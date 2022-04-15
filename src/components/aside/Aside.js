@@ -23,7 +23,7 @@ export default function Aside() {
 				<img src={logo} alt='logo' />
 			</div>
 			<div className='cabinet__aside-welcome grey-block'>
-				<span>Добро пожаловать</span>
+				<span>Добро пожаловать123</span>
 				<div className='cabinet__aside-welcome--name gold'>Artem</div>
 				<span>Ваша реферальная ссылка</span>
 				<button className='gold' onClick={handleClick}>
