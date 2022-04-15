@@ -60,7 +60,7 @@ export default function CabinetHelp() {
 											<div className='form__line'>
 												<textarea
 													className='cabhelp__form-textarea input'
-													autocomplete='off'
+													autoComplete='off'
 													type='text'
 													name='help'
 												></textarea>

@@ -1,12 +1,22 @@
+import { useState } from 'react';
+
 import { NavLink } from 'react-router-dom';
 
 import Footer from '../../footer/Footer';
 
-import {logo} from '../../../img/images';
+import { logo } from '../../../img/images';
 
 import './cabinetForms.scss';
 
 export default function CabinetRegistration() {
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+
+	const handleReg = (e) => {
+		e.preventDefault();
+		console.log('Auth');
+	};
+
 	return (
 		<body className='cabinet'>
 			<div className='wrapper'>
@@ -18,10 +28,10 @@ export default function CabinetRegistration() {
 						<div className='cabinet__form'>
 							<div className='cabinet__form-wrapper'>
 								<div className='cabinet__form-title gold'>Регистрация</div>
-								<form action='#' className='cabinet__form-form'>
+								<form onSubmit={handleReg} className='cabinet__form-form'>
 									<div className='cabinet__form-line'>
 										<input
-											autocomplete='off'
+											autoComplete='off'
 											type='text'
 											name='login'
 											placeholder='Логин'
@@ -30,7 +40,7 @@ export default function CabinetRegistration() {
 									</div>
 									<div className='cabinet__form-line'>
 										<input
-											autocomplete='off'
+											autoComplete='off'
 											type='text'
 											name='name'
 											placeholder='Имя'
@@ -39,16 +49,18 @@ export default function CabinetRegistration() {
 									</div>
 									<div className='cabinet__form-line'>
 										<input
-											autocomplete='off'
+											autoComplete='off'
 											type='text'
 											name='email'
 											placeholder='E-mail'
+											value={email}
+											onChange={({ target: { value } }) => setEmail(value)}
 											className='cabinet__form-input'
 										/>
 									</div>
 									<div className='cabinet__form-line'>
 										<input
-											autocomplete='off'
+											autoComplete='off'
 											type='text'
 											name='invite'
 											placeholder='Логин пригласившего'
@@ -57,16 +69,18 @@ export default function CabinetRegistration() {
 									</div>
 									<div className='cabinet__form-line'>
 										<input
-											autocomplete='off'
+											autoComplete='off'
 											type='password'
 											name='password'
 											placeholder='Придумайте пароль'
+											value={password}
+											onChange={({ target: { value } }) => setPassword(value)}
 											className='cabinet__form-input'
 										/>
 									</div>
 									<div className='cabinet__form-line'>
 										<input
-											autocomplete='off'
+											autoComplete='off'
 											type='password'
 											name='repassword'
 											placeholder='Ваш пароль еще раз'
@@ -101,7 +115,7 @@ export default function CabinetRegistration() {
 						</div>
 					</div>
 				</main>
-				<Footer/>
+				<Footer />
 			</div>
 		</body>
 	);

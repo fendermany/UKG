@@ -43,31 +43,31 @@ export default function CabinetProfile() {
 								<form action="#" className="cabprofile__form perdata__form">
 									<div className="cabprofile__form-item">
 										<label for="name">ФИО:</label>
-										<input autocomplete="off" type="text" name="name" className="cabprofile__form-input" />
+										<input autoComplete="off" type="text" name="name" className="cabprofile__form-input" />
 									</div>
 									<div className="cabprofile__form-item">
 										<label for="email">Почта:</label>
-										<input autocomplete="off" type="text" name="email" className="cabprofile__form-input" />
+										<input autoComplete="off" type="text" name="email" className="cabprofile__form-input" />
 									</div>
 									<div className="cabprofile__form-item">
 										<label for="login">Логин:</label>
-										<input autocomplete="off" type="text" name="login" className="cabprofile__form-input" />
+										<input autoComplete="off" type="text" name="login" className="cabprofile__form-input" />
 									</div>
 									<div className="cabprofile__form-item">
 										<label for="phone">Номер телефона:</label>
-										<input autocomplete="off" type="text" name="phone" className="cabprofile__form-input" />
+										<input autoComplete="off" type="text" name="phone" className="cabprofile__form-input" />
 									</div>
 									<div className="cabprofile__form-item">
 										<label for="telegram">Телеграм:</label>
-										<input autocomplete="off" type="text" name="telegram" className="cabprofile__form-input" />
+										<input autoComplete="off" type="text" name="telegram" className="cabprofile__form-input" />
 									</div>
 									<div className="cabprofile__form-item">
 										<label for="tron">TRON:</label>
-										<input autocomplete="off" type="text" name="tron" className="cabprofile__form-input" />
+										<input autoComplete="off" type="text" name="tron" className="cabprofile__form-input" />
 									</div>
 									<div className="cabprofile__form-item">
 										<label for="whatsapp">WHATSAPP:</label>
-										<input autocomplete="off" type="text" name="whatsapp" className="cabprofile__form-input" />
+										<input autoComplete="off" type="text" name="whatsapp" className="cabprofile__form-input" />
 									</div>
 									<button type="submit" className="cabprofile__form-button button button_gold">
 										Сохранить
@@ -78,15 +78,15 @@ export default function CabinetProfile() {
 								<form action="#" className="cabprofile__form changepw__form">
 									<div className="cabprofile__form-item">
 										<label for="old">ВАШ ТЕКУЩИЙ ПАРОЛЬ:</label>
-										<input autocomplete="off" type="text" name="old" className="cabprofile__form-input" />
+										<input autoComplete="off" type="text" name="old" className="cabprofile__form-input" />
 									</div>
 									<div className="cabprofile__form-item">
 										<label for="new">НОВЫЙ ПАРОЛЬ:</label>
-										<input autocomplete="off" type="password" name="new" className="cabprofile__form-input" />
+										<input autoComplete="off" type="password" name="new" className="cabprofile__form-input" />
 									</div>
 									<div className="cabprofile__form-item">
 										<label for="repnew">ПОВТОРИТЕ НОВЫЙ ПАРОЛЬ:</label>
-										<input autocomplete="off" type="password" name="repnew" className="cabprofile__form-input" />
+										<input autoComplete="off" type="password" name="repnew" className="cabprofile__form-input" />
 									</div>
 									<button type="submit" className="cabprofile__form-button button button_gold">
 										Сохранить
@@ -140,12 +140,12 @@ export default function CabinetProfile() {
 										<div className="cabprofile__form-subtitle">
 											Для активации Google Authenticator используйте ключ:
 										</div>
-										<input disabled autocomplete="off" type="text" name="google" value="RWX5C2NQW7WIHLKI" className="cabprofile__form-input google-auth" />
+										<input disabled autoComplete="off" type="text" name="google" value="RWX5C2NQW7WIHLKI" className="cabprofile__form-input google-auth" />
 									</div>
 									<div className="cabprofile__form-item">
 										<label for="google_input">ВВЕДИТЕ КОД ИЗ ПРИЛОЖЕНИЯ:
 										</label>
-										<input autocomplete="off" type="text" name="google_input" className="cabprofile__form-input" />
+										<input autoComplete="off" type="text" name="google_input" className="cabprofile__form-input" />
 									</div>
 									<button type="submit" className="cabprofile__form-button button button_gold">
 										Сохранить

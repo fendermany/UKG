@@ -23,7 +23,7 @@ export default function CabinetRecovery() {
 								<form action='#' className='cabinet__form-form'>
 									<div className='cabinet__form-line'>
 										<input
-											autocomplete='off'
+											autoComplete='off'
 											type='text'
 											name='login'
 											placeholder='Логин'
@@ -32,7 +32,7 @@ export default function CabinetRecovery() {
 									</div>
 									<div className='cabinet__form-line'>
 										<input
-											autocomplete='off'
+											autoComplete='off'
 											type='text'
 											name='email'
 											placeholder='E-mail'

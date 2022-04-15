@@ -10,6 +10,10 @@ import './cabinetHeader.scss';
 export default function CabinetHeader() {
 	const {getValue, onChange, options} = useContext(LangContext);
 	
+	const handleLogout = () => {
+		console.log('logout');
+		
+	}
 
 	return (
 		<div className='cabinet__header'>
@@ -18,10 +22,10 @@ export default function CabinetHeader() {
 					<img src={settingsIcon} alt='settings' />
 					<span>Настройки</span>
 				</a>
-				<a href='/' className='cabinet__header-btns--exit gold'>
+				<button onClick={handleLogout} className='cabinet__header-btns--exit gold'>
 					<img src={exitIcon} alt='exit' />
 					<span>Выход</span>
-				</a>
+				</button>
 			</div>
 			<div className='cabinet__header-rightside'>
 				<div className='cabinet__header-social social'>

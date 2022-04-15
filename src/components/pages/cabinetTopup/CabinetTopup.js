@@ -32,7 +32,7 @@ export default function CabinetTopup() {
 											<div className='cabtopup__input-wrapper'>
 												<input
 													disabled
-													autocomplete='off'
+													autoComplete='off'
 													type='text'
 													name='status'
 													value='Ожидает подтверждения'
@@ -45,7 +45,7 @@ export default function CabinetTopup() {
 											<div className='cabtopup__input-wrapper'>
 												<input
 													disabled
-													autocomplete='off'
+													autoComplete='off'
 													type='text'
 													name='status'
 													value='Bitcoin'
@@ -58,7 +58,7 @@ export default function CabinetTopup() {
 											<div className='cabtopup__input-wrapper'>
 												<input
 													disabled
-													autocomplete='off'
+													autoComplete='off'
 													type='text'
 													name='status'
 													value='12.10.2021 14:15:25'
@@ -71,7 +71,7 @@ export default function CabinetTopup() {
 											<div className='cabtopup__input-wrapper'>
 												<input
 													disabled
-													autocomplete='off'
+													autoComplete='off'
 													type='text'
 													name='status'
 													value='10 000 BTC'
@@ -84,7 +84,7 @@ export default function CabinetTopup() {
 											<div className='cabtopup__input-wrapper'>
 												<input
 													disabled
-													autocomplete='off'
+													autoComplete='off'
 													type='text'
 													name='status'
 													value='161AEyUD9WzJ3cZnjQqg621ewANyKWuvaQ'

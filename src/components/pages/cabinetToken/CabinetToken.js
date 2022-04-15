@@ -90,7 +90,7 @@ export default function CabinetToken() {
 										</div>
 										<div className='cabtoken__topup-line'>
 											<input
-												autocomplete='off'
+												autoComplete='off'
 												type='text'
 												name='topup'
 												className='cabtoken__topup-input'
