@@ -1,0 +1,49 @@
+.lang-list {
+	&__control {
+		background: rgba(255, 255, 255, 0.12) !important;
+		border-radius: 4px !important;
+		border: none !important;
+		height: 30px !important;
+	}
+	&__value-container {
+		font-weight: 500 !important;
+		font-size: 12px !important;
+		line-height: 14px !important;
+		border: none !important;
+		padding-right: 0 !important;
+	}
+	&__single-value {
+		color: #fff !important;
+	}
+	&__indicator-separator {
+		display: none;
+	}
+	&__indicator {
+		width: 12px;
+		height: 12px;
+		padding: 0 !important;
+		margin: 0 5px !important;
+		svg {
+			width: 100%;
+			height: 100%;
+		}
+	}
+	&__menu {
+		background: rgba(255, 255, 255, 0.12) !important;
+		border-radius: 0 0 4px 4px !important;
+		color: #fff !important;
+		right: -50px !important;
+		top: 0 !important;
+		padding: 0 !important;
+		margin: 0 !important;
+		font-weight: 500 !important;
+		font-size: 12px !important;
+		line-height: 14px !important;
+		width: 100% !important;
+		&-list {
+			padding: 0 !important;
+		}
+	}
+	&__option {
+	}
+}
