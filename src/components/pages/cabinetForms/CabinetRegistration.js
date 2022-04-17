@@ -1,8 +1,11 @@
 import { useState } from 'react';
-
+import { useMutation } from 'react-query';
 import { NavLink } from 'react-router-dom';
+import { $api } from '../../../api/axios';
 
 import Footer from '../../footer/Footer';
+import Alert from './../../ui/alert/Alert';
+import Spinner from '../../spinner/Spinner';
 
 import { logo } from '../../../img/images';
 
@@ -10,15 +13,43 @@ import './cabinetForms.scss';
 
 export default function CabinetRegistration() {
 	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+	const [phone, setPhone] = useState('');
+	const [fullName, setFullName] = useState('');
+	const [registerTag, setRegisterTag] = useState('AUTO');
 
-	const handleReg = (e) => {
+	const successRegistration = () => {
+		setPhone('');
+		setFullName('');
+		setEmail('');
+	};
+
+	const {
+		mutate: register,
+		isLoading,
+		error
+	} = useMutation(
+		'Registration',
+		() =>
+			$api({
+				url: '/pub/users/register',
+				type: 'POST',
+				auth: false,
+				body: { fullName, email, phone, registerTag },
+			}),
+		{
+			onSuccess() {
+				successRegistration();
+			}
+		}
+	);
+
+	const handleReg = e => {
 		e.preventDefault();
-		console.log('Auth');
+		register();
 	};
 
 	return (
-		<body className='cabinet'>
+		<div className='cabinet'>
 			<div className='wrapper'>
 				<main className='page'>
 					<div className='cabinet__container'>
@@ -28,22 +59,17 @@ export default function CabinetRegistration() {
 						<div className='cabinet__form'>
 							<div className='cabinet__form-wrapper'>
 								<div className='cabinet__form-title gold'>Регистрация</div>
+								{error && <Alert type='error' text={error} />}
+								{isLoading && <Spinner />}
 								<form onSubmit={handleReg} className='cabinet__form-form'>
-									<div className='cabinet__form-line'>
-										<input
-											autoComplete='off'
-											type='text'
-											name='login'
-											placeholder='Логин'
-											className='cabinet__form-input'
-										/>
-									</div>
 									<div className='cabinet__form-line'>
 										<input
 											autoComplete='off'
 											type='text'
 											name='name'
 											placeholder='Имя'
+											value={fullName}
+											onChange={({ target: { value } }) => setFullName(value)}
 											className='cabinet__form-input'
 										/>
 									</div>
@@ -62,12 +88,14 @@ export default function CabinetRegistration() {
 										<input
 											autoComplete='off'
 											type='text'
-											name='invite'
-											placeholder='Логин пригласившего'
+											name='phone'
+											value={phone}
+											onChange={({ target: { value } }) => setPhone(value)}
+											placeholder='Телефон'
 											className='cabinet__form-input'
 										/>
 									</div>
-									<div className='cabinet__form-line'>
+									{/* <div className='cabinet__form-line'>
 										<input
 											autoComplete='off'
 											type='password'
@@ -86,7 +114,7 @@ export default function CabinetRegistration() {
 											placeholder='Ваш пароль еще раз'
 											className='cabinet__form-input'
 										/>
-									</div>
+									</div> */}
 									<div className='cabinet__form-checkbox checkbox'>
 										<input
 											id='c_1'
@@ -96,7 +124,7 @@ export default function CabinetRegistration() {
 											value='1'
 											name='form[]'
 										/>
-										<label for='c_1' className='checkbox__label'>
+										<label htmlFor='c_1' className='checkbox__label'>
 											<span className='checkbox__text'>
 												Согласен с правилами и соглашениями, а так же с
 												возможными рисками.
@@ -117,6 +145,6 @@ export default function CabinetRegistration() {
 				</main>
 				<Footer />
 			</div>
-		</body>
+		</div>
 	);
 }

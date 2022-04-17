@@ -1,6 +1,7 @@
 import { lazy, Suspense, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LangContext from './context';
+import { useAuth } from '../../hooks/useAuth';
 
 import Spinner from '../spinner/Spinner';
 
@@ -54,7 +55,7 @@ function App() {
 		setCurrentCountry(newValue.value);
 	}
 
-	const auth = false;
+	const {isAuth} = useAuth();
 
 	return (
 		<LangContext.Provider
@@ -64,7 +65,7 @@ function App() {
 				options,
 			}}
 		>
-			{auth ? (
+			{isAuth ? (
 				<Router>
 					<Suspense fallback={<Spinner />}>
 						<Routes>

@@ -2,18 +2,27 @@ import { useContext } from 'react';
 import LangContext from '../app/context';
 import Select from 'react-select';
 import Clock from './Clock';
+import { useAuth } from './../../hooks/useAuth';
 
-import { settingsIcon, exitIcon, youtube, facebook, instagram, telegram } from '../../img/images';
+import {
+	settingsIcon,
+	exitIcon,
+	youtube,
+	facebook,
+	instagram,
+	telegram,
+} from '../../img/images';
 
 import './cabinetHeader.scss';
 
 export default function CabinetHeader() {
-	const {getValue, onChange, options} = useContext(LangContext);
-	
+	const { getValue, onChange, options } = useContext(LangContext);
+
+	const { setIsAuth } = useAuth();
 	const handleLogout = () => {
-		console.log('logout');
-		
-	}
+		localStorage.removeItem('token');
+		setIsAuth(false);
+	};
 
 	return (
 		<div className='cabinet__header'>
@@ -22,7 +31,10 @@ export default function CabinetHeader() {
 					<img src={settingsIcon} alt='settings' />
 					<span>Настройки</span>
 				</a>
-				<button onClick={handleLogout} className='cabinet__header-btns--exit gold'>
+				<button
+					onClick={handleLogout}
+					className='cabinet__header-btns--exit gold'
+				>
 					<img src={exitIcon} alt='exit' />
 					<span>Выход</span>
 				</button>
@@ -62,7 +74,7 @@ export default function CabinetHeader() {
 					/>
 				</div>
 				<div className='cabinet__header-time'>
-					<Clock/>
+					<Clock />
 				</div>
 			</div>
 		</div>

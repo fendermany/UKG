@@ -28,7 +28,7 @@ export default function CabinetTopup() {
 								<div className='cabtopup__inner'>
 									<ul className='cabtopup__body'>
 										<li className='cabtopup__item'>
-											<label for='status'>Статус</label>
+											<label htmlFor='status'>Статус</label>
 											<div className='cabtopup__input-wrapper'>
 												<input
 													disabled
@@ -41,7 +41,7 @@ export default function CabinetTopup() {
 											</div>
 										</li>
 										<li className='cabtopup__item'>
-											<label for='status'>Платежная система</label>
+											<label htmlFor='status'>Платежная система</label>
 											<div className='cabtopup__input-wrapper'>
 												<input
 													disabled
@@ -54,7 +54,7 @@ export default function CabinetTopup() {
 											</div>
 										</li>
 										<li className='cabtopup__item'>
-											<label for='status'>Дата</label>
+											<label htmlFor='status'>Дата</label>
 											<div className='cabtopup__input-wrapper'>
 												<input
 													disabled
@@ -67,7 +67,7 @@ export default function CabinetTopup() {
 											</div>
 										</li>
 										<li className='cabtopup__item'>
-											<label for='status'>Сумма</label>
+											<label htmlFor='status'>Сумма</label>
 											<div className='cabtopup__input-wrapper'>
 												<input
 													disabled
@@ -80,7 +80,7 @@ export default function CabinetTopup() {
 											</div>
 										</li>
 										<li className='cabtopup__item'>
-											<label for='status'>Реквизиты для оплаты</label>
+											<label htmlFor='status'>Реквизиты для оплаты</label>
 											<div className='cabtopup__input-wrapper'>
 												<input
 													disabled

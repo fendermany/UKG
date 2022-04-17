@@ -8,9 +8,10 @@
 	animation: opacity 0.4s;
 	padding: 10px;
 	border-radius: 10px;
+	margin-top: 1rem;
 
 	&.error {
-		background-color: #ff2e63;
+		background-color: #ec174c;
 		color: #fff;
 	}
 

@@ -37,7 +37,7 @@ export default function CabinetHelp() {
 													value='1'
 													name='option'
 												/>
-												<label for='o_1' className='options__label'>
+												<label htmlFor='o_1' className='options__label'>
 													<span className='options__text'>Technical questions</span>
 												</label>
 											</div>
@@ -50,7 +50,7 @@ export default function CabinetHelp() {
 													value='2'
 													name='option'
 												/>
-												<label for='o_2' className='options__label'>
+												<label htmlFor='o_2' className='options__label'>
 													<span className='options__text'>Financial questions</span>
 												</label>
 											</div>

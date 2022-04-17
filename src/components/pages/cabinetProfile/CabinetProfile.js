@@ -42,31 +42,31 @@ export default function CabinetProfile() {
 							<div className="cabprofile__body perdata">
 								<form action="#" className="cabprofile__form perdata__form">
 									<div className="cabprofile__form-item">
-										<label for="name">ФИО:</label>
+										<label htmlFor="name">ФИО:</label>
 										<input autoComplete="off" type="text" name="name" className="cabprofile__form-input" />
 									</div>
 									<div className="cabprofile__form-item">
-										<label for="email">Почта:</label>
+										<label htmlFor="email">Почта:</label>
 										<input autoComplete="off" type="text" name="email" className="cabprofile__form-input" />
 									</div>
 									<div className="cabprofile__form-item">
-										<label for="login">Логин:</label>
+										<label htmlFor="login">Логин:</label>
 										<input autoComplete="off" type="text" name="login" className="cabprofile__form-input" />
 									</div>
 									<div className="cabprofile__form-item">
-										<label for="phone">Номер телефона:</label>
+										<label htmlFor="phone">Номер телефона:</label>
 										<input autoComplete="off" type="text" name="phone" className="cabprofile__form-input" />
 									</div>
 									<div className="cabprofile__form-item">
-										<label for="telegram">Телеграм:</label>
+										<label htmlFor="telegram">Телеграм:</label>
 										<input autoComplete="off" type="text" name="telegram" className="cabprofile__form-input" />
 									</div>
 									<div className="cabprofile__form-item">
-										<label for="tron">TRON:</label>
+										<label htmlFor="tron">TRON:</label>
 										<input autoComplete="off" type="text" name="tron" className="cabprofile__form-input" />
 									</div>
 									<div className="cabprofile__form-item">
-										<label for="whatsapp">WHATSAPP:</label>
+										<label htmlFor="whatsapp">WHATSAPP:</label>
 										<input autoComplete="off" type="text" name="whatsapp" className="cabprofile__form-input" />
 									</div>
 									<button type="submit" className="cabprofile__form-button button button_gold">
@@ -77,15 +77,15 @@ export default function CabinetProfile() {
 							<div className="cabprofile__body changepw">
 								<form action="#" className="cabprofile__form changepw__form">
 									<div className="cabprofile__form-item">
-										<label for="old">ВАШ ТЕКУЩИЙ ПАРОЛЬ:</label>
+										<label htmlFor="old">ВАШ ТЕКУЩИЙ ПАРОЛЬ:</label>
 										<input autoComplete="off" type="text" name="old" className="cabprofile__form-input" />
 									</div>
 									<div className="cabprofile__form-item">
-										<label for="new">НОВЫЙ ПАРОЛЬ:</label>
+										<label htmlFor="new">НОВЫЙ ПАРОЛЬ:</label>
 										<input autoComplete="off" type="password" name="new" className="cabprofile__form-input" />
 									</div>
 									<div className="cabprofile__form-item">
-										<label for="repnew">ПОВТОРИТЕ НОВЫЙ ПАРОЛЬ:</label>
+										<label htmlFor="repnew">ПОВТОРИТЕ НОВЫЙ ПАРОЛЬ:</label>
 										<input autoComplete="off" type="password" name="repnew" className="cabprofile__form-input" />
 									</div>
 									<button type="submit" className="cabprofile__form-button button button_gold">
@@ -96,7 +96,7 @@ export default function CabinetProfile() {
 							<div className="cabprofile__body security">
 								<form action="#" className="cabprofile__form security__form">
 									<div className="cabprofile__form-item">
-										<label for="gmt">ВАШ ЧАСОВОЙ ПОЯС (ОТ GMT): </label>
+										<label htmlFor="gmt">ВАШ ЧАСОВОЙ ПОЯС (ОТ GMT): </label>
 										<select name="gmt" className="cabprofile__form-select">
 											<option value="1" selected>+0:00</option>
 											<option value="2">+1:00</option>
@@ -105,29 +105,29 @@ export default function CabinetProfile() {
 										</select>
 										<div className="cabprofile__form-checkbox checkbox">
 											<input id="notificationemail" className="checkbox__input" type="checkbox" value="1" name="notificationemail" />
-											<label for="notificationemail" className="checkbox__label"><span className="checkbox__text">Не получать оповещения на e-mail
+											<label htmlFor="notificationemail" className="checkbox__label"><span className="checkbox__text">Не получать оповещения на e-mail
 												</span></label>
 										</div>
 									</div>
 									<div className="cabprofile__form-item">
-										<label for="ip">КОНТРОЛЬ СМЕНЫ IP-АДРЕСЫ: </label>
+										<label htmlFor="ip">КОНТРОЛЬ СМЕНЫ IP-АДРЕСЫ: </label>
 										<select name="ip" className="cabprofile__form-select">
 											<option value="1" selected>по умолчанию</option>
 											<option value="2">динамически</option>
 										</select>
 										<div className="cabprofile__form-checkbox checkbox">
 											<input id="ipsession" className="checkbox__input" type="checkbox" value="1" name="ipsession" />
-											<label for="ipsession" className="checkbox__label"><span className="checkbox__text">Привязать сессию в IP-адресу
+											<label htmlFor="ipsession" className="checkbox__label"><span className="checkbox__text">Привязать сессию в IP-адресу
 												</span></label>
 										</div>
 										<div className="cabprofile__form-checkbox checkbox">
 											<input id="parsession" className="checkbox__input" type="checkbox" value="1" name="parsession" />
-											<label for="parsession" className="checkbox__label"><span className="checkbox__text">Запретить параллельные сессии
+											<label htmlFor="parsession" className="checkbox__label"><span className="checkbox__text">Запретить параллельные сессии
 												</span></label>
 										</div>
 									</div>
 									<div className="cabprofile__form-item">
-										<label for="autoexit">АВТОВЫХОД ЧЕРЕЗ N МИНУТ (0 ПО УМОЛЧАНИЮ):</label>
+										<label htmlFor="autoexit">АВТОВЫХОД ЧЕРЕЗ N МИНУТ (0 ПО УМОЛЧАНИЮ):</label>
 										<select name="autoexit" className="cabprofile__form-select">
 											<option value="1" selected>0- по умолчанию</option>
 											<option value="2">10</option>
@@ -136,14 +136,14 @@ export default function CabinetProfile() {
 										</select>
 									</div>
 									<div className="cabprofile__form-item">
-										<label for="google">GOOGLE AUTHENTICATOR: </label>
+										<label htmlFor="google">GOOGLE AUTHENTICATOR: </label>
 										<div className="cabprofile__form-subtitle">
 											Для активации Google Authenticator используйте ключ:
 										</div>
 										<input disabled autoComplete="off" type="text" name="google" value="RWX5C2NQW7WIHLKI" className="cabprofile__form-input google-auth" />
 									</div>
 									<div className="cabprofile__form-item">
-										<label for="google_input">ВВЕДИТЕ КОД ИЗ ПРИЛОЖЕНИЯ:
+										<label htmlFor="google_input">ВВЕДИТЕ КОД ИЗ ПРИЛОЖЕНИЯ:
 										</label>
 										<input autoComplete="off" type="text" name="google_input" className="cabprofile__form-input" />
 									</div>

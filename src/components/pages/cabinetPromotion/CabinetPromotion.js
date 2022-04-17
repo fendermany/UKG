@@ -26,7 +26,7 @@ export default function CabinetPromotion() {
 					</div>
 					<div className="cabpromo__link">
 						<div className="cabpromo__link-wrapper">
-							<label for="reflink">ВАША РЕФЕРАЛЬНАЯ ССЫЛКА: </label>
+							<label htmlFor="reflink">ВАША РЕФЕРАЛЬНАЯ ССЫЛКА: </label>
 							<input disabled autoComplete="off" type="text" name="reflink" value="https://demo.chyip.com/ethnicfinance2/?reg=zzzzz" className="input" />
 							<button type="submit" className="cabpromo__link-button button button_gold">
 								Скопировать
