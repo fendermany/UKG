@@ -1,11 +1,13 @@
 import axios from 'axios';
 
+export const API_URL = `https://ukgholding.com/api/v1`;
+
 const instance = axios.create({
 	
 	headers: {
 		'Content-Type': 'application/json',
 	},
-	baseURL: 'https://ukgholding.com/api/v1',
+	baseURL: API_URL,
 });
 
 export const $api = async ({ url, type = 'GET', auth = true, body }) => {
