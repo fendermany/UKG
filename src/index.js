@@ -2,18 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import AppProvider from './providers/AppProvider';
 
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools'
-import './index.css';
+// import i18n (needs to be bundled ;))
+import './components/i18n/i18n';
 
-const queryClient = new QueryClient();
+import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 	<React.StrictMode>
-		<QueryClientProvider client={queryClient}>
-			<AppProvider />
-      <ReactQueryDevtools initialIsOpen={false} />
-		</QueryClientProvider>
+		<AppProvider />
 	</React.StrictMode>
 );

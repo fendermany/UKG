@@ -1,30 +1,12 @@
-import { useState, useEffect } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
+import { useContext } from 'react';
 import App from '../components/app/App';
-import axios from 'axios';
-import { API_URL } from '../api/axios';
+import { AuthContext } from './../contexts/AuthContext';
+
 
 const AppProvider = () => {
-	const [isAuth, setIsAuth] = useState(!!localStorage.getItem('token'));
-
-	const checkAuth = async () => {
-		try {
-			const response = await axios.get(`${API_URL}/refresh`);
-			localStorage.setItem('token', response.data.accessToken);
-			setIsAuth(true);
-		} catch (error) {
-			console.log(error.response.data.message);
-		}
-	};
-
-	useEffect(() => {
-		if(localStorage.getItem('token')) {
-			checkAuth();
-		}
-	}, [])
-
+	const { store } = useContext(AuthContext);
 	return (
-		<AuthContext.Provider value={{ isAuth, setIsAuth }}>
+		<AuthContext.Provider value={{ store }}>
 			<App />
 		</AuthContext.Provider>
 	);

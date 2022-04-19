@@ -1,9 +1,7 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useMutation } from 'react-query';
-import { $api } from '../../../api/axios';
-import { useAuth } from './../../../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import { AuthContext } from './../../../contexts/AuthContext';
+import { observer } from 'mobx-react-lite';
 
 import Footer from '../../footer/Footer';
 import Spinner from '../../spinner/Spinner';
@@ -13,48 +11,15 @@ import { logo } from '../../../img/images';
 
 import './cabinetForms.scss';
 
-export default function CabinetSignin() {
+function CabinetSignin() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [rememberMe, setRememberMe] = useState(true);
-
-	const navigate = useNavigate();
-	const { setIsAuth } = useAuth();
-
-	const successLogin = token => {
-		localStorage.setItem('token', token);
-
-		setIsAuth(true);
-
-		setEmail('');
-		setPassword('');
-
-		navigate('/');
-	};
-
-	const {
-		mutate: auth,
-		isLoading: isLoadingAuth,
-		error: errorAuth,
-	} = useMutation(
-		'Auth',
-		() =>
-			$api({
-				url: '/login',
-				type: 'POST',
-				auth: false,
-				body: { email, password, rememberMe },
-			}),
-		{
-			onSuccess(data) {
-				successLogin(data.headers.authorization);
-			},
-		}
-	);
+	const { store } = useContext(AuthContext);
 
 	const handleAuth = e => {
 		e.preventDefault();
-		auth();
+		store.login(email, password, rememberMe);
 	};
 
 	return (
@@ -70,8 +35,13 @@ export default function CabinetSignin() {
 								<div className='cabinet__form-title gold'>
 									Вход личный кабинет
 								</div>
-								{errorAuth && <Alert type='error' text={errorAuth} />}
-								{isLoadingAuth && <Spinner />}
+								{store.isError && (
+									<Alert type='error' text={store.errorMessage} />
+								)}
+								{store.isSuccess && (
+									<Alert type='success' text={store.successMessage} />
+								)}
+								{store.isLoading && <Spinner />}
 								<form onSubmit={handleAuth} className='cabinet__form-form'>
 									<div className='cabinet__form-line'>
 										<input
@@ -117,3 +87,5 @@ export default function CabinetSignin() {
 		</div>
 	);
 }
+
+export default observer(CabinetSignin);

@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import { useMutation } from 'react-query';
+import { useState, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import { $api } from '../../../api/axios';
+import { AuthContext } from './../../../contexts/AuthContext';
+import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 
 import Footer from '../../footer/Footer';
 import Alert from './../../ui/alert/Alert';
@@ -11,42 +12,20 @@ import { logo } from '../../../img/images';
 
 import './cabinetForms.scss';
 
-export default function CabinetRegistration() {
+function CabinetRegistration() {
 	const [email, setEmail] = useState('');
 	const [phone, setPhone] = useState('');
 	const [fullName, setFullName] = useState('');
 	const [registerTag, setRegisterTag] = useState('AUTO');
-
-	const successRegistration = () => {
-		setPhone('');
-		setFullName('');
-		setEmail('');
-	};
-
-	const {
-		mutate: register,
-		isLoading,
-		error
-	} = useMutation(
-		'Registration',
-		() =>
-			$api({
-				url: '/pub/users/register',
-				type: 'POST',
-				auth: false,
-				body: { fullName, email, phone, registerTag },
-			}),
-		{
-			onSuccess() {
-				successRegistration();
-			}
-		}
-	);
+	const { store } = useContext(AuthContext);
+	const { t } = useTranslation();
 
 	const handleReg = e => {
 		e.preventDefault();
-		register();
+		store.registration(fullName, email, phone, registerTag);
 	};
+
+
 
 	return (
 		<div className='cabinet'>
@@ -58,9 +37,16 @@ export default function CabinetRegistration() {
 						</div>
 						<div className='cabinet__form'>
 							<div className='cabinet__form-wrapper'>
-								<div className='cabinet__form-title gold'>Регистрация</div>
-								{error && <Alert type='error' text={error} />}
-								{isLoading && <Spinner />}
+								<div className='cabinet__form-title gold'>
+									{t('registration.formTitle')}
+								</div>
+								{store.isError && (
+									<Alert type='error' text={store.errorMessage} />
+								)}
+								{store.isSuccess && (
+									<Alert type='success' text={store.successMessage} />
+								)}
+								{store.isLoading && <Spinner />}
 								<form onSubmit={handleReg} className='cabinet__form-form'>
 									<div className='cabinet__form-line'>
 										<input
@@ -71,6 +57,7 @@ export default function CabinetRegistration() {
 											value={fullName}
 											onChange={({ target: { value } }) => setFullName(value)}
 											className='cabinet__form-input'
+											required
 										/>
 									</div>
 									<div className='cabinet__form-line'>
@@ -82,6 +69,7 @@ export default function CabinetRegistration() {
 											value={email}
 											onChange={({ target: { value } }) => setEmail(value)}
 											className='cabinet__form-input'
+											required
 										/>
 									</div>
 									<div className='cabinet__form-line'>
@@ -93,28 +81,9 @@ export default function CabinetRegistration() {
 											onChange={({ target: { value } }) => setPhone(value)}
 											placeholder='Телефон'
 											className='cabinet__form-input'
+											required
 										/>
 									</div>
-									{/* <div className='cabinet__form-line'>
-										<input
-											autoComplete='off'
-											type='password'
-											name='password'
-											placeholder='Придумайте пароль'
-											value={password}
-											onChange={({ target: { value } }) => setPassword(value)}
-											className='cabinet__form-input'
-										/>
-									</div>
-									<div className='cabinet__form-line'>
-										<input
-											autoComplete='off'
-											type='password'
-											name='repassword'
-											placeholder='Ваш пароль еще раз'
-											className='cabinet__form-input'
-										/>
-									</div> */}
 									<div className='cabinet__form-checkbox checkbox'>
 										<input
 											id='c_1'
@@ -123,6 +92,7 @@ export default function CabinetRegistration() {
 											type='checkbox'
 											value='1'
 											name='form[]'
+											required
 										/>
 										<label htmlFor='c_1' className='checkbox__label'>
 											<span className='checkbox__text'>
@@ -148,3 +118,5 @@ export default function CabinetRegistration() {
 		</div>
 	);
 }
+
+export default observer(CabinetRegistration);

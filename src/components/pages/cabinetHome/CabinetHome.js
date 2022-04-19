@@ -2,10 +2,30 @@ import Footer from '../../footer/Footer';
 import CabinetTopbar from '../../cabinetTopbar/CabinetTopbar';
 import Aside from '../../aside/Aside';
 import CabinetHeader from '../../cabinetHeader/CabinetHeader';
-import { cg, cgWhite, car, banknota, mail, okCircle, user, userWhite, bonus3, documents, calendar, clock, procent, dollar, gold, gold3, gold1 } from '../../../img/images';
+import { Tab, Tabs, TabPanel } from '@mui/material';
+
+import {
+	cg,
+	cgWhite,
+	car,
+	banknota,
+	mail,
+	okCircle,
+	user,
+	userWhite,
+	bonus3,
+	documents,
+	calendar,
+	clock,
+	procent,
+	dollar,
+	gold,
+	gold3,
+	gold1,
+} from '../../../img/images';
 
 import './cabinetHome.scss';
-
+import Yieldchart from './Yieldchart';
 
 export default function CabinetHome() {
 	return (
@@ -15,29 +35,13 @@ export default function CabinetHome() {
 
 				<div className='wrapper'>
 					<main className='page'>
-						<CabinetHeader/>
+						<CabinetHeader />
 
-						<CabinetTopbar/>
+						<CabinetTopbar />
 
 						<div className='cabhome'>
 							<div className='cabhome__profitability'>
-								<div className='cabhome__yieldchart'>
-									<div className='cabhome__yieldchart--wrapper'>
-										<div className='cabhome__yieldchart-top'>
-											<div className='cabhome__yieldchart-title cabinet__title'>
-												ГРАФИК <span className='gold'>ДОХОДНОСТИ</span>
-											</div>
-											<ul className='cabhome__yieldchart-tabstitles'>
-												<li>По дням</li>
-												<li className='_active'>По месяцам</li>
-												<li>По годам</li>
-											</ul>
-										</div>
-										<ul className='cabhome__yieldchart-tabsbodies'>
-											<li>здесь график</li>
-										</ul>
-									</div>
-								</div>
+								<Yieldchart/>
 								<ul className='cabhome__profitability-table grey-block-dark'>
 									<li>
 										<span>
@@ -90,10 +94,12 @@ export default function CabinetHome() {
 												<div className='pull__progress-start'>0%</div>
 												<div className='pull__progress-body'>
 													<div
-														style={{'width': '50%'}}
+														style={{ width: '50%' }}
 														className='pull__progress-body--inner'
 													>
-														<div className='pull__progress-current gold'>50%</div>
+														<div className='pull__progress-current gold'>
+															50%
+														</div>
 													</div>
 												</div>
 												<div className='pull__progress-end'>100%</div>
@@ -128,30 +134,21 @@ export default function CabinetHome() {
 													<span className='gold'>Сумма депозита</span>
 													<span>
 														(42% + тело ) 142
-														<img
-															src={cg}
-															alt='deposit amount'
-														/>
+														<img src={cg} alt='deposit amount' />
 													</span>
 												</div>
 												<div className='pull__column'>
 													<span className='gold'>Общая прибыль</span>
 													<span>
 														432587
-														<img
-															src={cg}
-															alt='deposit amount'
-														/>
+														<img src={cg} alt='deposit amount' />
 													</span>
 												</div>
 												<div className='pull__column'>
 													<span className='gold'>Заработанно</span>
 													<span>
 														55754740
-														<img
-															src={cg}
-															alt='deposit amount'
-														/>
+														<img src={cg} alt='deposit amount' />
 													</span>
 												</div>
 											</div>
@@ -167,10 +164,12 @@ export default function CabinetHome() {
 												<div className='pull__progress-start'>0%</div>
 												<div className='pull__progress-body'>
 													<div
-														style={{'width': '50%'}}
+														style={{ width: '50%' }}
 														className='pull__progress-body--inner'
 													>
-														<div className='pull__progress-current gold'>50%</div>
+														<div className='pull__progress-current gold'>
+															50%
+														</div>
 													</div>
 												</div>
 												<div className='pull__progress-end'>100%</div>
@@ -205,30 +204,21 @@ export default function CabinetHome() {
 													<span className='gold'>Сумма депозита</span>
 													<span>
 														(42% + тело ) 142
-														<img
-															src={cg}
-															alt='deposit amount'
-														/>
+														<img src={cg} alt='deposit amount' />
 													</span>
 												</div>
 												<div className='pull__column'>
 													<span className='gold'>Общая прибыль</span>
 													<span>
 														432587
-														<img
-															src={cg}
-															alt='deposit amount'
-														/>
+														<img src={cg} alt='deposit amount' />
 													</span>
 												</div>
 												<div className='pull__column'>
 													<span className='gold'>Заработанно</span>
 													<span>
 														55754740
-														<img
-															src={cg}
-															alt='deposit amount'
-														/>
+														<img src={cg} alt='deposit amount' />
 													</span>
 												</div>
 											</div>
@@ -244,10 +234,12 @@ export default function CabinetHome() {
 												<div className='pull__progress-start'>0%</div>
 												<div className='pull__progress-body'>
 													<div
-														style={{'width': '50%'}}
+														style={{ width: '50%' }}
 														className='pull__progress-body--inner'
 													>
-														<div className='pull__progress-current gold'>50%</div>
+														<div className='pull__progress-current gold'>
+															50%
+														</div>
 													</div>
 												</div>
 												<div className='pull__progress-end'>100%</div>
@@ -282,30 +274,21 @@ export default function CabinetHome() {
 													<span className='gold'>Сумма депозита</span>
 													<span>
 														(42% + тело ) 142
-														<img
-															src={cg}
-															alt='deposit amount'
-														/>
+														<img src={cg} alt='deposit amount' />
 													</span>
 												</div>
 												<div className='pull__column'>
 													<span className='gold'>Общая прибыль</span>
 													<span>
 														432587
-														<img
-															src={cg}
-															alt='deposit amount'
-														/>
+														<img src={cg} alt='deposit amount' />
 													</span>
 												</div>
 												<div className='pull__column'>
 													<span className='gold'>Заработанно</span>
 													<span>
 														55754740
-														<img
-															src={cg}
-															alt='deposit amount'
-														/>
+														<img src={cg} alt='deposit amount' />
 													</span>
 												</div>
 											</div>
@@ -324,18 +307,12 @@ export default function CabinetHome() {
 												сколько осталось
 											</div>
 											<div className='cabhome__qsb-body--item grey-block-dark'>
-												<img
-													src={calendar}
-													alt='quick-start-bonus-calendar'
-												/>
+												<img src={calendar} alt='quick-start-bonus-calendar' />
 												<span>Дата</span>
 												<span className='gold'>29 дней</span>
 											</div>
 											<div className='cabhome__qsb-body--item grey-block-dark'>
-												<img
-													src={clock}
-													alt='quick-start-bonus-clock'
-												/>
+												<img src={clock} alt='quick-start-bonus-clock' />
 												<span>Время</span>
 												<span className='gold'>05:39:09</span>
 											</div>
@@ -345,10 +322,7 @@ export default function CabinetHome() {
 												для получения бонуса необходимо
 											</div>
 											<div className='cabhome__qsb-body--item grey-block-dark'>
-												<img
-													src={user}
-													alt='quick-start-bonus-user'
-												/>
+												<img src={user} alt='quick-start-bonus-user' />
 												<span>Ваш оборот</span>
 												<span className='gold'>
 													0.00
@@ -356,10 +330,7 @@ export default function CabinetHome() {
 												</span>
 											</div>
 											<div className='cabhome__qsb-body--item grey-block-dark'>
-												<img
-													src={user}
-													alt='quick-start-bonus-user'
-												/>
+												<img src={user} alt='quick-start-bonus-user' />
 												<span>Вы получите</span>
 												<span className='gold'>
 													0
@@ -623,10 +594,7 @@ export default function CabinetHome() {
 												<br />
 												Достичь уровня <span>МЕНЕДЖЕР 2</span> за 90 дней
 											</span>
-											<img
-												src={documents}
-												alt='bonus-documents'
-											/>
+											<img src={documents} alt='bonus-documents' />
 										</div>
 									</div>
 									<table className='cabhome__invitebonus-table'>
@@ -658,7 +626,7 @@ export default function CabinetHome() {
 												<td className='cabhome__invitebonus-table--progress'>
 													<span>8 ур</span>
 													<div>
-														<span style={{'width': '50%'}}></span>
+														<span style={{ width: '50%' }}></span>
 													</div>
 												</td>
 											</tr>
@@ -680,7 +648,7 @@ export default function CabinetHome() {
 												<td className='cabhome__invitebonus-table--progress'>
 													<span>8 ур</span>
 													<div>
-														<span style={{'width': '50%'}}></span>
+														<span style={{ width: '50%' }}></span>
 													</div>
 												</td>
 											</tr>
@@ -702,7 +670,7 @@ export default function CabinetHome() {
 												<td className='cabhome__invitebonus-table--progress'>
 													<span>8 ур</span>
 													<div>
-														<span style={{'width': '50%'}}></span>
+														<span style={{ width: '50%' }}></span>
 													</div>
 												</td>
 											</tr>
@@ -747,7 +715,7 @@ export default function CabinetHome() {
 											</li>
 										</ul>
 										<div className='cabhome__yourlvl-body--progress'>
-											<span style={{'width': '50%'}}></span>
+											<span style={{ width: '50%' }}></span>
 										</div>
 									</div>
 									<div className='cabhome__yourlvl-footer'>
@@ -778,7 +746,7 @@ export default function CabinetHome() {
 									</ul>
 									<div className='reflvl__body'>
 										<div className='reflvl__progress'>
-											<span style={{'width': '794px'}}></span>
+											<span style={{ width: '794px' }}></span>
 										</div>
 										<div className='reflvl__thead gold'>
 											<span>Уровень</span>
@@ -1005,10 +973,7 @@ export default function CabinetHome() {
 													<td>
 														<span>
 															0.10
-															<img
-																src={cgWhite}
-																alt='ref-sum'
-															/>
+															<img src={cgWhite} alt='ref-sum' />
 														</span>
 													</td>
 												</tr>
@@ -1023,10 +988,7 @@ export default function CabinetHome() {
 													<td>
 														<span>
 															0.10
-															<img
-																src={cgWhite}
-																alt='ref-sum'
-															/>
+															<img src={cgWhite} alt='ref-sum' />
 														</span>
 													</td>
 												</tr>
@@ -1041,10 +1003,7 @@ export default function CabinetHome() {
 													<td>
 														<span>
 															0.10
-															<img
-																src={cgWhite}
-																alt='ref-sum'
-															/>
+															<img src={cgWhite} alt='ref-sum' />
 														</span>
 													</td>
 												</tr>
@@ -1059,10 +1018,7 @@ export default function CabinetHome() {
 													<td>
 														<span>
 															0.10
-															<img
-																src={cgWhite}
-																alt='ref-sum'
-															/>
+															<img src={cgWhite} alt='ref-sum' />
 														</span>
 													</td>
 												</tr>
@@ -1077,10 +1033,7 @@ export default function CabinetHome() {
 													<td>
 														<span>
 															0.10
-															<img
-																src={cgWhite}
-																alt='ref-sum'
-															/>
+															<img src={cgWhite} alt='ref-sum' />
 														</span>
 													</td>
 												</tr>
@@ -1105,10 +1058,7 @@ export default function CabinetHome() {
 													<td>
 														<span>Вклад</span>
 														<span>
-															<img
-																src={banknota}
-																alt='banknota'
-															/>
+															<img src={banknota} alt='banknota' />
 															100.00$
 														</span>
 													</td>
@@ -1118,10 +1068,7 @@ export default function CabinetHome() {
 													<td>
 														<span>Вклад</span>
 														<span>
-															<img
-																src={banknota}
-																alt='banknota'
-															/>
+															<img src={banknota} alt='banknota' />
 															100.00$
 														</span>
 													</td>
@@ -1131,10 +1078,7 @@ export default function CabinetHome() {
 													<td>
 														<span>Вклад</span>
 														<span>
-															<img
-																src={banknota}
-																alt='banknota'
-															/>
+															<img src={banknota} alt='banknota' />
 															100.00$
 														</span>
 													</td>
@@ -1144,10 +1088,7 @@ export default function CabinetHome() {
 													<td>
 														<span>Вклад</span>
 														<span>
-															<img
-																src={banknota}
-																alt='banknota'
-															/>
+															<img src={banknota} alt='banknota' />
 															100.00$
 														</span>
 													</td>
@@ -1157,10 +1098,7 @@ export default function CabinetHome() {
 													<td>
 														<span>Вклад</span>
 														<span>
-															<img
-																src={banknota}
-																alt='banknota'
-															/>
+															<img src={banknota} alt='banknota' />
 															100.00$
 														</span>
 													</td>

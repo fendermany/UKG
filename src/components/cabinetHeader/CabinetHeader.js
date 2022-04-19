@@ -1,8 +1,10 @@
 import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LangContext from '../app/context';
 import Select from 'react-select';
 import Clock from './Clock';
-import { useAuth } from './../../hooks/useAuth';
+import { AuthContext } from './../../contexts/AuthContext';
+
 
 import {
 	settingsIcon,
@@ -17,12 +19,15 @@ import './cabinetHeader.scss';
 
 export default function CabinetHeader() {
 	const { getValue, onChange, options } = useContext(LangContext);
+	const {store} = useContext(AuthContext);
+	const navigate = useNavigate();
 
-	const { setIsAuth } = useAuth();
 	const handleLogout = () => {
-		localStorage.removeItem('token');
-		setIsAuth(false);
+		store.logout();
+		navigate('/signin');
 	};
+
+	
 
 	return (
 		<div className='cabinet__header'>
