@@ -1,15 +1,10 @@
-import { PureComponent, useState } from 'react';
+import { useState } from 'react';
 import { Tab, Tabs } from '@mui/material';
 import PropTypes from 'prop-types';
 import { AreaChart, Area, XAxis, Tooltip } from 'recharts';
-import styled from 'styled-components';
-
-const data = [
-	{ date: '14.06.2021', chart: 400 },
-	{ date: '14.07.2021', chart: 500 },
-	{ date: '14.08.2021', chart: 600 },
-	{ date: '14.09.2021', chart: 300 },
-];
+import { cg } from '../../../img/images';
+import UserServices from './../../../services/UserServices';
+import { useQuery } from 'react-query';
 
 function TabPanel(props) {
 	const { children, value, index, ...other } = props;
@@ -40,29 +35,693 @@ function a11yProps(index) {
 	};
 }
 
-// const Text = styled.text`
-// 	font-family: 'Gilroy';
-// 	font-weight: 400;
-// 	font-size: 12px;
-// 	line-height: 17px;
-// 	color: rgba(255, 255, 255, 0.83);
-// `;
+const CustomTooltip = ({ active, payload, label }) => {
+	if (active && payload && payload.length) {
+		return (
+			<div className='custom-tooltip'>
+				<div className='custom-tooltip__wrapper'>
+					<p className='label'>{label}</p>
+					<p className='desc gold'>
+						{payload[0].value} <img src={cg} alt='pull-profit' />
+					</p>
+				</div>
+			</div>
+		);
+	}
 
-// class CustomizedAxisTick extends PureComponent {
-//   render() {
-//     const { x, y, payload } = this.props;
-
-//     return (
-//       <g transform={`translate(${x},${y})`}>
-//         <text x={0} y={0} dy={46} textAnchor="end" fill="#666">
-//           {payload.value}
-//         </text>
-//       </g>
-//     );
-//   }
-// }
+	return null;
+};
 
 function Yieldchart() {
+	const { data: getAddition, isSuccess: isSuccessAddition } = useQuery(
+		'addition',
+		() => UserServices.userTransactionAddition(),
+		{
+			refetchOnWindowFocus: false,
+		}
+	);
+
+	const { data: getAdditionMonth, isSuccess: isSuccessAdditionMonth } =
+		useQuery('addition', () => UserServices.userTransactionAdditionMonth(), {
+			refetchOnWindowFocus: false,
+		});
+
+	let dataYears = [];
+	let dataMonths = [];
+	let dataDates = [];
+
+	let date = new Date();
+	let currentDay = date.getDate();
+	let currentYear = date.getFullYear();
+	let currentMonth = date.getMonth();
+
+	if (isSuccessAddition) {
+		dataYears.push(
+			{
+				date: currentYear - 1,
+				chart: +getAddition.data.content
+					.filter(item => +item.time.slice(0, 4) === currentYear - 1)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			{
+				date: currentYear,
+				chart: +getAddition.data.content
+					.filter(item => +item.time.slice(0, 4) === currentYear)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			{
+				date: currentYear + 1,
+				chart: +getAddition.data.content
+					.filter(item => +item.time.slice(0, 4) === currentYear + 1)
+					.reduce((acc, item) => acc + item.amount, 0),
+			}
+		);
+	}
+
+	if (isSuccessAddition) {
+		dataMonths.push(
+			{
+				date: `${currentDay}.01.${currentYear}`,
+				chart: +getAddition.data.content
+					.filter(
+						item =>
+							item.time.slice(5, 7) === '01' &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			{
+				date: `${currentDay}.02.${currentYear}`,
+				chart: +getAddition.data.content
+					.filter(
+						item =>
+							item.time.slice(5, 7) === '02' &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			{
+				date: `${currentDay}.03.${currentYear}`,
+				chart: +getAddition.data.content
+					.filter(
+						item =>
+							item.time.slice(5, 7) === '03' &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			{
+				date: `${currentDay}.04.${currentYear}`,
+				chart: +getAddition.data.content
+					.filter(
+						item =>
+							item.time.slice(5, 7) === '04' &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			{
+				date: `${currentDay}.05.${currentYear}`,
+				chart: +getAddition.data.content
+					.filter(
+						item =>
+							item.time.slice(5, 7) === '05' &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			{
+				date: `${currentDay}.06.${currentYear}`,
+				chart: +getAddition.data.content
+					.filter(
+						item =>
+							item.time.slice(5, 7) === '06' &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			{
+				date: `${currentDay}.07.${currentYear}`,
+				chart: +getAddition.data.content
+					.filter(
+						item =>
+							item.time.slice(5, 7) === '07' &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			{
+				date: `${currentDay}.08.${currentYear}`,
+				chart: +getAddition.data.content
+					.filter(
+						item =>
+							item.time.slice(5, 7) === '08' &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			{
+				date: `${currentDay}.09.${currentYear}`,
+				chart: +getAddition.data.content
+					.filter(
+						item =>
+							item.time.slice(5, 7) === '09' &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			{
+				date: `${currentDay}.10.${currentYear}`,
+				chart: +getAddition.data.content
+					.filter(
+						item =>
+							item.time.slice(5, 7) === '10' &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			{
+				date: `${currentDay}.11.${currentYear}`,
+				chart: +getAddition.data.content
+					.filter(
+						item =>
+							item.time.slice(5, 7) === '11' &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			{
+				date: `${currentDay}.12.${currentYear}`,
+				chart: +getAddition.data.content
+					.filter(
+						item =>
+							item.time.slice(5, 7) === '12' &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			}
+		);
+	}
+
+	if (isSuccessAdditionMonth) {
+		let dataDatesArray = [
+			{
+				date: `01.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '01' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '02' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `02.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '02' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '03' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `03.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '03' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '04' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `04.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '04' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '05' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `05.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '05' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '06' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `06.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '06' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '07' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `07.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '07' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '08' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `08.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '08' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '09' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `09.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '09' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '10' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `10.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '10' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '11' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `11.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '11' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '12' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `12.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '12' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '13' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `13.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '13' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '14' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `14.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '14' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '15' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `15.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '15' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '16' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `16.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '16' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '17' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `17.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '17' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '18' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `18.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '18' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '19' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `19.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '19' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '20' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `20.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '20' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '21' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `21.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '21' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '22' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `22.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '22' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '23' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `23.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '23' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '24' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `24.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '24' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '25' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `25.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '25' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '26' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `26.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '26' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '27' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `27.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '27' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '28' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `28.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '28' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '29' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `29.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '29' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '30' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `30.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '30' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+			+getAdditionMonth.data.content.filter(
+				item =>
+					item.time.slice(8, 10) === '31' &&
+					+item.time.slice(5, 7) === currentMonth + 1 &&
+					+item.time.slice(0, 4) === currentYear
+			).length > 0 && {
+				date: `31.${currentMonth + 1}.${currentYear}`,
+				chart: +getAdditionMonth.data.content
+					.filter(
+						item =>
+							item.time.slice(8, 10) === '31' &&
+							+item.time.slice(5, 7) === currentMonth + 1 &&
+							+item.time.slice(0, 4) === currentYear
+					)
+					.reduce((acc, item) => acc + item.amount, 0),
+			},
+		];
+
+		dataDates = dataDatesArray.filter(item => item !== false);
+
+	}
+
 	const [value, setValue] = useState(0);
 
 	const handleChange = (event, newValue) => {
@@ -89,7 +748,7 @@ function Yieldchart() {
 				</div>
 				<ul className='cabhome__yieldchart-tabsbodies'>
 					<TabPanel value={value} index={0}>
-						<AreaChart width={818} height={170} data={data}>
+						<AreaChart width={800} height={170} data={dataDates}>
 							<defs>
 								<linearGradient id='chart' x1='0' y1='0' x2='0' y2='1'>
 									<stop offset='8%' stopColor='#FFE38D1A' stopOpacity={1} />
@@ -100,9 +759,9 @@ function Yieldchart() {
 								dataKey='date'
 								axisLine={false}
 								tickLine={false}
-								tick={{fontSize: '12px', fill: 'rgba(255, 255, 255, 0.83)'}}
+								tick={{ fontSize: '12px', fill: 'rgba(255, 255, 255, 0.83)' }}
 							/>
-							<Tooltip />
+							<Tooltip content={<CustomTooltip />} />
 							<Area
 								type='monotone'
 								dataKey='chart'
@@ -114,10 +773,54 @@ function Yieldchart() {
 						</AreaChart>
 					</TabPanel>
 					<TabPanel value={value} index={1}>
-						здесь график
+						<AreaChart width={800} height={170} data={dataMonths}>
+							<defs>
+								<linearGradient id='chart' x1='0' y1='0' x2='0' y2='1'>
+									<stop offset='8%' stopColor='#FFE38D1A' stopOpacity={1} />
+									<stop offset='100%' stopColor='#FFE38D1A' stopOpacity={0} />
+								</linearGradient>
+							</defs>
+							<XAxis
+								dataKey='date'
+								axisLine={false}
+								tickLine={false}
+								tick={{ fontSize: '12px', fill: 'rgba(255, 255, 255, 0.83)' }}
+							/>
+							<Tooltip content={<CustomTooltip />} />
+							<Area
+								type='monotone'
+								dataKey='chart'
+								stroke='#372C19'
+								fillOpacity={1}
+								fill='url(#chart)'
+								dot={{ fill: '#7B602E', fillWidth: 4 }}
+							/>
+						</AreaChart>
 					</TabPanel>
 					<TabPanel value={value} index={2}>
-						здесь график
+						<AreaChart width={800} height={170} data={dataYears}>
+							<defs>
+								<linearGradient id='chart' x1='0' y1='0' x2='0' y2='1'>
+									<stop offset='8%' stopColor='#FFE38D1A' stopOpacity={1} />
+									<stop offset='100%' stopColor='#FFE38D1A' stopOpacity={0} />
+								</linearGradient>
+							</defs>
+							<XAxis
+								dataKey='date'
+								axisLine={false}
+								tickLine={false}
+								tick={{ fontSize: '12px', fill: 'rgba(255, 255, 255, 0.83)' }}
+							/>
+							<Tooltip content={<CustomTooltip />} />
+							<Area
+								type='monotone'
+								dataKey='chart'
+								stroke='#372C19'
+								fillOpacity={1}
+								fill='url(#chart)'
+								dot={{ fill: '#7B602E', fillWidth: 4 }}
+							/>
+						</AreaChart>
 					</TabPanel>
 				</ul>
 			</div>

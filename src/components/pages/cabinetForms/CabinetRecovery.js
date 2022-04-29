@@ -1,25 +1,62 @@
-import { useContext, useState } from 'react';
-import { AuthContext } from './../../../contexts/AuthContext';
-import { observer } from 'mobx-react-lite';
-
+// Функции
+import AuthService from './../../../services/AuthService';
+import { useMutation } from 'react-query';
 import { NavLink } from 'react-router-dom';
 
+// Формы
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import * as Yup from 'yup';
+// Компоненты
 import Footer from '../../footer/Footer';
 import Alert from './../../ui/alert/Alert';
 import Spinner from './../../spinner/Spinner';
-
+// Медиа
 import { logo } from '../../../img/images';
-
+// Стили
 import './cabinetForms.scss';
 
-function CabinetRecovery() {
-	const [email, setEmail] = useState('');
-	const { store } = useContext(AuthContext);
+const Schema = Yup.object().shape({
+	email: Yup.string()
+		.required('Email обязателен')
+		.email('Неправильный email формат')
+		.max(255),
+});
 
-	const handleRecovery = e => {
-		e.preventDefault();
-		store.recovery(email);
-	};
+function CabinetRecovery() {
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors },
+	} = useForm({
+		mode: 'onChange',
+		resolver: yupResolver(Schema),
+	});
+
+	const {
+		mutate: recovery,
+		isLoading,
+		isError,
+		error,
+		isSuccess,
+	} = useMutation('Reset password', data => AuthService.recovery(data.email), {
+		onSuccess() {
+			reset(
+				{
+					email: '',
+				},
+				{
+					keepErrors: true,
+					keepDirty: true,
+					keepIsSubmitted: false,
+					keepTouched: false,
+					keepIsValid: false,
+					keepSubmitCount: false,
+				}
+			);
+		},
+	});
 
 	return (
 		<div className='cabinet'>
@@ -31,30 +68,40 @@ function CabinetRecovery() {
 						</div>
 						<div className='cabinet__form'>
 							<div className='cabinet__form-wrapper'>
-								{store.isError && (
-									<Alert type='error' text={store.errorMessage} />
-								)}
-								{store.isSuccess && (
-									<Alert type='success' text={store.successMessage} />
-								)}
-								{store.isLoading && <Spinner />}
 								<div className='cabinet__form-title gold'>
 									Восстановление пароля
 								</div>
-								<form onSubmit={handleRecovery} className='cabinet__form-form'>
+								{isError && <Alert type='error' text={error.message} />}
+								{isSuccess && (
+									<Alert
+										type='success'
+										text='Ссылка для восстановления пароля отправлена на Вашу почту.'
+									/>
+								)}
+								{isLoading && <Spinner width='80px' height='80px' />}
+								<form
+									onSubmit={handleSubmit(recovery)}
+									className='cabinet__form-form'
+								>
 									<div className='cabinet__form-line'>
 										<input
 											autoComplete='off'
 											type='text'
 											name='email'
 											placeholder='E-mail'
-											value={email}
-											onChange={({ target: { value } }) => setEmail(value)}
+											{...register('email')}
 											className='cabinet__form-input'
-											required
 										/>
+										{errors.email && (
+											<p className='text-red-600 mt-1 text-xs'>
+												{errors.email.message}
+											</p>
+										)}
 									</div>
-									<button type='submit' className='cabinet__form-btn button button_gold'>
+									<button
+										type='submit'
+										className='cabinet__form-btn button button_gold'
+									>
 										Сбросить пароль
 									</button>
 								</form>
@@ -72,4 +119,4 @@ function CabinetRecovery() {
 	);
 }
 
-export default observer(CabinetRecovery);
+export default CabinetRecovery;

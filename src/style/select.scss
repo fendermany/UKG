@@ -1,9 +1,12 @@
 .lang-list {
+	width: 50px;
+	
 	&__control {
 		background: rgba(255, 255, 255, 0.12) !important;
 		border-radius: 4px !important;
 		border: none !important;
 		height: 30px !important;
+		cursor: pointer !important;
 	}
 	&__value-container {
 		font-weight: 500 !important;
@@ -29,7 +32,8 @@
 		}
 	}
 	&__menu {
-		background: rgba(255, 255, 255, 0.12) !important;
+		z-index: 100;
+		background: rgba(31, 31, 31, 1) !important;
 		border-radius: 0 0 4px 4px !important;
 		color: #fff !important;
 		right: -50px !important;
@@ -45,5 +49,6 @@
 		}
 	}
 	&__option {
+		cursor: pointer !important;
 	}
 }

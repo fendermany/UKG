@@ -1,21 +1,36 @@
-import React from 'react';
+// Functions
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-
+import UserServices from './../../services/UserServices';
+import { useQuery } from 'react-query';
 import { Snackbar } from '@mui/material';
+import RefLink from '../functions/RefLink';
+
+// Media
 import { copyIcon, logo } from '../../img/images';
-
-
+// Styles
 import './aside.scss';
 
-export default function Aside() {
+function Aside() {
 	const [open, setOpen] = useState(false);
 
 	const handleClick = e => {
-		e.stopPropagation()
+		e.stopPropagation();
 		setOpen(true);
 		navigator.clipboard.writeText(e.currentTarget.firstElementChild.innerText);
 	};
+
+	const { data, isSuccess } = useQuery('user', () => UserServices.userInfo(), {
+		refetchOnWindowFocus: false,
+	});
+
+	const { data: walletsTree, isSuccess: isSuccessWalletsTree } = useQuery(
+		'wallet',
+		() => UserServices.walletsTree(),
+		{
+			refetchOnWindowFocus: false,
+		}
+	);
 
 	return (
 		<aside className='cabinet__aside'>
@@ -23,11 +38,18 @@ export default function Aside() {
 				<img src={logo} alt='logo' />
 			</div>
 			<div className='cabinet__aside-welcome grey-block'>
-				<span>Добро пожаловать123</span>
-				<div className='cabinet__aside-welcome--name gold'>Artem</div>
+				<span>Добро пожаловать</span>
+
+				{isSuccess && (
+					<div className='cabinet__aside-welcome--name gold'>
+						{data.data.fullName}
+					</div>
+				)}
 				<span>Ваша реферальная ссылка</span>
 				<button className='gold' onClick={handleClick}>
-					<span>https://google.com/awdawdawdawdawda</span>
+					<span>
+						<RefLink />
+					</span>
 					<img src={copyIcon} alt='copy' />
 				</button>
 				<Snackbar
@@ -49,9 +71,12 @@ export default function Aside() {
 					<li>
 						<NavLink to='/token'>Токен</NavLink>
 					</li>
-					<li>
-						<NavLink to='/partnership'>Партнерская программа</NavLink>
-					</li>
+					{isSuccessWalletsTree && walletsTree.status === 200 && (
+						<li>
+							<NavLink to='/partnership'>Партнерская программа</NavLink>
+						</li>
+					)}
+
 					<li>
 						<NavLink to='/profile'>Мой профиль</NavLink>
 					</li>
@@ -66,3 +91,5 @@ export default function Aside() {
 		</aside>
 	);
 }
+
+export default Aside;

@@ -1,11 +1,12 @@
+// Functions
 import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import LangContext from '../app/context';
+import LangContext from './../../contexts/LangContext';
+
 import Select from 'react-select';
 import Clock from './Clock';
 import { AuthContext } from './../../contexts/AuthContext';
-
-
+import { observer } from 'mobx-react-lite';
+// Media
 import {
 	settingsIcon,
 	exitIcon,
@@ -14,20 +15,16 @@ import {
 	instagram,
 	telegram,
 } from '../../img/images';
-
+// Styles
 import './cabinetHeader.scss';
 
-export default function CabinetHeader() {
+function CabinetHeader() {
 	const { getValue, onChange, options } = useContext(LangContext);
-	const {store} = useContext(AuthContext);
-	const navigate = useNavigate();
+	const { store } = useContext(AuthContext);
 
 	const handleLogout = () => {
 		store.logout();
-		navigate('/signin');
 	};
-
-	
 
 	return (
 		<div className='cabinet__header'>
@@ -74,7 +71,7 @@ export default function CabinetHeader() {
 						classNamePrefix='lang-list'
 						onChange={onChange}
 						value={getValue()}
-						className='lang__list'
+						className='lang-list'
 						options={options}
 					/>
 				</div>
@@ -85,3 +82,5 @@ export default function CabinetHeader() {
 		</div>
 	);
 }
+
+export default observer(CabinetHeader);

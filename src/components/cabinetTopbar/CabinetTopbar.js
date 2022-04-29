@@ -1,39 +1,52 @@
-import { useState, useEffect } from 'react';
+// Функции
+import { useQuery } from 'react-query';
 import UserServices from './../../services/UserServices';
+import Refbonus from '../functions/getRefBonus';
 
+// Медиа
 import { cg, cgWhite, car, gift, money } from '../../img/images';
-
+// Стили
 import './cabinetTopbar.scss';
 
-export default function CabinetTopbar() {
-	const [user, setUser] = useState(null);
-
-	const getInfo = async () => {
-		try {
-			const response = await UserServices.userInfo();
-			setUser(response.data);
-		} catch (e) {
-			console.log(e);
+function CabinetTopbar() {
+	const { data: userInfo, isSuccess: isSuccessUserInfo } = useQuery(
+		'user',
+		() => UserServices.userInfo(),
+		{
+			refetchOnWindowFocus: false,
 		}
-	};
+	);
 
-	useEffect(() => {
-		getInfo();
-	}, []);
+	const { data: walletsTree, isSuccess: isSuccessWalletsTree } = useQuery(
+		'wallet',
+		() => UserServices.walletsTree(),
+		{
+			refetchOnWindowFocus: false,
+		}
+	);
 
-	const content = !!user ? <View user={user} /> : null;
+	const { data: getAddition, isSuccess: isSuccessAddition } = useQuery(
+		'addition',
+		() => UserServices.userTransactionAddition(),
+		{
+			refetchOnWindowFocus: false,
+		}
+	);
 
-	return <>{content}</>;
-}
+	const { data: getWithdrawalAll, isSuccess: isSuccessWithdrawalAll } =
+		useQuery('withdrawal', () => UserServices.userWithdrawalAll(), {
+			refetchOnWindowFocus: false,
+		});
 
-const View = ({ user }) => {
 	return (
 		<div className='cabinet__topbar'>
 			<div className='cabinet__topbar-wrapper'>
 				<div className='cabinet__topbar-balance'>
 					<div className='cabinet__topbar-balance--wrapper'>
 						<span>Ваш баланс</span>
-						<span className='gold'>{user.balance.amount}</span>
+						{isSuccessUserInfo && (
+							<span className='gold'>{userInfo.data.balance.amount}</span>
+						)}
 						<img src={cg} alt='balance' />
 						<img src={money} alt='balance-money' />
 					</div>
@@ -42,14 +55,28 @@ const View = ({ user }) => {
 					<div>
 						<span>Заработано</span>
 						<span>
-							391.14
+							{isSuccessAddition && (
+								<>
+									{getAddition.data.content.reduce(
+										(acc, item) => acc + item.amount,
+										0
+									)}
+								</>
+							)}
 							<img src={cgWhite} alt='earned' />
 						</span>
 					</div>
 					<div>
 						<span>Выведено</span>
 						<span>
-							144.14
+							{isSuccessWithdrawalAll && (
+								<>
+									{getWithdrawalAll.data.content.reduce(
+										(acc, item) => acc + item.amount,
+										0
+									)}
+								</>
+							)}
 							<img src={cgWhite} alt='withdrawn' />
 						</span>
 					</div>
@@ -57,12 +84,19 @@ const View = ({ user }) => {
 				<div className='cabinet__topbar-actdep grey-block-dark'>
 					<div>
 						<span>Активные депозиты</span>
-						<span>4 </span>
+						{isSuccessUserInfo && <span>{userInfo.data.pools.length}</span>}
 					</div>
 					<div>
 						<span>На сумму</span>
 						<span>
-							353.14
+							{isSuccessUserInfo && (
+								<>
+									{userInfo.data.pools.reduce(
+										(acc, item) => acc + item.amount,
+										0
+									)}
+								</>
+							)}
 							<img src={cgWhite} alt='earned' />
 						</span>
 					</div>
@@ -70,29 +104,48 @@ const View = ({ user }) => {
 				<div className='cabinet__topbar-reflvl grey-block-dark'>
 					<div className='grey-block'>
 						<span>Реферальный уровень</span>
-						<span>
-							<span>Уровень 5 </span>
-							<span className='gold'>- 15%</span>
-						</span>
+						{isSuccessUserInfo && (
+							<span>
+								<span>Уровень {userInfo.data.rank.replace(/[^0-9]/g, '')}</span>
+								<span className='gold'>
+									- {Refbonus(isSuccessUserInfo, userInfo)}
+								</span>
+							</span>
+						)}
 					</div>
 					<div>
-						<span>Уровень менеджера</span>
-						<span>М4</span>
+						{isSuccessWalletsTree && walletsTree.data && (
+							<>
+								<span>Уровень менеджера</span>
+								{isSuccessWalletsTree && (
+									<span>М{walletsTree.data.rank.replace(/[^0-9]/g, '')}</span>
+								)}
+							</>
+						)}
 					</div>
 				</div>
-				<div className='cabinet__topbar-partnum grey-block-dark'>
-					<div>
-						<span>Количество партнеров</span>
-						<span>138</span>
+				{isSuccessWalletsTree && walletsTree.data && (
+					<div className='cabinet__topbar-partnum grey-block-dark'>
+						<div>
+							<span>Количество партнеров</span>
+							{isSuccessWalletsTree && (
+								<span>{walletsTree.data.children.length}</span>
+							)}
+						</div>
+						<div>
+							{/* {isSuccessWalletsTree && walletsTree.data.children.length > 0 ? (
+							<>
+								<span>Акт</span>
+								<span className='green'>125</span>
+								<span>Неак.</span>
+								<span className='red'>54</span>
+							</>
+						) : null} */}
+						</div>
 					</div>
-					<div>
-						<span>Акт</span>
-						<span className='green'>125</span>
-						<span>Неак.</span>
-						<span className='red'>54</span>
-					</div>
-				</div>
-				<div className='cabinet__topbar-gift grey-block-dark'>
+				)}
+
+				{/* <div className='cabinet__topbar-gift grey-block-dark'>
 					<div>
 						<img src={gift} alt='topbar-gift' />
 						<span>
@@ -102,8 +155,10 @@ const View = ({ user }) => {
 						</span>
 					</div>
 					<img src={car} alt='topbar-car' />
-				</div>
+				</div> */}
 			</div>
 		</div>
 	);
-};
+}
+
+export default CabinetTopbar;

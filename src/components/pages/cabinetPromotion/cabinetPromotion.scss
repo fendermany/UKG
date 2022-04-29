@@ -9,7 +9,12 @@
 
 .cabpromo__link {
 	margin-top: 33px;
-	background: linear-gradient(92.35deg, #b48a3d 9.32%, #fcecce 50.74%, #ccab6c 95.84%);
+	background: linear-gradient(
+		92.35deg,
+		#b48a3d 9.32%,
+		#fcecce 50.74%,
+		#ccab6c 95.84%
+	);
 	border-radius: 12px;
 	padding: 1px;
 }
@@ -58,30 +63,38 @@
 
 .cabpromo__tabs-navigation {
 	border-radius: 4px 4px 0 0;
-	height: 30px;
 	display: flex;
 	align-items: center;
 	width: 100%;
 	background: rgba(255, 255, 255, 0.12);
+	height: 30px;
+	min-height: 30px !important;
+
+	.MuiTabs-indicator {
+		display: none;
+	}
 }
 
 .cabpromo__tabs-navigation button {
-	background: transparent;
-	height: 100%;
 	padding: 0 15px;
-	font-weight: 300;
-	font-size: 12px;
-	line-height: 14px;
+	height: 30px;
+	min-height: 30px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	font-weight: 300;
+	font-size: 12px;
+	line-height: 14px;
+	cursor: pointer;
+	color: #fff;
+	font-family: 'Gilroy';
+	text-transform: none;
 }
 
-.cabpromo__tabs-navigation button._tab-active {
-	color: #010101;
-	text-transform: uppercase;
+.cabpromo__tabs-navigation button[tabindex='0'] {
 	background: linear-gradient(66.41deg, #c29c58 12.74%, #dfcba6 76.65%);
 	border-radius: 4px;
+	color: black;
 	font-weight: 500;
 }
 

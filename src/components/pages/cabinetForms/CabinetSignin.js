@@ -1,26 +1,59 @@
-import { useState, useContext } from 'react';
+// Функции
+import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { AuthContext } from './../../../contexts/AuthContext';
 import { observer } from 'mobx-react-lite';
-
+import AuthService from './../../../services/AuthService';
+import { useMutation } from 'react-query';
+// Формы
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
+// Компоненты
 import Footer from '../../footer/Footer';
 import Spinner from '../../spinner/Spinner';
 import Alert from '../../ui/alert/Alert';
-
+// Медиа
 import { logo } from '../../../img/images';
-
+// Стили
 import './cabinetForms.scss';
 
+
+const Schema = Yup.object().shape({
+	email: Yup.string()
+		.email('Неправильный email формат')
+		.required('Email обязателен')
+		.max(255),
+	password: Yup.string().max(255).required('Пароль обязателен'),
+});
+
 function CabinetSignin() {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [rememberMe, setRememberMe] = useState(true);
 	const { store } = useContext(AuthContext);
 
-	const handleAuth = e => {
-		e.preventDefault();
-		store.login(email, password, rememberMe);
-	};
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm({
+		resolver: yupResolver(Schema),
+	});
+
+	const {
+		mutate: auth,
+		isLoading,
+		isError,
+		error,
+		isSuccess,
+	} = useMutation(
+		'Auth',
+		data => AuthService.login(data.email, data.password),
+		{
+			onSuccess(data) {
+				localStorage.setItem('token', data.headers.authorization);
+				store.setAuth(true);
+			},
+		}
+	);
 
 	return (
 		<div className='cabinet'>
@@ -35,37 +68,42 @@ function CabinetSignin() {
 								<div className='cabinet__form-title gold'>
 									Вход личный кабинет
 								</div>
-								{store.isError && (
-									<Alert type='error' text={store.errorMessage} />
-								)}
-								{store.isSuccess && (
-									<Alert type='success' text={store.successMessage} />
-								)}
-								{store.isLoading && <Spinner />}
-								<form onSubmit={handleAuth} className='cabinet__form-form'>
+								{isError && <Alert type='error' text={error.message} />}
+								{isSuccess && <Alert type='success' text='Вход выполнен' />}
+								{isLoading && <Spinner width='80px' height='80px' />}
+								<form
+									onSubmit={handleSubmit(auth)}
+									className='cabinet__form-form'
+								>
 									<div className='cabinet__form-line'>
 										<input
 											autoComplete='off'
 											type='text'
-											name='login'
-											value={email}
-											onChange={({ target: { value } }) => setEmail(value)}
+											name='email'
+											{...register('email')}
 											placeholder='Ваша почта или логин'
 											className='cabinet__form-input'
-											required
 										/>
+										{errors.email && (
+											<p className='text-red-600 mt-1 text-xs'>
+												{errors.email.message}
+											</p>
+										)}
 									</div>
 									<div className='cabinet__form-line'>
 										<input
 											autoComplete='off'
 											type='password'
 											name='password'
-											value={password}
-											onChange={({ target: { value } }) => setPassword(value)}
+											{...register('password')}
 											placeholder='Ваш пароль'
 											className='cabinet__form-input'
-											required
 										/>
+										{errors.password && (
+											<p className='text-red-600 mt-1 text-xs'>
+												{errors.password.message}
+											</p>
+										)}
 									</div>
 									<button
 										type='submit'

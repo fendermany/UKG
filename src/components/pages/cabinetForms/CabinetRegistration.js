@@ -1,31 +1,111 @@
-import { useState, useContext } from 'react';
+// Функции
 import { NavLink } from 'react-router-dom';
-import { AuthContext } from './../../../contexts/AuthContext';
-import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
-
+import { useMutation } from 'react-query';
+import AuthService from './../../../services/AuthService';
+import { useNavigate } from 'react-router-dom';
+// Формы
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
+// Компоненты
 import Footer from '../../footer/Footer';
 import Alert from './../../ui/alert/Alert';
 import Spinner from '../../spinner/Spinner';
-
+// Медиа
 import { logo } from '../../../img/images';
-
+// Стили
 import './cabinetForms.scss';
+import UserServices from './../../../services/UserServices';
+import { useState } from 'react';
+import { useEffect } from 'react';
+
+const Schema = Yup.object().shape({
+	email: Yup.string()
+		.required('Email обязателен')
+		.email('Неправильный email формат')
+		.max(255),
+	phone: Yup.string()
+		.required('Телефон обязателен')
+		.min(5, 'Минимум 5 цифр')
+		.max(255),
+	fullName: Yup.string()
+		.required('Имя обязательно')
+		.min(2, 'Минимум 2 символа')
+		.max(255),
+	checkbox: Yup.boolean().oneOf([true], 'Необходимо согласие'),
+});
 
 function CabinetRegistration() {
-	const [email, setEmail] = useState('');
-	const [phone, setPhone] = useState('');
-	const [fullName, setFullName] = useState('');
-	const [registerTag, setRegisterTag] = useState('AUTO');
-	const { store } = useContext(AuthContext);
 	const { t } = useTranslation();
+	const [view, setView] = useState(false);
+	const [name, setName] = useState(null);
+	const [token, setToken] = useState(null);
 
-	const handleReg = e => {
-		e.preventDefault();
-		store.registration(fullName, email, phone, registerTag);
-	};
+	useEffect(() => {
+		getQueryVariable('token');
+	}, []);
 
+	function getQueryVariable(variable) {
+		let query = window.location.search.substring(1);
+		let vars = query.split('&');
+		for (let i = 0; i < vars.length; i++) {
+			var pair = vars[i].split('=');
+			if (pair[0] === variable) {
+				setToken(pair[1]);
+				UserServices.userRefLinkCheck(pair[1])
+					.then(response => {
+						setView(true);
+						setName(response.data.fullName);
+					})
+					.catch(error => {
+						setView(false);
+					});
+			}
+		}
+		return false;
+	}
 
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors },
+	} = useForm({
+		mode: 'onChange',
+		resolver: yupResolver(Schema),
+	});
+
+	const {
+		mutate: registration,
+		isLoading,
+		isError,
+		error,
+		isSuccess,
+	} = useMutation(
+		'Registration',
+		data => AuthService.registration(data.fullName, data.email, data.phone, token),
+		{
+			onSuccess() {
+				reset(
+					{
+						fullName: '',
+						email: '',
+						phone: '',
+						checkbox: false,
+					},
+					{
+						keepErrors: true,
+						keepDirty: true,
+						keepIsSubmitted: false,
+						keepTouched: false,
+						keepIsValid: false,
+						keepSubmitCount: false,
+					}
+				);
+			},
+		}
+	);
 
 	return (
 		<div className='cabinet'>
@@ -40,25 +120,32 @@ function CabinetRegistration() {
 								<div className='cabinet__form-title gold'>
 									{t('registration.formTitle')}
 								</div>
-								{store.isError && (
-									<Alert type='error' text={store.errorMessage} />
+								{isError && <Alert type='error' text={error.message} />}
+								{isSuccess && (
+									<Alert
+										type='success'
+										text='Регистрация прошла успешно. Проверьте почту для подтверждения.'
+									/>
 								)}
-								{store.isSuccess && (
-									<Alert type='success' text={store.successMessage} />
-								)}
-								{store.isLoading && <Spinner />}
-								<form onSubmit={handleReg} className='cabinet__form-form'>
+								{isLoading && <Spinner width='80px' height='80px' />}
+								<form
+									onSubmit={handleSubmit(registration)}
+									className='cabinet__form-form'
+								>
 									<div className='cabinet__form-line'>
 										<input
 											autoComplete='off'
 											type='text'
-											name='name'
+											name='fullName'
 											placeholder='Имя'
-											value={fullName}
-											onChange={({ target: { value } }) => setFullName(value)}
+											{...register('fullName')}
 											className='cabinet__form-input'
-											required
 										/>
+										{errors.fullName && (
+											<p className='text-red-600 mt-1 text-xs'>
+												{errors.fullName.message}
+											</p>
+										)}
 									</div>
 									<div className='cabinet__form-line'>
 										<input
@@ -66,40 +153,61 @@ function CabinetRegistration() {
 											type='text'
 											name='email'
 											placeholder='E-mail'
-											value={email}
-											onChange={({ target: { value } }) => setEmail(value)}
+											{...register('email')}
 											className='cabinet__form-input'
-											required
 										/>
+										{errors.email && (
+											<p className='text-red-600 mt-1 text-xs'>
+												{errors.email.message}
+											</p>
+										)}
 									</div>
 									<div className='cabinet__form-line'>
 										<input
 											autoComplete='off'
 											type='text'
 											name='phone'
-											value={phone}
-											onChange={({ target: { value } }) => setPhone(value)}
+											{...register('phone')}
 											placeholder='Телефон'
 											className='cabinet__form-input'
-											required
 										/>
+										{errors.phone && (
+											<p className='text-red-600 mt-1 text-xs'>
+												{errors.phone.message}
+											</p>
+										)}
 									</div>
+									{view && (
+										<div className='cabinet__form-line'>
+											<input
+												disabled
+												autoComplete='off'
+												type='text'
+												name='invite'
+												placeholder={name}
+												className='cabinet__form-input'
+											/>
+										</div>
+									)}
 									<div className='cabinet__form-checkbox checkbox'>
 										<input
-											id='c_1'
-											data-error='Ошибка'
+											id='checkbox'
 											className='checkbox__input'
 											type='checkbox'
-											value='1'
-											name='form[]'
-											required
+											{...register('checkbox')}
+											name='checkbox'
 										/>
-										<label htmlFor='c_1' className='checkbox__label'>
+										<label htmlFor='checkbox' className='checkbox__label'>
 											<span className='checkbox__text'>
 												Согласен с правилами и соглашениями, а так же с
 												возможными рисками.
 											</span>
 										</label>
+										{errors.checkbox && (
+											<p className='text-red-600 mt-1 text-xs'>
+												{errors.checkbox.message}
+											</p>
+										)}
 									</div>
 									<button className='cabinet__form-btn button button_gold'>
 										Регистрация
@@ -119,4 +227,4 @@ function CabinetRegistration() {
 	);
 }
 
-export default observer(CabinetRegistration);
+export default CabinetRegistration;

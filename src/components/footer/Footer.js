@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import LangContext from '../app/context';
+import LangContext from '../../contexts/LangContext';
 import Select from 'react-select';
 import { NavLink } from 'react-router-dom';
 
@@ -105,7 +105,7 @@ export default function Footer() {
 						classNamePrefix='lang-list'
 						onChange={onChange}
 						value={getValue()}
-						className='lang__list'
+						className='lang-list'
 						options={options}
 					/>
 				</div>

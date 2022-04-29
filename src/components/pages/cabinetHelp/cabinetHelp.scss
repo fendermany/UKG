@@ -21,10 +21,6 @@
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	/* .options__item */
-	/* .options__input */
-	/* .options__label */
-	/* .options__text */
 }
 
 .cabhelp__form .options>*+* {
@@ -160,7 +156,7 @@
 	margin-top: 26px;
 }
 
-.cabhelp__faq-list li+li {
+.cabhelp__faq-list > div+div {
 	margin-top: 20px;
 }
 

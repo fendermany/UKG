@@ -110,13 +110,6 @@
 	margin-top: 27px;
 }
 
-.cabhome {
-	/* .cabhome__investments */
-	/* .cabhome__title */
-	/* .cabhome__investments-title */
-	/* .cabhome__pulls */
-}
-
 .cabhome__investments {
 	margin-top: 46px;
 }
@@ -125,25 +118,7 @@
 	padding-left: 35px;
 }
 
-.cabhome__pulls {
-	margin-top: 22px;
-}
 
-.cabhome {
-	/* .cabhome__qsb */
-	/* .cabhome__qsb-title */
-	/* .cabhome__title */
-	/* .cabhome__qsb-wrapper */
-	/* .cabhome__qsb-body */
-	/* .cabhome__qsb-body--row */
-	/* .cabhome__qsb-body--title */
-	/* .cabhome__qsb-body--item */
-	/* .cabhome__qsb-table */
-	/* .cabhome__qsb-table--row */
-	/* .cabhome__qsb-table--turn */
-	/* .cabhome__qsb-table--earn */
-	/* .cabhome__qsb-table--premium */
-}
 
 .cabhome__qsb {
 	margin-top: 38px;
@@ -727,4 +702,33 @@
 
 .cabhome__latest-table tbody tr td:first-child span:nth-child(2) img {
 	margin-right: 5px;
+}
+
+// Yieldchart
+
+.custom-tooltip {
+	background: linear-gradient(66.41deg, #c29c58 12.74%, #dfcba6 76.65%);
+	border-radius: 4px;
+	padding: 1px;
+	&__wrapper {
+		width: 100%;
+		height: 100%;
+		border-radius: 4px;
+		background: #000;
+		padding: 10px;
+	}
+	.label{
+		font-size: 14px;
+	}
+	.desc{
+		margin-top: 5px;
+		font-size: 16px;
+		display: flex;
+		align-items: center;
+		img{
+			width: 14px;
+			height: 14px;
+			margin-left: 5px;
+		}
+	}
 }

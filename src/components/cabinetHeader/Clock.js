@@ -22,7 +22,7 @@ class Clock extends React.Component {
 
 	tick() {
 		this.setState({
-			time: format(new Date(), "dd MMM yyyy HH : mm", {locale: ru}),
+			time: format(new Date(), "dd MMM yyyy  HH : mm", {locale: ru}),
 		});
 	}
 
