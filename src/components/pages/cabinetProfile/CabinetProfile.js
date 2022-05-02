@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import UserServices from '../../../services/UserServices';
+// Hooks
+import useUserInfo from './../../../hooks/useUserInfo';
+
 // Components
 import Footer from '../../footer/Footer';
 import CabinetTopbar from '../../cabinetTopbar/CabinetTopbar';
@@ -64,6 +67,7 @@ const SchemaPassword = Yup.object().shape({
 
 export default function CabinetProfile() {
 	const [value, setValue] = useState(0);
+	const { userInfo, isSuccessUserInfo } = useUserInfo();
 
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
@@ -107,14 +111,6 @@ export default function CabinetProfile() {
 					}
 				);
 			},
-		}
-	);
-
-	const { data: userInfo, isSuccess: isSuccessUserInfo } = useQuery(
-		'user',
-		() => UserServices.userInfo(),
-		{
-			refetchOnWindowFocus: false,
 		}
 	);
 

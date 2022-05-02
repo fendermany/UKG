@@ -1,42 +1,23 @@
-// Функции
-import { useQuery } from 'react-query';
-import UserServices from './../../services/UserServices';
+// Components
 import Refbonus from '../functions/getRefBonus';
-
+// Hooks
+import useWalletsTree from './../../hooks/useWalletsTree';
+import useUserInfo from './../../hooks/useUserInfo';
+import useAdditions from './../../hooks/useAdditions';
+import useWithdrawals from './../../hooks/useWithdrawals';
 // Медиа
 import { cg, cgWhite, car, gift, money } from '../../img/images';
 // Стили
 import './cabinetTopbar.scss';
 
 function CabinetTopbar() {
-	const { data: userInfo, isSuccess: isSuccessUserInfo } = useQuery(
-		'user',
-		() => UserServices.userInfo(),
-		{
-			refetchOnWindowFocus: false,
-		}
-	);
+	const { userInfo, isSuccessUserInfo } = useUserInfo();
 
-	const { data: walletsTree, isSuccess: isSuccessWalletsTree } = useQuery(
-		'wallet',
-		() => UserServices.walletsTree(),
-		{
-			refetchOnWindowFocus: false,
-		}
-	);
+	const { walletsTree, isSuccessWalletsTree } = useWalletsTree();
 
-	const { data: getAddition, isSuccess: isSuccessAddition } = useQuery(
-		'addition',
-		() => UserServices.userTransactionAddition(),
-		{
-			refetchOnWindowFocus: false,
-		}
-	);
+	const { getAddition, isSuccessAddition } = useAdditions();
 
-	const { data: getWithdrawalAll, isSuccess: isSuccessWithdrawalAll } =
-		useQuery('withdrawal', () => UserServices.userWithdrawalAll(), {
-			refetchOnWindowFocus: false,
-		});
+	const { getWithdrawalAll, isSuccessWithdrawalAll } = useWithdrawals();
 
 	return (
 		<div className='cabinet__topbar'>
@@ -45,7 +26,9 @@ function CabinetTopbar() {
 					<div className='cabinet__topbar-balance--wrapper'>
 						<span>Ваш баланс</span>
 						{isSuccessUserInfo && (
-							<span className='gold'>{userInfo.data.balance.amount}</span>
+							<span className='gold'>
+								{Math.floor(userInfo.data.balance.amount)}
+							</span>
 						)}
 						<img src={cg} alt='balance' />
 						<img src={money} alt='balance-money' />
@@ -57,9 +40,11 @@ function CabinetTopbar() {
 						<span>
 							{isSuccessAddition && (
 								<>
-									{getAddition.data.content.reduce(
-										(acc, item) => acc + item.amount,
-										0
+									{Math.floor(
+										getAddition.data.content.reduce(
+											(acc, item) => acc + item.amount,
+											0
+										)
 									)}
 								</>
 							)}
@@ -71,9 +56,11 @@ function CabinetTopbar() {
 						<span>
 							{isSuccessWithdrawalAll && (
 								<>
-									{getWithdrawalAll.data.content.reduce(
-										(acc, item) => acc + item.amount,
-										0
+									{Math.floor(
+										getWithdrawalAll.data.content.reduce(
+											(acc, item) => acc + item.amount,
+											0
+										)
 									)}
 								</>
 							)}
@@ -91,9 +78,11 @@ function CabinetTopbar() {
 						<span>
 							{isSuccessUserInfo && (
 								<>
-									{userInfo.data.pools.reduce(
-										(acc, item) => acc + item.amount,
-										0
+									{Math.floor(
+										userInfo.data.pools.reduce(
+											(acc, item) => acc + item.amount,
+											0
+										)
 									)}
 								</>
 							)}
@@ -108,7 +97,7 @@ function CabinetTopbar() {
 							<span>
 								<span>Уровень {userInfo.data.rank.replace(/[^0-9]/g, '')}</span>
 								<span className='gold'>
-									- {Refbonus(isSuccessUserInfo, userInfo)}
+									- {Refbonus(isSuccessUserInfo, userInfo)}%
 								</span>
 							</span>
 						)}
@@ -129,7 +118,10 @@ function CabinetTopbar() {
 						<div>
 							<span>Количество партнеров</span>
 							{isSuccessWalletsTree && (
-								<span>{walletsTree.data.children.length}</span>
+								<span>
+									{walletsTree.data.leftChildrenCount +
+										walletsTree.data.rightChildrenCount}
+								</span>
 							)}
 						</div>
 						<div>

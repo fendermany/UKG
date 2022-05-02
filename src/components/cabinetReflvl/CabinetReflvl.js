@@ -1,27 +1,17 @@
 import refLvl from '../functions/getRefLvl';
-import UserServices from './../../services/UserServices';
-import { useQuery } from 'react-query';
+import useUserInfo from './../../hooks/useUserInfo';
+import useWalletsTree from './../../hooks/useWalletsTree';
+
+
 // Media
 import { cgWhite, okCircle } from '../../img/images';
 // Styles
 import './cabinetReflvl.scss';
 
 function CabinetReflvl() {
-	const { data: userInfo, isSuccess: isSuccessUserInfo } = useQuery(
-		'user',
-		() => UserServices.userInfo(),
-		{
-			refetchOnWindowFocus: false,
-		}
-	);
+	const { userInfo, isSuccessUserInfo } = useUserInfo();
 
-	const { data: walletsTree, isSuccess: isSuccessWalletsTree } = useQuery(
-		'wallet',
-		() => UserServices.walletsTree(),
-		{
-			refetchOnWindowFocus: false,
-		}
-	);
+	const {walletsTree, isSuccessWalletsTree} = useWalletsTree();
 
 	return (
 		<div className='reflvl__body'>

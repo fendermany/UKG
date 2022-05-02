@@ -64,7 +64,7 @@ function formatDate(date, config) {
         second = fillZero(second);
     }
 		// var formatStr = year + separator + month + separator + day + " " + hour + ":" + minute + ":" + second;
-    var formatStr = year + separator + month + separator + day;
+    var formatStr = year + separator + month + separator + date;
 
     if (showMillisecond) {
         formatStr += "." + millisecond;

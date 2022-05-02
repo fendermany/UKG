@@ -6,6 +6,7 @@ let weekEnd = Dates.getThisWeekEnd(true);
 let monthStart = Dates.getThisMonthBegin(true);
 let monthEnd = Dates.getThisMonthEnd(true);
 
+
 export default class UserServices {
 	// Пользователь
 	static async userInfo() {
@@ -24,6 +25,9 @@ export default class UserServices {
 	static async walletsTree() {
 		return $api.get('/user/wallet/wallets-tree');
 	}
+	static async walletsTreeId(token) {
+		return $api.get(`/user/wallet/wallets-tree/${token}`);
+	}
 	// Пулы
 	static async userPool() {
 		return $api.get('/user/pool');
@@ -32,11 +36,18 @@ export default class UserServices {
 	static async userTransactionAddition() {
 		return $api.get('/user/transaction?page=0&size=1000&type=ADDITION');
 	}
+	static async userTransactionAdditionStructure() {
+		return $api.get(
+			'/user/transaction?page=0&size=1000&type=ADDITION&entity=STRUCTURE'
+		);
+	}
 	static async userTransactionAdditionWeek() {
 		return $api.get(
-			`/user/transaction?page=0&size=1000&type=ADDITION&start=${Dates.formatDate(
+			`/user/transaction?page=0&size=1000&start=${Dates.formatDate(
 				weekStart
-			)}T00%3A00%3A00&end=${Dates.formatDate(weekEnd)}T00%3A00%3A00`
+			)}T00%3A00%3A00&end=${Dates.formatDate(
+				weekEnd
+			)}T00%3A00%3A00&type=ADDITION`
 		);
 	}
 	static async userTransactionAdditionMonth() {
@@ -75,5 +86,9 @@ export default class UserServices {
 	}
 	static async userRefLinkCheck(token) {
 		return $api.get(`/pub/users/user/${token}`);
+	}
+	// Покупка
+	static async balanceBuy(poolId, amount) {
+		return $api.post(`/user/balance/buy`, {poolId, amount});
 	}
 }

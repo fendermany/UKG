@@ -527,21 +527,6 @@
 	transform: translateX(-50%);
 }
 
-@media (any-hover: hover) {
-
-	.cabaffpro__turnover-left--list>li:hover .cabaffpro__turnover-hover,
-	.cabaffpro__turnover-right--list>li:hover .cabaffpro__turnover-hover {
-		display: flex;
-	}
-}
-
-.cabaffpro__turnover-left--list>li:active .cabaffpro__turnover-hover,
-.cabaffpro__turnover-left--list>li:focus .cabaffpro__turnover-hover,
-.cabaffpro__turnover-right--list>li:active .cabaffpro__turnover-hover,
-.cabaffpro__turnover-right--list>li:focus .cabaffpro__turnover-hover {
-	display: flex;
-}
-
 .cabaffpro__turnover-right {
 	grid-column: 2/3;
 	grid-row: 2/3;
@@ -557,17 +542,12 @@
 }
 
 .cabaffpro__turnover-hover {
-	position: absolute;
-	top: 73px;
-	display: none;
+	display: flex;
 	background: #161616;
 	box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.94);
 	flex-direction: column;
 	width: 174px;
 	padding: 13px;
-	z-index: 100;
-	left: 50%;
-	transform: translateX(-50%);
 }
 
 .cabaffpro__turnover-hover>span {

@@ -281,3 +281,33 @@
 .cabinvest__pulls {
 	margin-top: 40px;
 }
+
+
+// Form
+
+.cabprofile__form {
+	column-gap: 43px;
+}
+
+.cabprofile__form-item {
+	display: flex;
+	flex-direction: column;
+}
+
+.cabprofile__form-item label {
+	font-size: 16px;
+	line-height: 17px;
+}
+
+.cabprofile__form-input,
+.cabprofile__form-select {
+	background: #000;
+	border: 1px solid #484848;
+	border-radius: 9px;
+	color: #fff;
+	height: 37px;
+	padding: 0 15px;
+	margin-top: 10px;
+	font-size: 12px;
+	line-height: 17px;
+}

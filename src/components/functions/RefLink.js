@@ -1,14 +1,7 @@
-import { useQuery } from 'react-query';
-import UserServices from '../../services/UserServices';
+import useRefLink from './../../hooks/useRefLink';
 
 function RefLink() {
-	const { data: refLink, isSuccess: isSuccessrefLink } = useQuery(
-		'reflink',
-		() => UserServices.userRefLink(),
-		{
-			refetchOnWindowFocus: false,
-		}
-	);
+	const { refLink, isSuccessrefLink } = useRefLink();
 
 	return (
 		<>

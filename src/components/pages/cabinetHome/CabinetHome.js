@@ -1,7 +1,3 @@
-// Vendors
-import { useQuery } from 'react-query';
-// Services
-import UserServices from './../../../services/UserServices';
 // Functions
 import Refbonus from '../../functions/getRefBonus';
 import checkBars from './../../functions/checkBars';
@@ -9,6 +5,13 @@ import checkManagerPoints from './../../functions/checkManagerPoints';
 import getDate from './../../functions/getDate';
 import getDateObject from './../../functions/getDateObject';
 import fastStartLvl from '../../functions/getFastStartBonus';
+// Hooks
+import useAdditions from './../../../hooks/useAdditions';
+import useWalletsTree from './../../../hooks/useWalletsTree';
+import useUserInfo from './../../../hooks/useUserInfo';
+import useAdditionsWeek from './../../../hooks/useAdditionsWeek';
+import useNotUsedInviteBonus from './../../../hooks/useNotUsedInviteBonus';
+import useReferralsLast from './../../../hooks/useReferralsLast';
 // Components
 import Footer from '../../footer/Footer';
 import CabinetTopbar from '../../cabinetTopbar/CabinetTopbar';
@@ -36,54 +39,18 @@ import {
 import './cabinetHome.scss';
 
 export default function CabinetHome() {
-	const { data: userInfo, isSuccess: isSuccessUserInfo } = useQuery(
-		'user',
-		() => UserServices.userInfo(),
-		{
-			refetchOnWindowFocus: false,
-		}
-	);
+	const { userInfo, isSuccessUserInfo } = useUserInfo();
 
-	const { data: walletsTree, isSuccess: isSuccessWalletsTree } = useQuery(
-		'wallet',
-		() => UserServices.walletsTree(),
-		{
-			refetchOnWindowFocus: false,
-		}
-	);
+	const { walletsTree, isSuccessWalletsTree } = useWalletsTree();
 
-	const { data: getAddition, isSuccess: isSuccessAddition } = useQuery(
-		'addition',
-		() => UserServices.userTransactionAddition(),
-		{
-			refetchOnWindowFocus: false,
-		}
-	);
+	const { getAddition, isSuccessAddition } = useAdditions();
 
-	const { data: getAdditionWeek, isSuccess: isSuccessAdditionWeek } = useQuery(
-		'addition',
-		() => UserServices.userTransactionAdditionWeek(),
-		{
-			refetchOnWindowFocus: false,
-		}
-	);
+	const { getAdditionWeek, isSuccessAdditionWeek } = useAdditionsWeek();
 
-	const { data: notUsedInviteBonus, isSuccess: isSuccessNotUsedInviteBonus } =
-		useQuery(
-			'NotUsedInviteBonus',
-			() => UserServices.userReferralsNotUsedInviteBonus(),
-			{
-				refetchOnWindowFocus: false,
-			}
-		);
+	const { notUsedInviteBonus, isSuccessNotUsedInviteBonus } =
+		useNotUsedInviteBonus();
 
-	const { data: referralsLast, isSuccess: isSuccessreferralsLast } = useQuery(
-		'NotUsedInviteBonus',
-		() => UserServices.userReferralsLast(),
-		{
-			refetchOnWindowFocus: false,
-		}
-	);
+	const { referralsLast, isSuccessreferralsLast } = useReferralsLast();
 
 	// Quick Start Bonus
 	let date, nowDate, time, qsbView;
@@ -154,11 +121,13 @@ export default function CabinetHome() {
 											Ваша доходность за все время:
 										</span>
 										<span className='gold'>
-											{isSuccessAdditionWeek && (
+											{isSuccessAddition && (
 												<>
-													{getAdditionWeek.data.content.reduce(
-														(acc, item) => acc + item.amount,
-														0
+													{Math.floor(
+														getAddition.data.content.reduce(
+															(acc, item) => acc + item.amount,
+															0
+														)
 													)}
 												</>
 											)}
@@ -171,11 +140,13 @@ export default function CabinetHome() {
 											Ваша доходность за все эту неделю:
 										</span>
 										<span className='gold'>
-											{isSuccessAddition && (
+											{isSuccessAdditionWeek && (
 												<>
-													{getAddition.data.content.reduce(
-														(acc, item) => acc + item.amount,
-														0
+													{Math.floor(
+														getAdditionWeek.data.content.reduce(
+															(acc, item) => acc + item.amount,
+															0
+														)
 													)}
 												</>
 											)}
@@ -210,10 +181,8 @@ export default function CabinetHome() {
 													<span className='gold'>
 														{isSuccessWalletsTree && (
 															<>
-																{walletsTree.data.children.reduce(
-																	(acc, item) => acc + item.points,
-																	0
-																)}
+																{walletsTree.data.leftHistoryPoints +
+																	walletsTree.data.rightHistoryPoints}
 															</>
 														)}
 														<img src={cg} alt='turnover' />
@@ -248,15 +217,15 @@ export default function CabinetHome() {
 														{isSuccessWalletsTree && (
 															<>
 																{100 -
-																	+walletsTree.data.children.reduce(
-																		(acc, item) => acc + item.points,
-																		0
+																	+(
+																		walletsTree.data.leftHistoryPoints +
+																		walletsTree.data.rightHistoryPoints
 																	) >
 																0
 																	? 100 -
-																	  +walletsTree.data.children.reduce(
-																			(acc, item) => acc + item.points,
-																			0
+																	  +(
+																			walletsTree.data.leftHistoryPoints +
+																			walletsTree.data.rightHistoryPoints
 																	  )
 																	: 0}
 															</>
@@ -286,15 +255,15 @@ export default function CabinetHome() {
 														{isSuccessWalletsTree && (
 															<>
 																{500 -
-																	+walletsTree.data.children.reduce(
-																		(acc, item) => acc + item.points,
-																		0
+																	+(
+																		walletsTree.data.leftHistoryPoints +
+																		walletsTree.data.rightHistoryPoints
 																	) >
 																0
 																	? 500 -
-																	  +walletsTree.data.children.reduce(
-																			(acc, item) => acc + item.points,
-																			0
+																	  +(
+																			walletsTree.data.leftHistoryPoints +
+																			walletsTree.data.rightHistoryPoints
 																	  )
 																	: 0}
 															</>
@@ -324,15 +293,15 @@ export default function CabinetHome() {
 														{isSuccessWalletsTree && (
 															<>
 																{1000 -
-																	+walletsTree.data.children.reduce(
-																		(acc, item) => acc + item.points,
-																		0
+																	+(
+																		walletsTree.data.leftHistoryPoints +
+																		walletsTree.data.rightHistoryPoints
 																	) >
 																0
 																	? 1000 -
-																	  +walletsTree.data.children.reduce(
-																			(acc, item) => acc + item.points,
-																			0
+																	  +(
+																			walletsTree.data.leftHistoryPoints +
+																			walletsTree.data.rightHistoryPoints
 																	  )
 																	: 0}
 															</>
@@ -362,15 +331,15 @@ export default function CabinetHome() {
 														{isSuccessWalletsTree && (
 															<>
 																{2500 -
-																	+walletsTree.data.children.reduce(
-																		(acc, item) => acc + item.points,
-																		0
+																	+(
+																		walletsTree.data.leftHistoryPoints +
+																		walletsTree.data.rightHistoryPoints
 																	) >
 																0
 																	? 2500 -
-																	  +walletsTree.data.children.reduce(
-																			(acc, item) => acc + item.points,
-																			0
+																	  +(
+																			walletsTree.data.leftHistoryPoints +
+																			walletsTree.data.rightHistoryPoints
 																	  )
 																	: 0}
 															</>
@@ -400,15 +369,15 @@ export default function CabinetHome() {
 														{isSuccessWalletsTree && (
 															<>
 																{5000 -
-																	+walletsTree.data.children.reduce(
-																		(acc, item) => acc + item.points,
-																		0
+																	+(
+																		walletsTree.data.leftHistoryPoints +
+																		walletsTree.data.rightHistoryPoints
 																	) >
 																0
 																	? 5000 -
-																	  +walletsTree.data.children.reduce(
-																			(acc, item) => acc + item.points,
-																			0
+																	  +(
+																			walletsTree.data.leftHistoryPoints +
+																			walletsTree.data.rightHistoryPoints
 																	  )
 																	: 0}
 															</>
@@ -438,15 +407,15 @@ export default function CabinetHome() {
 														{isSuccessWalletsTree && (
 															<>
 																{7000 -
-																	+walletsTree.data.children.reduce(
-																		(acc, item) => acc + item.points,
-																		0
+																	+(
+																		walletsTree.data.leftHistoryPoints +
+																		walletsTree.data.rightHistoryPoints
 																	) >
 																0
 																	? 7000 -
-																	  +walletsTree.data.children.reduce(
-																			(acc, item) => acc + item.points,
-																			0
+																	  +(
+																			walletsTree.data.leftHistoryPoints +
+																			walletsTree.data.rightHistoryPoints
 																	  )
 																	: 0}
 															</>
@@ -476,15 +445,15 @@ export default function CabinetHome() {
 														{isSuccessWalletsTree && (
 															<>
 																{10000 -
-																	+walletsTree.data.children.reduce(
-																		(acc, item) => acc + item.points,
-																		0
+																	+(
+																		walletsTree.data.leftHistoryPoints +
+																		walletsTree.data.rightHistoryPoints
 																	) >
 																0
 																	? 10000 -
-																	  +walletsTree.data.children.reduce(
-																			(acc, item) => acc + item.points,
-																			0
+																	  +(
+																			walletsTree.data.leftHistoryPoints +
+																			walletsTree.data.rightHistoryPoints
 																	  )
 																	: 0}
 															</>
@@ -514,15 +483,15 @@ export default function CabinetHome() {
 														{isSuccessWalletsTree && (
 															<>
 																{15000 -
-																	+walletsTree.data.children.reduce(
-																		(acc, item) => acc + item.points,
-																		0
+																	+(
+																		walletsTree.data.leftHistoryPoints +
+																		walletsTree.data.rightHistoryPoints
 																	) >
 																0
 																	? 15000 -
-																	  +walletsTree.data.children.reduce(
-																			(acc, item) => acc + item.points,
-																			0
+																	  +(
+																			walletsTree.data.leftHistoryPoints +
+																			walletsTree.data.rightHistoryPoints
 																	  )
 																	: 0}
 															</>
@@ -552,15 +521,15 @@ export default function CabinetHome() {
 														{isSuccessWalletsTree && (
 															<>
 																{20000 -
-																	+walletsTree.data.children.reduce(
-																		(acc, item) => acc + item.points,
-																		0
+																	+(
+																		walletsTree.data.leftHistoryPoints +
+																		walletsTree.data.rightHistoryPoints
 																	) >
 																0
 																	? 20000 -
-																	  +walletsTree.data.children.reduce(
-																			(acc, item) => acc + item.points,
-																			0
+																	  +(
+																			walletsTree.data.leftHistoryPoints +
+																			walletsTree.data.rightHistoryPoints
 																	  )
 																	: 0}
 															</>
@@ -590,15 +559,15 @@ export default function CabinetHome() {
 														{isSuccessWalletsTree && (
 															<>
 																{50000 -
-																	+walletsTree.data.children.reduce(
-																		(acc, item) => acc + item.points,
-																		0
+																	+(
+																		walletsTree.data.leftHistoryPoints +
+																		walletsTree.data.rightHistoryPoints
 																	) >
 																0
 																	? 50000 -
-																	  +walletsTree.data.children.reduce(
-																			(acc, item) => acc + item.points,
-																			0
+																	  +(
+																			walletsTree.data.leftHistoryPoints +
+																			walletsTree.data.rightHistoryPoints
 																	  )
 																	: 0}
 															</>
@@ -873,7 +842,7 @@ export default function CabinetHome() {
 													<span>реферальный бонус:</span>
 													{isSuccessUserInfo && (
 														<span className='gold'>
-															{Refbonus(isSuccessUserInfo, userInfo)}
+															{Refbonus(isSuccessUserInfo, userInfo)}%
 														</span>
 													)}
 												</li>
@@ -882,10 +851,8 @@ export default function CabinetHome() {
 													<span className='gold flex items-center'>
 														{isSuccessWalletsTree && (
 															<>
-																{walletsTree.data.children.reduce(
-																	(acc, item) => acc + item.points,
-																	0
-																)}
+																{walletsTree.data.leftHistoryPoints +
+																	walletsTree.data.rightHistoryPoints}
 															</>
 														)}
 														<img className='ml-1 w-4 h-4' src={cg} alt='cg' />

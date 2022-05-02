@@ -1,6 +1,15 @@
-import UserServices from './../../../services/UserServices';
-import { useQuery } from 'react-query';
+import { useMemo } from 'react';
+import Popup from 'reactjs-popup';
+import { useTable, useExpanded } from 'react-table';
+// Hooks
+import useUserInfo from './../../../hooks/useUserInfo';
+import useWalletsTree from './../../../hooks/useWalletsTree';
+import useAdditionsStructure from './../../../hooks/useAdditionsStructure';
+import useReferrals from './../../../hooks/useReferrals';
+// Functions
 import Refbonus from './../../functions/getRefBonus';
+import checkManagerPoints from './../../functions/checkManagerPoints';
+import checkManagerLvl from './../../functions/checkManagerLvl';
 // Components
 import Footer from '../../footer/Footer';
 import CabinetTopbar from '../../cabinetTopbar/CabinetTopbar';
@@ -32,21 +41,178 @@ import {
 import './cabinetAffiliate.scss';
 
 export default function CabinetAffiliate() {
-	const { data: userInfo, isSuccess: isSuccessUserInfo } = useQuery(
-		'user',
-		() => UserServices.userInfo(),
-		{
-			refetchOnWindowFocus: false,
-		}
+	const { userInfo, isSuccessUserInfo } = useUserInfo();
+	const { walletsTree, isSuccessWalletsTree } = useWalletsTree();
+	const { getAdditionStructure, isSuccessAdditionStructure } =
+		useAdditionsStructure();
+	const { referrals, isSuccessReferrals } = useReferrals();
+
+	const columns = useMemo(
+		() => [
+			{
+				// Build our expander column
+				id: 'expander', // Make sure it has an ID
+				Header: () => null,
+				Cell: ({ row }) =>
+					// Use the row.canExpand and row.getToggleRowExpandedProps prop getter
+					// to build the toggle for expanding a row
+					row.canExpand ? (
+						<div
+							{...row.getToggleRowExpandedProps({
+								style: {
+									// We can even use the row.depth property
+									// and paddingLeft to indicate the depth
+									// of the row
+									marginLeft: `${row.depth * 2}rem`,
+								},
+							})}
+						>
+							<span>
+								{' '}
+								<span className='gold'>{row.isExpanded ? '-' : '+'}</span>{' '}
+							</span>
+						</div>
+					) : null,
+			},
+			{
+				Header: () => null,
+				id: 'main', // It needs an ID
+				columns: [
+					{
+						Header: 'Логин',
+						accessor: 'fullName',
+					},
+					{
+						Header: 'Дата регистрации',
+						accessor: 'regdate',
+					},
+					{
+						Header: 'Уровень менеджера',
+						accessor: 'manlvl',
+					},
+					{
+						Header: 'Оборот структуры',
+						accessor: 'turn',
+					},
+					{
+						Header: 'Инвестиции',
+						accessor: 'investments',
+					},
+				],
+			},
+		],
+		[]
 	);
 
-	const { data: walletsTree, isSuccess: isSuccessWalletsTree } = useQuery(
-		'wallet',
-		() => UserServices.walletsTree(),
-		{
-			refetchOnWindowFocus: false,
-		}
-	);
+	const data = useMemo(() => [], [referrals]);
+
+	if (isSuccessWalletsTree) {
+		walletsTree.data.children.forEach((item, i) => {
+			data[i] = {
+				fullName: <span className='gold'>{item.user.fullName}</span>,
+				regdate: `${
+					isSuccessReferrals &&
+					referrals.data.content
+						.filter(referral => referral.publicId === item.user.publicId)
+						.map(
+							referral =>
+								referral.registerDate.slice(8, 10) +
+								'.' +
+								referral.registerDate.slice(5, 7) +
+								'.' +
+								referral.registerDate.slice(0, 4)
+						)
+				}`,
+				manlvl: `M${checkManagerLvl(
+					item.leftHistoryPoints + item.rightHistoryPoints
+				)}`,
+				turn: (
+					<div className='gold'>
+						{item.leftHistoryPoints + item.rightHistoryPoints}
+						<img src={cg} alt='Оборот структуры' />
+					</div>
+				),
+				investments: (
+					<div>
+						{item.points}
+						<img src={cgWhite} alt='Инвестиции' />
+					</div>
+				),
+				subRows: item.children.map(subrow => {
+					return {
+						fullName: <span className='gold'>{subrow.user.fullName}</span>,
+						regdate: `${
+							isSuccessReferrals &&
+							referrals.data.content
+								.filter(referral => referral.publicId === subrow.user.publicId)
+								.map(
+									referral =>
+										referral.registerDate.slice(8, 10) +
+										'.' +
+										referral.registerDate.slice(5, 7) +
+										'.' +
+										referral.registerDate.slice(0, 4)
+								)
+						}`,
+						manlvl: `M${checkManagerLvl(
+							subrow.leftHistoryPoints + subrow.rightHistoryPoints
+						)}`,
+						turn: (
+							<div className='gold'>
+								{subrow.leftHistoryPoints + subrow.rightHistoryPoints}
+								<img src={cg} alt='Оборот структуры' />
+							</div>
+						),
+						investments: (
+							<div>
+								{subrow.points}
+								<img src={cgWhite} alt='Инвестиции' />
+							</div>
+						),
+						subRows: subrow.children.map(depth3 => {
+							return {
+								fullName: <span className='gold'>{depth3.user.fullName}</span>,
+								regdate: `${
+									isSuccessReferrals &&
+									referrals.data.content
+										.filter(
+											referral => referral.publicId === depth3.user.publicId
+										)
+										.map(
+											referral =>
+												referral.registerDate.slice(8, 10) +
+												'.' +
+												referral.registerDate.slice(5, 7) +
+												'.' +
+												referral.registerDate.slice(0, 4)
+										)
+								}`,
+								manlvl: `M${checkManagerLvl(
+									depth3.leftHistoryPoints + depth3.rightHistoryPoints
+								)}`,
+								turn: (
+									<div className='gold'>
+										{depth3.leftHistoryPoints + depth3.rightHistoryPoints}
+										<img src={cg} alt='Оборот структуры' />
+									</div>
+								),
+								investments: (
+									<div>
+										{depth3.points}
+										<img src={cgWhite} alt='Инвестиции' />
+									</div>
+								),
+							};
+						}),
+					};
+				}),
+			};
+		});
+	}
+
+	// Create a function that will render our row sub components
+
+	console.log(data);
 
 	return (
 		<div className='cabinet'>
@@ -67,7 +233,7 @@ export default function CabinetAffiliate() {
 								<li className='cabaffpro__stats-item'>
 									<span>Ваш партнёрский процент</span>
 									<span className='gold'>
-										{Refbonus(isSuccessUserInfo, userInfo)}
+										{Refbonus(isSuccessUserInfo, userInfo)}%
 									</span>
 									<img src={procent} alt='Ваш партнёрский процент' />
 								</li>
@@ -79,27 +245,40 @@ export default function CabinetAffiliate() {
 										alt='Кол-во переходов по реф. ссылке'
 									/>
 								</li> */}
-								<li className='cabaffpro__stats-item'>
-									<span>Заработано реферальных</span>
-									<span className='gold'>
-										1644.69
-										<img src={cg} alt='Заработано реферальных' />
-									</span>
-									<img src={earned} alt='Заработано реферальных' />
-								</li>
+								{isSuccessAdditionStructure && (
+									<li className='cabaffpro__stats-item'>
+										<span>Заработано реферальных</span>
+										<span className='gold'>
+											{Math.floor(
+												getAdditionStructure.data.content.reduce(
+													(acc, item) => acc + item.amount,
+													0
+												)
+											)}
+											<img src={cg} alt='Заработано реферальных' />
+										</span>
+										<img src={earned} alt='Заработано реферальных' />
+									</li>
+								)}
+
 								<li className='cabaffpro__stats-item'>
 									<span>Количество партнёров</span>
 									<span>
-										<span className='gold'>7</span>
+										{isSuccessWalletsTree && (
+											<span className='gold'>
+												{walletsTree.data.leftChildrenCount +
+													walletsTree.data.rightChildrenCount}
+											</span>
+										)}
 										<ul>
-											<li>
+											{/* <li>
 												<span>Активных</span>
 												<span className='green'>4</span>
 											</li>
 											<li>
 												<span>Неактивных</span>
 												<span className='red'>3</span>
-											</li>
+											</li> */}
 										</ul>
 									</span>
 									<img src={handStars} alt='Количество партнёров' />
@@ -107,28 +286,37 @@ export default function CabinetAffiliate() {
 								<li className='cabaffpro__stats-item'>
 									<span>Личных рефералов</span>
 									<span>
-										<span className='gold'>134</span>
+										{isSuccessWalletsTree && (
+											<span className='gold'>
+												{walletsTree.data.children.length}
+											</span>
+										)}
 										<ul>
-											<li>
+											{/* <li>
 												<span>Активных</span>
 												<span className='green'>26</span>
 											</li>
 											<li>
 												<span>Неактивных</span>
 												<span className='red'>108</span>
-											</li>
+											</li> */}
 										</ul>
 									</span>
 									<img src={diamond} alt='Личных рефералов' />
 								</li>
-								<li className='cabaffpro__stats-item'>
-									<span>Оборот личных рефералов</span>
-									<span className='gold'>
-										58
-										<img src={cg} alt='Оборот личных рефералов' />
-									</span>
-									<img src={selfturn} alt='Оборот личных рефералов' />
-								</li>
+								{isSuccessWalletsTree && walletsTree.data && (
+									<li className='cabaffpro__stats-item'>
+										<span>Оборот личных рефералов</span>
+										<span className='gold'>
+											{walletsTree.data.children.reduce(
+												(acc, item) => acc + item.points,
+												0
+											)}
+											<img src={cg} alt='Оборот личных рефералов' />
+										</span>
+										<img src={selfturn} alt='Оборот личных рефералов' />
+									</li>
+								)}
 							</ul>
 							{isSuccessWalletsTree && walletsTree.data && (
 								<>
@@ -139,33 +327,72 @@ export default function CabinetAffiliate() {
 											</div>
 											<div className='cabaffpro__yourlvl-body'>
 												<div className='cabaffpro__yourlvl-body--title gold'>
-													МЕНЕДЖЕР 4
+													МЕНЕДЖЕР{' '}
+													{isSuccessWalletsTree && (
+														<>{walletsTree.data.rank.replace(/[^0-9]/g, '')}</>
+													)}
 												</div>
 												<div className='cabaffpro__yourlvl-body--subtitle'>
 													Оборот структуры:
 												</div>
 												<ul className='cabaffpro__yourlvl-list'>
 													<li>
-														<span className='gold'>12040</span>
+														<span className='gold'>
+															{isSuccessWalletsTree && (
+																<>
+																	{walletsTree.data.leftHistoryPoints +
+																		walletsTree.data.rightHistoryPoints}
+																</>
+															)}
+														</span>
 														<span>Выполнено</span>
 														<img src={cg} alt='Выполнено' />
 													</li>
 													<li>
-														<span className='gold'>12960</span>
+														<span className='gold'>
+															{isSuccessWalletsTree &&
+																checkManagerPoints(
+																	isSuccessWalletsTree,
+																	walletsTree.data.rank
+																) -
+																	(isSuccessWalletsTree &&
+																		walletsTree.data.leftHistoryPoints +
+																			walletsTree.data.rightHistoryPoints)}
+														</span>
 														<span>Осталось</span>
 														<img src={cg} alt='Осталось' />
 													</li>
 													<li>
-														<span className='gold'>25000</span>
+														<span className='gold'>
+															{isSuccessWalletsTree &&
+																checkManagerPoints(
+																	isSuccessWalletsTree,
+																	walletsTree.data.rank
+																)}
+														</span>
 														<span>Всего нужно</span>
 														<img src={cg} alt='Всего нужно' />
 													</li>
 												</ul>
 												<div className='cabaffpro__yourlvl-progress'>
-													<span style={{ width: '50%' }}></span>
+													<span
+														style={{
+															width: `${
+																(615 / 100) *
+																(isSuccessWalletsTree &&
+																	((walletsTree.data.leftHistoryPoints +
+																		walletsTree.data.rightHistoryPoints) /
+																		checkManagerPoints(
+																			isSuccessWalletsTree,
+																			walletsTree.data.rank
+																		)) *
+																		100)
+															}px`,
+														}}
+													></span>
 												</div>
 											</div>
-											<div className='cabaffpro__yourlvl-footer'>
+											{/* <div className='cabaffpro__yourlvl-footer'>
 												<div className='cabaffpro__yourlvl-footer--title'>
 													ПОДАРОК
 													<br />
@@ -174,32 +401,63 @@ export default function CabinetAffiliate() {
 												<div className='cabaffpro__yourlvl-gift'>
 													<img src={car} alt='ПОДАРОК ЗА СЛЕДУЮЩИЙ УРОВЕНЬ' />
 												</div>
-											</div>
+											</div> */}
 										</div>
 										<div className='cabaffpro__yourlvl-item grey-block-dark-414'>
 											<div className='cabaffpro__yourlvl-title'>
 												ВАШ РЕФЕРАЛЬНЫЙ УРОВЕНЬ
 											</div>
 											<div className='cabaffpro__yourlvl-body'>
-												<div className='cabaffpro__yourlvl-body--title gold'>
-													УРОВЕНЬ 6
-												</div>
+												{isSuccessUserInfo && (
+													<div className='cabaffpro__yourlvl-body--title gold'>
+														УРОВЕНЬ {userInfo.data.rank.replace(/[^0-9]/g, '')}
+													</div>
+												)}
 												<div className='cabaffpro__yourlvl-body--subtitle'>
 													Оборот структуры:
 												</div>
 												<ul className='cabaffpro__yourlvl-list'>
 													<li>
-														<span className='gold'>15%</span>
-														<span>Реферальный бонус</span>
+														{isSuccessUserInfo && (
+															<>
+																<span className='gold'>
+																	{Refbonus(isSuccessUserInfo, userInfo)}%
+																</span>
+																<span>Реферальный бонус</span>
+															</>
+														)}
 													</li>
 													<li>
-														<span className='gold'>7000</span>
-														<span>Оборот</span>
-														<img src={cg} alt='Оборот' />
+														{isSuccessWalletsTree && (
+															<>
+																<span className='gold'>
+																	{' '}
+																	{walletsTree.data.leftHistoryPoints +
+																		walletsTree.data.rightHistoryPoints}
+																</span>
+																<span>Оборот</span>
+																<img src={cg} alt='Оборот' />
+															</>
+														)}
 													</li>
 												</ul>
 												<div className='cabaffpro__yourlvl-progress'>
-													<span style={{ width: '50%' }}></span>
+													<span
+														style={{
+															width: `${
+																(615 / 100) *
+																(isSuccessWalletsTree &&
+																	isSuccessUserInfo &&
+																	((walletsTree.data.leftHistoryPoints +
+																		walletsTree.data.rightHistoryPoints) /
+																		checkManagerPoints(
+																			isSuccessUserInfo,
+																			userInfo.data.rank
+																		)) *
+																		100)
+															}px`,
+														}}
+													></span>
 												</div>
 											</div>
 											<div className='cabaffpro__yourlvl-footer'>
@@ -209,7 +467,13 @@ export default function CabinetAffiliate() {
 													СЛЕДУЮЩИЙ УРОВЕНЬ
 												</div>
 												<div className='cabaffpro__yourlvl-gift'>
-													<span className='gold'>15%</span>
+													<span className='gold'>
+														{isSuccessUserInfo &&
+															(Refbonus(isSuccessUserInfo, userInfo) < 18
+																? Refbonus(isSuccessUserInfo, userInfo) + 1
+																: Refbonus(isSuccessUserInfo, userInfo))}
+														%
+													</span>
 													<img
 														src={procentGold}
 														alt='ПОДАРОК ЗА СЛЕДУЮЩИЙ УРОВЕНЬ'
@@ -220,19 +484,8 @@ export default function CabinetAffiliate() {
 									</div>
 									<div className='cabaffpro__reflvl reflvl grey-block-dark-414'>
 										<div className='cabaffpro__reflvl-wrapper reflvl__wrapper'>
-											<ul className='reflvl__top'>
-												<li>
-													<span>Ваш реферальный уровень:</span>
-													<span className='gold'>УРОВЕНЬ 6</span>
-												</li>
-												<li>
-													<span>реферанльный бонус:</span>
-													<span className='gold'>15%</span>
-												</li>
-												<li>
-													<span>ОБОРОТ:</span>
-													<span className='gold'>7000$</span>
-												</li>
+											<ul className='reflvl__top uppercase text-xl'>
+												Реферальный процент на следующий уровень
 											</ul>
 											<CabinetReflvl />
 										</div>
@@ -490,15 +743,48 @@ export default function CabinetAffiliate() {
 												</div>
 											</div>
 											<div className='cabaffpro__turnover-stats gold'>
-												<span>+ 10 000</span>
-												<span>Artem</span>
-												<span>0</span>
+												<span>
+													{isSuccessWalletsTree && (
+														<>
+															{walletsTree.data.leftHistoryPoints > 0
+																? '+ ' + walletsTree.data.leftHistoryPoints
+																: walletsTree.data.leftHistoryPoints}
+														</>
+													)}
+												</span>
+												<span className='whitespace-nowrap'>
+													{isSuccessUserInfo && userInfo.data.fullName}
+												</span>
+												<span>
+													{isSuccessWalletsTree && walletsTree.data && (
+														<>
+															{walletsTree.data.rightHistoryPoints > 0
+																? '+ ' + walletsTree.data.rightHistoryPoints
+																: walletsTree.data.rightHistoryPoints}
+														</>
+													)}
+												</span>
 											</div>
 											<div className='cabaffpro__turnover-wrapper'>
 												<div className='cabaffpro__turnover-main'>
 													<div className='cabaffpro__turnover-main--inner'>
-														<img src={user} alt='Artem' />
-														<span className='gold'>+ 10 000</span>
+														<img
+															src={user}
+															alt={
+																isSuccessUserInfo
+																	? userInfo.data.fullName
+																	: null
+															}
+														/>
+														<span className='gold'>
+															{isSuccessWalletsTree && (
+																<>
+																	{walletsTree.data.points > 0
+																		? '+ ' + walletsTree.data.points
+																		: walletsTree.data.points}
+																</>
+															)}
+														</span>
 														<span>Ваш оборот</span>
 													</div>
 												</div>
@@ -508,192 +794,103 @@ export default function CabinetAffiliate() {
 														Левая ветка
 													</div>
 													<ul className='cabaffpro__turnover-left--list'>
-														<li>
-															<div>
-																<img src={turnAvatar} alt='Vitaly Dmitriev' />
-																<span className='gold'>Vitaly Dmitriev</span>
-															</div>
-														</li>
-														<li>
-															<div>
-																<img src={turnAvatar} alt='Vitaly Dmitriev' />
-																<span className='gold'>Vitaly Dmitriev</span>
-															</div>
-														</li>
-														<li>
-															<div>
-																<img src={turnAvatar} alt='Vitaly Dmitriev' />
-																<span className='gold'>Vitaly Dmitriev</span>
-															</div>
-														</li>
-														<li>
-															<div>
-																<img src={turnAvatar} alt='Vitaly Dmitriev' />
-																<span className='gold'>Vitaly Dmitriev</span>
-																<div className='cabaffpro__turnover-hover'>
-																	<span className='gold'>Vitaliy27</span>
-																	<a href='mailto:customer@gmail.com'>
-																		customer@gmail.com
-																	</a>
-																	<div>
-																		оборот<span className='gold'>+ 10 000</span>
-																	</div>
-																	<div className='cabaffpro__turnover-social social'>
-																		<ul>
+														{isSuccessWalletsTree &&
+															walletsTree.data.children
+																.filter(item => item.side === 'LEFT')
+																.map((item, idx) => (
+																	<Popup
+																		trigger={open => (
 																			<li>
-																				<a href='/'>
-																					<img src={youtube} alt='youtube' />
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img src={facebook} alt='facebook' />
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
+																				<div>
 																					<img
-																						src={instagram}
-																						alt='instagram'
+																						src={turnAvatar}
+																						alt={item.user.fullName.toString()}
 																					/>
-																				</a>
+																					<span className='gold'>
+																						{item.user.fullName}
+																					</span>
+																				</div>
 																			</li>
-																			<li>
-																				<a href='/'>
-																					<img src={telegram} alt='telegram' />
-																				</a>
-																			</li>
-																		</ul>
-																	</div>
-																</div>
-															</div>
-														</li>
-														<li>
-															<div>
-																<img src={turnAvatar} alt='Vitaly Dmitriev' />
-																<span className='gold'>Vitaly Dmitriev</span>
-																<div className='cabaffpro__turnover-hover'>
-																	<span className='gold'>Vitaliy27</span>
-																	<a href='mailto:customer@gmail.com'>
-																		customer@gmail.com
-																	</a>
-																	<div>
-																		оборот<span className='gold'>+ 10 000</span>
-																	</div>
-																	<div className='cabaffpro__turnover-social social'>
-																		<ul>
-																			<li>
-																				<a href='/'>
-																					<img src={youtube} alt='youtube' />
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img src={facebook} alt='facebook' />
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img
-																						src={instagram}
-																						alt='instagram'
-																					/>
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img src={telegram} alt='telegram' />
-																				</a>
-																			</li>
-																		</ul>
-																	</div>
-																</div>
-															</div>
-														</li>
-														<li>
-															<div>
-																<img src={turnAvatar} alt='Vitaly Dmitriev' />
-																<span className='gold'>Vitaly Dmitriev</span>
-																<div className='cabaffpro__turnover-hover'>
-																	<span className='gold'>Vitaliy27</span>
-																	<a href='mailto:customer@gmail.com'>
-																		customer@gmail.com
-																	</a>
-																	<div>
-																		оборот<span className='gold'>+ 10 000</span>
-																	</div>
-																	<div className='cabaffpro__turnover-social social'>
-																		<ul>
-																			<li>
-																				<a href='/'>
-																					<img src={youtube} alt='youtube' />
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img src={facebook} alt='facebook' />
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img
-																						src={instagram}
-																						alt='instagram'
-																					/>
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img src={telegram} alt='telegram' />
-																				</a>
-																			</li>
-																		</ul>
-																	</div>
-																</div>
-															</div>
-														</li>
-														<li>
-															<div>
-																<img src={turnAvatar} alt='Vitaly Dmitriev' />
-																<span className='gold'>Vitaly Dmitriev</span>
-																<div className='cabaffpro__turnover-hover'>
-																	<span className='gold'>Vitaliy27</span>
-																	<a href='mailto:customer@gmail.com'>
-																		customer@gmail.com
-																	</a>
-																	<div>
-																		оборот<span className='gold'>+ 10 000</span>
-																	</div>
-																	<div className='cabaffpro__turnover-social social'>
-																		<ul>
-																			<li>
-																				<a href='/'>
-																					<img src={youtube} alt='youtube' />
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img src={facebook} alt='facebook' />
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img
-																						src={instagram}
-																						alt='instagram'
-																					/>
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img src={telegram} alt='telegram' />
-																				</a>
-																			</li>
-																		</ul>
-																	</div>
-																</div>
-															</div>
-														</li>
+																		)}
+																		position='bottom center'
+																		closeOnDocumentClick
+																		on={['hover', 'click']}
+																		arrow={false}
+																		key={`turnover ${idx}`}
+																	>
+																		<div className='cabaffpro__turnover-hover'>
+																			<span className='gold'>
+																				{item.user.fullName}
+																			</span>
+																			<a
+																				aria-disabled
+																				href={`mailto:${
+																					isSuccessReferrals &&
+																					referrals.data.content
+																						.filter(
+																							referral =>
+																								referral.publicId ===
+																								item.user.publicId
+																						)
+																						.map(referral => referral.email)
+																				}`}
+																			>
+																				{isSuccessReferrals &&
+																					referrals.data.content
+																						.filter(
+																							referral =>
+																								referral.publicId ===
+																								item.user.publicId
+																						)
+																						.map(referral => referral.email)}
+																			</a>
+																			<div>
+																				оборот
+																				<span className='gold'>
+																					{item.points > 0
+																						? '+ ' + item.points
+																						: item.points}
+																				</span>
+																			</div>
+																			{/* <div className='cabaffpro__turnover-social social'>
+																					<ul>
+																						<li>
+																							<a href='/'>
+																								<img
+																									src={youtube}
+																									alt='youtube'
+																								/>
+																							</a>
+																						</li>
+																						<li>
+																							<a href='/'>
+																								<img
+																									src={facebook}
+																									alt='facebook'
+																								/>
+																							</a>
+																						</li>
+																						<li>
+																							<a href='/'>
+																								<img
+																									src={instagram}
+																									alt='instagram'
+																								/>
+																							</a>
+																						</li>
+																						<li>
+																							<a href='/'>
+																								<img
+																									src={telegram}
+																									alt='telegram'
+																								/>
+																							</a>
+																						</li>
+																					</ul>
+																				</div> */}
+																		</div>
+																	</Popup>
+																))}
 													</ul>
 												</div>
 												<div className='cabaffpro__turnover-right'>
@@ -702,228 +899,103 @@ export default function CabinetAffiliate() {
 														Правая ветка
 													</div>
 													<ul className='cabaffpro__turnover-right--list'>
-														<li>
-															<div>
-																<img src={turnAvatar} alt='Vitaly Dmitriev' />
-																<span className='gold'>Vitaly Dmitriev</span>
-																<div className='cabaffpro__turnover-hover'>
-																	<span className='gold'>Vitaliy27</span>
-																	<a href='mailto:customer@gmail.com'>
-																		customer@gmail.com
-																	</a>
-																	<div>
-																		оборот<span className='gold'>+ 10 000</span>
-																	</div>
-																	<div className='cabaffpro__turnover-social social'>
-																		<ul>
+														{isSuccessWalletsTree &&
+															walletsTree.data.children
+																.filter(item => item.side === 'RIGHT')
+																.map((item, idx) => (
+																	<Popup
+																		trigger={open => (
 																			<li>
-																				<a href='/'>
-																					<img src={youtube} alt='youtube' />
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img src={facebook} alt='facebook' />
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
+																				<div>
 																					<img
-																						src={instagram}
-																						alt='instagram'
+																						src={turnAvatar}
+																						alt={item.user.fullName}
 																					/>
-																				</a>
+																					<span className='gold'>
+																						{item.user.fullName}
+																					</span>
+																				</div>
 																			</li>
-																			<li>
-																				<a href='/'>
-																					<img src={telegram} alt='telegram' />
-																				</a>
-																			</li>
-																		</ul>
-																	</div>
-																</div>
-															</div>
-														</li>
-														<li>
-															<div>
-																<img src={turnAvatar} alt='Vitaly Dmitriev' />
-																<span className='gold'>Vitaly Dmitriev</span>
-															</div>
-														</li>
-														<li>
-															<div>
-																<img src={turnAvatar} alt='Vitaly Dmitriev' />
-																<span className='gold'>Vitaly Dmitriev</span>
-															</div>
-														</li>
-														<li>
-															<div>
-																<img src={turnAvatar} alt='Vitaly Dmitriev' />
-																<span className='gold'>Vitaly Dmitriev</span>
-																<div className='cabaffpro__turnover-hover'>
-																	<span className='gold'>Vitaliy27</span>
-																	<a href='mailto:customer@gmail.com'>
-																		customer@gmail.com
-																	</a>
-																	<div>
-																		оборот<span className='gold'>+ 10 000</span>
-																	</div>
-																	<div className='cabaffpro__turnover-social social'>
-																		<ul>
-																			<li>
-																				<a href='/'>
-																					<img src={youtube} alt='youtube' />
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img src={facebook} alt='facebook' />
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img
-																						src={instagram}
-																						alt='instagram'
-																					/>
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img src={telegram} alt='telegram' />
-																				</a>
-																			</li>
-																		</ul>
-																	</div>
-																</div>
-															</div>
-														</li>
-														<li>
-															<div>
-																<img src={turnAvatar} alt='Vitaly Dmitriev' />
-																<span className='gold'>Vitaly Dmitriev</span>
-																<div className='cabaffpro__turnover-hover'>
-																	<span className='gold'>Vitaliy27</span>
-																	<a href='mailto:customer@gmail.com'>
-																		customer@gmail.com
-																	</a>
-																	<div>
-																		оборот<span className='gold'>+ 10 000</span>
-																	</div>
-																	<div className='cabaffpro__turnover-social social'>
-																		<ul>
-																			<li>
-																				<a href='/'>
-																					<img src={youtube} alt='youtube' />
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img src={facebook} alt='facebook' />
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img
-																						src={instagram}
-																						alt='instagram'
-																					/>
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img src={telegram} alt='telegram' />
-																				</a>
-																			</li>
-																		</ul>
-																	</div>
-																</div>
-															</div>
-														</li>
-														<li>
-															<div>
-																<img src={turnAvatar} alt='Vitaly Dmitriev' />
-																<span className='gold'>Vitaly Dmitriev</span>
-																<div className='cabaffpro__turnover-hover'>
-																	<span className='gold'>Vitaliy27</span>
-																	<a href='mailto:customer@gmail.com'>
-																		customer@gmail.com
-																	</a>
-																	<div>
-																		оборот<span className='gold'>+ 10 000</span>
-																	</div>
-																	<div className='cabaffpro__turnover-social social'>
-																		<ul>
-																			<li>
-																				<a href='/'>
-																					<img src={youtube} alt='youtube' />
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img src={facebook} alt='facebook' />
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img
-																						src={instagram}
-																						alt='instagram'
-																					/>
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img src={telegram} alt='telegram' />
-																				</a>
-																			</li>
-																		</ul>
-																	</div>
-																</div>
-															</div>
-														</li>
-														<li>
-															<div>
-																<img src={turnAvatar} alt='Vitaly Dmitriev' />
-																<span className='gold'>Vitaly Dmitriev</span>
-																<div className='cabaffpro__turnover-hover'>
-																	<span className='gold'>Vitaliy27</span>
-																	<a href='mailto:customer@gmail.com'>
-																		customer@gmail.com
-																	</a>
-																	<div>
-																		оборот<span className='gold'>+ 10 000</span>
-																	</div>
-																	<div className='cabaffpro__turnover-social social'>
-																		<ul>
-																			<li>
-																				<a href='/'>
-																					<img src={youtube} alt='youtube' />
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img src={facebook} alt='facebook' />
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img
-																						src={instagram}
-																						alt='instagram'
-																					/>
-																				</a>
-																			</li>
-																			<li>
-																				<a href='/'>
-																					<img src={telegram} alt='telegram' />
-																				</a>
-																			</li>
-																		</ul>
-																	</div>
-																</div>
-															</div>
-														</li>
+																		)}
+																		position='bottom center'
+																		closeOnDocumentClick
+																		on={['hover', 'click']}
+																		arrow={false}
+																		key={`turnover ${idx}`}
+																	>
+																		<div className='cabaffpro__turnover-hover'>
+																			<span className='gold'>
+																				{item.user.fullName}
+																			</span>
+																			<a
+																				aria-disabled
+																				href={`mailto:${
+																					isSuccessReferrals &&
+																					referrals.data.content
+																						.filter(
+																							referral =>
+																								referral.publicId ===
+																								item.user.publicId
+																						)
+																						.map(referral => referral.email)
+																				}`}
+																			>
+																				{isSuccessReferrals &&
+																					referrals.data.content
+																						.filter(
+																							referral =>
+																								referral.publicId ===
+																								item.user.publicId
+																						)
+																						.map(referral => referral.email)}
+																			</a>
+																			<div>
+																				оборот
+																				<span className='gold'>
+																					{item.points > 0
+																						? '+ ' + item.points
+																						: item.points}
+																				</span>
+																			</div>
+																			{/* <div className='cabaffpro__turnover-social social'>
+																					<ul>
+																						<li>
+																							<a href='/'>
+																								<img
+																									src={youtube}
+																									alt='youtube'
+																								/>
+																							</a>
+																						</li>
+																						<li>
+																							<a href='/'>
+																								<img
+																									src={facebook}
+																									alt='facebook'
+																								/>
+																							</a>
+																						</li>
+																						<li>
+																							<a href='/'>
+																								<img
+																									src={instagram}
+																									alt='instagram'
+																								/>
+																							</a>
+																						</li>
+																						<li>
+																							<a href='/'>
+																								<img
+																									src={telegram}
+																									alt='telegram'
+																								/>
+																							</a>
+																						</li>
+																					</ul>
+																				</div> */}
+																		</div>
+																	</Popup>
+																))}
 													</ul>
 												</div>
 											</div>
@@ -934,181 +1006,7 @@ export default function CabinetAffiliate() {
 											<div className='cabinet__title cabaffpro__partners-title'>
 												МОИ <span className='gold'>ПАРТНЁРЫ</span>
 											</div>
-											<table className='cabaffpro__partners-table'>
-												<thead>
-													<tr>
-														<th>Логин</th>
-														<th>Дата регистрации</th>
-														<th>Линия</th>
-														<th>Уровень менеджера</th>
-														<th>Оборот структуры</th>
-														<th>Инвестиции</th>
-														<th>Реферальные</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td>
-															<div>
-																<span>
-																	{' '}
-																	<span className='gold'>+</span>{' '}
-																</span>
-															</div>
-															<span className='gold'>Андрей Васильев</span>
-														</td>
-														<td>14.06.2021</td>
-														<td>1</td>
-														<td>М1</td>
-														<td>
-															<div className='gold'>
-																350.14
-																<img src={cg} alt='Оборот структуры' />
-															</div>
-														</td>
-														<td>
-															<div>
-																350.14
-																<img src={cgWhite} alt='Инвестиции' />
-															</div>
-														</td>
-														<td>
-															<div className='gold'>
-																350.14
-																<img src={cg} alt='Реферальные' />
-															</div>
-														</td>
-													</tr>
-													<tr>
-														<td>
-															<div>
-																<span>
-																	{' '}
-																	<span className='gold'>+</span>{' '}
-																</span>
-															</div>
-															<span className='gold'>Андрей Васильев</span>
-														</td>
-														<td>14.06.2021</td>
-														<td>1</td>
-														<td>М1</td>
-														<td>
-															<div className='gold'>
-																350.14
-																<img src={cg} alt='Оборот структуры' />
-															</div>
-														</td>
-														<td>
-															<div>
-																350.14
-																<img src={cgWhite} alt='Инвестиции' />
-															</div>
-														</td>
-														<td>
-															<div className='gold'>
-																350.14
-																<img src={cg} alt='Реферальные' />
-															</div>
-														</td>
-													</tr>
-													<tr>
-														<td>
-															<div>
-																<span>
-																	{' '}
-																	<span className='gold'>+</span>{' '}
-																</span>
-															</div>
-															<span className='gold'>Андрей Васильев</span>
-														</td>
-														<td>14.06.2021</td>
-														<td>1</td>
-														<td>М1</td>
-														<td>
-															<div className='gold'>
-																350.14
-																<img src={cg} alt='Оборот структуры' />
-															</div>
-														</td>
-														<td>
-															<div>
-																350.14
-																<img src={cgWhite} alt='Инвестиции' />
-															</div>
-														</td>
-														<td>
-															<div className='gold'>
-																350.14
-																<img src={cg} alt='Реферальные' />
-															</div>
-														</td>
-													</tr>
-													<tr>
-														<td>
-															<div>
-																<span>
-																	{' '}
-																	<span className='gold'>+</span>{' '}
-																</span>
-															</div>
-															<span className='gold'>Андрей Васильев</span>
-														</td>
-														<td>14.06.2021</td>
-														<td>1</td>
-														<td>М1</td>
-														<td>
-															<div className='gold'>
-																350.14
-																<img src={cg} alt='Оборот структуры' />
-															</div>
-														</td>
-														<td>
-															<div>
-																350.14
-																<img src={cgWhite} alt='Инвестиции' />
-															</div>
-														</td>
-														<td>
-															<div className='gold'>
-																350.14
-																<img src={cg} alt='Реферальные' />
-															</div>
-														</td>
-													</tr>
-													<tr>
-														<td>
-															<div>
-																<span>
-																	{' '}
-																	<span className='gold'>+</span>{' '}
-																</span>
-															</div>
-															<span className='gold'>Андрей Васильев</span>
-														</td>
-														<td>14.06.2021</td>
-														<td>1</td>
-														<td>М1</td>
-														<td>
-															<div className='gold'>
-																350.14
-																<img src={cg} alt='Оборот структуры' />
-															</div>
-														</td>
-														<td>
-															<div>
-																350.14
-																<img src={cgWhite} alt='Инвестиции' />
-															</div>
-														</td>
-														<td>
-															<div className='gold'>
-																350.14
-																<img src={cg} alt='Реферальные' />
-															</div>
-														</td>
-													</tr>
-												</tbody>
-											</table>
+											<Table columns={columns} data={data} />
 										</div>
 									</div>
 								</>
@@ -1119,5 +1017,52 @@ export default function CabinetAffiliate() {
 				</div>
 			</div>
 		</div>
+	);
+}
+
+function Table({ columns: userColumns, data }) {
+	const {
+		getTableProps,
+		getTableBodyProps,
+		headerGroups,
+		rows,
+		prepareRow,
+		state: { expanded },
+	} = useTable(
+		{
+			columns: userColumns,
+			data,
+		},
+		useExpanded // Use the useExpanded plugin hook
+	);
+
+	return (
+		<>
+			<table className='cabaffpro__partners-table' {...getTableProps()}>
+				<thead>
+					{headerGroups.map(headerGroup => (
+						<tr {...headerGroup.getHeaderGroupProps()}>
+							{headerGroup.headers.map(column => (
+								<th {...column.getHeaderProps()}>{column.render('Header')}</th>
+							))}
+						</tr>
+					))}
+				</thead>
+				<tbody {...getTableBodyProps()}>
+					{rows.map((row, i) => {
+						prepareRow(row);
+						return (
+							<tr {...row.getRowProps()}>
+								{row.cells.map(cell => {
+									return (
+										<td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+									);
+								})}
+							</tr>
+						);
+					})}
+				</tbody>
+			</table>
+		</>
 	);
 }
