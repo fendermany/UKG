@@ -174,7 +174,7 @@ export default function CabinetInvestments() {
 										</SwiperSlide>
 									))}
 							</Swiper>
-							<div className='cabinvest__calc'>
+							{/* <div className='cabinvest__calc'>
 								<div className='cabinvest__calc-inputs'>
 									<div className='cabinvest__calc-inputs--wrapper'>
 										<div className='cabinvest__calc-title cabinet__title_36'>
@@ -247,25 +247,105 @@ export default function CabinetInvestments() {
 										</div>
 									</div>
 								</div>
-							</div>
-							{activePools.length >
-								0 && (
-									<div className='cabinvest__pulls'>
-										<div className='cabinvest__pulls-title cabinet__title_36'>
-											Ваши активные пулы
-										</div>
-										{isSuccessUserInfo && (
-											<ul className='pulls'>
-												{userInfo.data.pools.map((pool, idx) => {
-													if (activePools.includes(pool.publicId)) {
-														return (
-															<li
-																className='pulls__item pull'
-																key={`pool ${idx}`}
-															>
-																<div className='pull__header'>
-																	<img src={gold} alt='pull-header' />
-																	<div className='pull__name grey-block-dark'>
+							</div> */}
+							{activePools.length > 0 ? (
+								<div className='cabinvest__pulls'>
+									<div className='cabinvest__pulls-title cabinet__title_36'>
+										Ваши активные пулы
+									</div>
+									{isSuccessUserInfo && (
+										<ul className='pulls'>
+											{userInfo.data.pools.map((pool, idx) => {
+												if (activePools.includes(pool.publicId)) {
+													return (
+														<li
+															className='pulls__item pull'
+															key={`pool ${idx}`}
+														>
+															<div className='pull__header'>
+																<img src={gold} alt='pull-header' />
+																<div className='pull__name grey-block-dark'>
+																	<span className='gold'>
+																		{isSuccessPools &&
+																			pools.data
+																				.filter(
+																					item =>
+																						item.publicId === pool.publicId
+																				)
+																				.map(item => item.name)[0]}
+																	</span>
+																</div>
+																<div className='pull__progress'>
+																	<div className='pull__progress-start'>
+																		0дн
+																	</div>
+																	<div className='pull__progress-body'>
+																		<div
+																			style={{
+																				width: `${
+																					isSuccessPools &&
+																					pools.data
+																						.filter(
+																							item =>
+																								item.publicId === pool.publicId
+																						)
+																						.map(
+																							item =>
+																								(913 / 100) *
+																								(((item.days - item.daysLeft) /
+																									item.days) *
+																									100)
+																						)[0]
+																				}px`,
+																			}}
+																			className='pull__progress-body--inner'
+																		>
+																			{isSuccessPools &&
+																				pools.data
+																					.filter(
+																						item =>
+																							item.publicId === pool.publicId
+																					)
+																					.map(
+																						item =>
+																							item.days - item.daysLeft >
+																								10 && (
+																								<div className='pull__progress-current gold'>
+																									{item.days - item.daysLeft}
+																									дн
+																								</div>
+																							)
+																					)[0]}
+																		</div>
+																	</div>
+																	<div className='pull__progress-end'>
+																		{isSuccessPools &&
+																			pools.data
+																				.filter(
+																					item =>
+																						item.publicId === pool.publicId
+																				)
+																				.map(item => item.days)[0]}
+																		дн
+																	</div>
+																</div>
+																<div className='pull__profit grey-block-dark'>
+																	<span>Прибыль</span>
+																	<span className='gold'>
+																		{Math.floor(pool.accruedAmount)}
+																	</span>
+																	<img src={cg} alt='pull-profit' />
+																</div>
+																{/* <div className='pull__more'>
+														<span></span>
+														<span></span>
+														<span></span>
+													</div> */}
+															</div>
+															<div className='pull__body'>
+																<img src={gold} alt='pull-header' />
+																<div className='pull__table'>
+																	<div className='pull__column'>
 																		<span className='gold'>
 																			{isSuccessPools &&
 																				pools.data
@@ -275,157 +355,71 @@ export default function CabinetInvestments() {
 																					)
 																					.map(item => item.name)[0]}
 																		</span>
-																	</div>
-																	<div className='pull__progress'>
-																		<div className='pull__progress-start'>
-																			0дн
-																		</div>
-																		<div className='pull__progress-body'>
-																			<div
-																				style={{
-																					width: `${
-																						isSuccessPools &&
-																						pools.data
-																							.filter(
-																								item =>
-																									item.publicId ===
-																									pool.publicId
-																							)
-																							.map(
-																								item =>
-																									(913 / 100) *
-																									(((item.days -
-																										item.daysLeft) /
-																										item.days) *
-																										100)
-																							)[0]
-																					}px`,
-																				}}
-																				className='pull__progress-body--inner'
-																			>
-																				{isSuccessPools &&
-																					pools.data
-																						.filter(
-																							item =>
-																								item.publicId === pool.publicId
-																						)
-																						.map(
-																							item =>
-																								item.days - item.daysLeft >
-																									10 && (
-																									<div className='pull__progress-current gold'>
-																										{item.days - item.daysLeft}
-																										дн
-																									</div>
-																								)
-																						)[0]}
-																			</div>
-																		</div>
-																		<div className='pull__progress-end'>
+																		<span>
 																			{isSuccessPools &&
 																				pools.data
 																					.filter(
 																						item =>
 																							item.publicId === pool.publicId
 																					)
-																					.map(item => item.days)[0]}
-																			дн
-																		</div>
-																	</div>
-																	<div className='pull__profit grey-block-dark'>
-																		<span>Прибыль</span>
-																		<span className='gold'>
-																			{Math.floor(pool.accruedAmount)}
+																					.map(item => item.months)[0]}{' '}
+																			месяцев
 																		</span>
-																		<img src={cg} alt='pull-profit' />
 																	</div>
-																	{/* <div className='pull__more'>
-														<span></span>
-														<span></span>
-														<span></span>
-													</div> */}
-																</div>
-																<div className='pull__body'>
-																	<img src={gold} alt='pull-header' />
-																	<div className='pull__table'>
-																		<div className='pull__column'>
-																			<span className='gold'>
-																				{isSuccessPools &&
-																					pools.data
-																						.filter(
-																							item =>
-																								item.publicId === pool.publicId
+																	<div className='pull__column'>
+																		<span className='gold'>Дата старта</span>
+																		<span></span>
+																	</div>
+																	<div className='pull__column'>
+																		<span className='gold'>Дата окончания</span>
+																		<span></span>
+																	</div>
+																	<div className='pull__column'>
+																		<span className='gold'>Сумма депозита</span>
+																		<span>
+																			{pool.amount}
+																			<img src={cg} alt='deposit amount' />
+																		</span>
+																	</div>
+																	<div className='pull__column'>
+																		<span className='gold'>% дохода</span>
+																		<span>
+																			{(pool.accruedAmount / pool.amount) * 100}
+																			%
+																		</span>
+																	</div>
+																	<div className='pull__column'>
+																		<span className='gold'>Итоговая сумма</span>
+																		<span>
+																			{isSuccessPools &&
+																				pools.data
+																					.filter(
+																						item =>
+																							item.publicId === pool.publicId
+																					)
+																					.map(item =>
+																						Math.floor(
+																							pool.amount *
+																								(item.totalRate / 100)
 																						)
-																						.map(item => item.name)[0]}
-																			</span>
-																			<span>
-																				{isSuccessPools &&
-																					pools.data
-																						.filter(
-																							item =>
-																								item.publicId === pool.publicId
-																						)
-																						.map(item => item.months)[0]}{' '}
-																				месяцев
-																			</span>
-																		</div>
-																		<div className='pull__column'>
-																			<span className='gold'>Дата старта</span>
-																			<span></span>
-																		</div>
-																		<div className='pull__column'>
-																			<span className='gold'>
-																				Дата окончания
-																			</span>
-																			<span></span>
-																		</div>
-																		<div className='pull__column'>
-																			<span className='gold'>
-																				Сумма депозита
-																			</span>
-																			<span>
-																				{pool.amount}
-																				<img src={cg} alt='deposit amount' />
-																			</span>
-																		</div>
-																		<div className='pull__column'>
-																			<span className='gold'>% дохода</span>
-																			<span>
-																				{(pool.accruedAmount / pool.amount) *
-																					100}
-																				%
-																			</span>
-																		</div>
-																		<div className='pull__column'>
-																			<span className='gold'>
-																				Итоговая сумма
-																			</span>
-																			<span>
-																				{isSuccessPools &&
-																					pools.data
-																						.filter(
-																							item =>
-																								item.publicId === pool.publicId
-																						)
-																						.map(item =>
-																							Math.floor(
-																								pool.amount *
-																									(item.totalRate / 100)
-																							)
-																						)[0]}
-																				<img src={cg} alt='deposit amount' />
-																			</span>
-																		</div>
+																					)[0]}
+																			<img src={cg} alt='deposit amount' />
+																		</span>
 																	</div>
 																</div>
-															</li>
-														);
-													}
-												})}
-											</ul>
-										)}
-									</div>
-								)}
+															</div>
+														</li>
+													);
+												}
+											})}
+										</ul>
+									)}
+								</div>
+							) : (
+								<div className='cabinvest__pulls'>
+									У Вас нет ни одного активного пула.
+								</div>
+							)}
 						</div>
 					</main>
 					<Footer />

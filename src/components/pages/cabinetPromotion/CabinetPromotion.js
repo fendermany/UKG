@@ -9,6 +9,7 @@ import CabinetHeader from '../../cabinetHeader/CabinetHeader';
 import { Snackbar } from '@mui/material';
 // Styles
 import './cabinetPromotion.scss';
+import RefLink from './../../functions/RefLink';
 
 function TabPanel(props) {
 	const { children, value, index, ...other } = props;
@@ -50,7 +51,7 @@ export default function CabinetPromotion() {
 	const handleClick = e => {
 		e.stopPropagation();
 		setOpen(true);
-		navigator.clipboard.writeText(e.currentTarget.previousElementSibling.value);
+		navigator.clipboard.writeText(e.currentTarget.previousElementSibling.innerText);
 	};
 
 	return (
@@ -71,14 +72,10 @@ export default function CabinetPromotion() {
 							<div className='cabpromo__link'>
 								<div className='cabpromo__link-wrapper'>
 									<label htmlFor='reflink'>ВАША РЕФЕРАЛЬНАЯ ССЫЛКА: </label>
-									<input
-										disabled
-										autoComplete='off'
-										type='text'
-										name='reflink'
-										value='https://demo.chyip.com/ethnicfinance2/?reg=zzzzz'
-										className='input'
-									/>
+
+									<span className='cabpromo__link-input'>
+										<span><RefLink /></span>
+									</span>
 									<button
 										onClick={handleClick}
 										className='cabpromo__link-button button button_gold'

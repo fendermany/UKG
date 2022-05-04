@@ -911,7 +911,7 @@ export default function CabinetHome() {
 												</table>
 											</div>
 										</div>
-										<div className='cabhome__latest-item ref'>
+										{/* <div className='cabhome__latest-item ref'>
 											<div className='cabhome__latest-wrapper'>
 												<div className='cabhome__latest-title'>
 													Последние полученные реферальные
@@ -1070,7 +1070,7 @@ export default function CabinetHome() {
 													</tbody>
 												</table>
 											</div>
-										</div>
+										</div> */}
 									</div>
 								</>
 							)}

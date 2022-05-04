@@ -103,3 +103,20 @@
 	border-radius: 0 0 4px 4px;
 	height: 400px;
 }
+
+.cabpromo__link-input {
+	border: 1px solid #484848;
+	border-radius: 9px;
+	height: 51px;
+	display: flex;
+	align-items: center;
+	padding: 0 20px;
+	width: 419px;
+
+	& > span {
+		display: block;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+}
