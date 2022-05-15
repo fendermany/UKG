@@ -1,7 +1,6 @@
 // Функции
 import { useState, useEffect } from 'react';
-import { observer } from 'mobx-react-lite';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import AuthService from './../../../services/AuthService';
 // Формы
@@ -30,7 +29,7 @@ function SetPassword() {
 	const [token, setToken] = useState(null);
 	const navigate = useNavigate();
 
-	function getQueryVariable(variable) {
+	const getQueryVariable = variable => {
 		let query = window.location.search.substring(1);
 		let vars = query.split('&');
 		for (let i = 0; i < vars.length; i++) {
@@ -48,7 +47,7 @@ function SetPassword() {
 			}
 		}
 		return false;
-	}
+	};
 
 	useEffect(() => {
 		getQueryVariable('token');
@@ -82,70 +81,68 @@ function SetPassword() {
 	);
 
 	return (
-		<div className='cabinet'>
-			<div className='wrapper'>
-				<main className='page'>
-					<div className='cabinet__container'>
-						<div className='cabinet__logo'>
-							<img src={logo} alt='Установка пароля' />
-						</div>
-						<div className='cabinet__form'>
-							<div className='cabinet__form-wrapper'>
-								<div className='cabinet__form-title gold'>Установка пароля</div>
-								{isError && <Alert type='error' text={error.message} />}
-								{isSuccess && (
-									<Alert type='success' text='Пароль успешно задан.' />
-								)}
-								{isLoading && <Spinner width='80px' height='80px' />}
-								{view && (
-									<form
-										onSubmit={handleSubmit(setpw)}
-										className='cabinet__form-form'
+		<div className='wrapper'>
+			<main className='page'>
+				<div className='cabinet__container'>
+					<Link to='/' className='cabinet__logo'>
+						<img src={logo} alt='Вход личный кабинет' />
+					</Link>
+					<div className='cabinet__form'>
+						<div className='cabinet__form-wrapper'>
+							<div className='cabinet__form-title gold'>Установка пароля</div>
+							{isError && <Alert type='error' text={error.message} />}
+							{isSuccess && (
+								<Alert type='success' text='Пароль успешно задан.' />
+							)}
+							{isLoading && <Spinner width='80px' height='80px' />}
+							{view && (
+								<form
+									onSubmit={handleSubmit(setpw)}
+									className='cabinet__form-form'
+								>
+									<div className='cabinet__form-line'>
+										<input
+											autoComplete='off'
+											type='password'
+											name='login'
+											{...register('password')}
+											placeholder='Пароль'
+											className='cabinet__form-input'
+										/>
+										{errors.password && (
+											<p className='text-red-600 mt-1 text-xs'>
+												{errors.password.message}
+											</p>
+										)}
+									</div>
+									<div className='cabinet__form-line'>
+										<input
+											autoComplete='off'
+											type='password'
+											name='password'
+											{...register('confirmPassword')}
+											placeholder='Повторите пароль'
+											className='cabinet__form-input'
+										/>
+										{errors.confirmPassword && (
+											<p className='text-red-600 mt-1 text-xs'>
+												{errors.confirmPassword.message}
+											</p>
+										)}
+									</div>
+									<button
+										type='submit'
+										className='cabinet__form-btn button button_gold'
 									>
-										<div className='cabinet__form-line'>
-											<input
-												autoComplete='off'
-												type='password'
-												name='login'
-												{...register('password')}
-												placeholder='Пароль'
-												className='cabinet__form-input'
-											/>
-											{errors.password && (
-												<p className='text-red-600 mt-1 text-xs'>
-													{errors.password.message}
-												</p>
-											)}
-										</div>
-										<div className='cabinet__form-line'>
-											<input
-												autoComplete='off'
-												type='password'
-												name='password'
-												{...register('confirmPassword')}
-												placeholder='Повторите пароль'
-												className='cabinet__form-input'
-											/>
-											{errors.confirmPassword && (
-												<p className='text-red-600 mt-1 text-xs'>
-													{errors.confirmPassword.message}
-												</p>
-											)}
-										</div>
-										<button
-											type='submit'
-											className='cabinet__form-btn button button_gold'
-										>
-											Установить пароль
-										</button>
-									</form>
-								)}
-							</div>
+										Установить пароль
+									</button>
+								</form>
+							)}
 						</div>
 					</div>
-				</main>
-				<Footer />
-			</div>
+				</div>
+			</main>
+			<Footer />
 		</div>
 	);
 }

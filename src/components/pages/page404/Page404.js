@@ -1,29 +1,42 @@
-import Footer from '../../footer/Footer';
+import { useContext } from 'react';
+import { AuthContext } from './../../../contexts/AuthContext';
+import { Navigate } from 'react-router-dom';
+
+// Components
+import CabinetFooter from '../../cabinetFooter/CabinetFooter';
 import CabinetTopbar from '../../cabinetTopbar/CabinetTopbar';
 import Aside from '../../aside/Aside';
 import CabinetHeader from '../../cabinetHeader/CabinetHeader';
-import { Navigate } from 'react-router-dom';
 
 import './page404.scss';
 
 export default function Page404() {
+	const { store } = useContext(AuthContext);
+
 	return (
-		<div className='cabinet'>
-			<Navigate replace to="/" />
-			<div className='cabinet__wrapper'>
-				<Aside />
+		<>
+			{store.isAuth ? (
+				<Navigate replace to='/cabinet' />
+			) : (
+				<Navigate replace to='/' />
+			)}
 
-				<div className='wrapper'>
-					<main className='page'>
-						<CabinetHeader/>
+			<div className='cabinet'>
+				<div className='cabinet__wrapper'>
+					<Aside />
 
-						<CabinetTopbar/>
+					<div className='wrapper'>
+						<main className='page'>
+							<CabinetHeader />
 
-						<div className='mt-5'>Страница не найдена</div>
-					</main>
-					<Footer />
+							<CabinetTopbar />
+
+							<div className='mt-5'>Страница не найдена</div>
+						</main>
+						<CabinetFooter />
+					</div>
 				</div>
 			</div>
-		</div>
-	)
+		</>
+	);
 }

@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 // Components
-import Footer from '../../footer/Footer';
+import CabinetFooter from '../../cabinetFooter/CabinetFooter';
 import CabinetTopbar from '../../cabinetTopbar/CabinetTopbar';
 import Aside from '../../aside/Aside';
 import CabinetHeader from '../../cabinetHeader/CabinetHeader';
@@ -353,7 +353,7 @@ export default function CabinetHelp() {
 							</div>
 						</div>
 					</main>
-					<Footer />
+					<CabinetFooter />
 				</div>
 			</div>
 		</div>

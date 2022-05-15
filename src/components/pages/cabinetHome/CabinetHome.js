@@ -13,7 +13,7 @@ import useAdditionsWeek from './../../../hooks/useAdditionsWeek';
 import useNotUsedInviteBonus from './../../../hooks/useNotUsedInviteBonus';
 import useReferralsLast from './../../../hooks/useReferralsLast';
 // Components
-import Footer from '../../footer/Footer';
+import CabinetFooter from '../../cabinetFooter/CabinetFooter';
 import CabinetTopbar from '../../cabinetTopbar/CabinetTopbar';
 import Aside from '../../aside/Aside';
 import CabinetHeader from '../../cabinetHeader/CabinetHeader';
@@ -1076,7 +1076,7 @@ export default function CabinetHome() {
 							)}
 						</div>
 					</main>
-					<Footer />
+					<CabinetFooter />
 				</div>
 			</div>
 		</div>

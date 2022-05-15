@@ -31,7 +31,11 @@
 .cabinvest__slider-third span:nth-child(2),
 .cabinvest__slider-fourth span:nth-child(2),
 .cabinvest__slider-fifth span:nth-child(2) {
-	background: linear-gradient(175.49deg, #292929 11.91%, rgba(41, 41, 41, 0.51) 368.29%);
+	background: linear-gradient(
+		175.49deg,
+		#292929 11.91%,
+		rgba(41, 41, 41, 0.51) 368.29%
+	);
 	font-size: 14px;
 	line-height: 16px;
 	border-radius: 10px;
@@ -45,7 +49,11 @@
 .cabinvest__slider-second {
 	margin-top: 8px;
 	margin-bottom: 5px;
-	background: linear-gradient(175.49deg, #292929 11.91%, rgba(41, 41, 41, 0.51) 368.29%);
+	background: linear-gradient(
+		175.49deg,
+		#292929 11.91%,
+		rgba(41, 41, 41, 0.51) 368.29%
+	);
 	border-radius: 10px;
 	width: 297px;
 	height: 45px;
@@ -54,13 +62,13 @@
 	padding: 0 10px;
 }
 
-.cabinvest__slider-second>span {
+.cabinvest__slider-second > span {
 	font-size: 12px;
 	line-height: 14px;
 	margin-right: 50px;
 }
 
-.cabinvest__slider-second>span>span {
+.cabinvest__slider-second > span > span {
 	font-size: 20px;
 	line-height: 23px;
 }
@@ -90,14 +98,22 @@
 }
 
 .slide-gold {
-	background: linear-gradient(92.35deg, #b48a3d 9.32%, #fcecce 50.74%, #ccab6c 95.84%);
+	background: linear-gradient(
+		92.35deg,
+		#b48a3d 9.32%,
+		#fcecce 50.74%,
+		#ccab6c 95.84%
+	);
 }
 
 .slide-silver {
-	background: linear-gradient(92.35deg, #b5b6bf 9.32%, #fdfdfd 50.74%, #93949f 95.84%);
+	background: linear-gradient(
+		92.35deg,
+		#b5b6bf 9.32%,
+		#fdfdfd 50.74%,
+		#93949f 95.84%
+	);
 }
-
-
 
 .cabinvest__calc {
 	margin-top: 36px;
@@ -109,7 +125,12 @@
 }
 
 .cabinvest__calc-inputs {
-	background: linear-gradient(92.35deg, #b48a3d 9.32%, #fcecce 50.74%, #ccab6c 95.84%);
+	background: linear-gradient(
+		92.35deg,
+		#b48a3d 9.32%,
+		#fcecce 50.74%,
+		#ccab6c 95.84%
+	);
 	box-shadow: 0px 4px 73px #000000;
 	border-radius: 10px;
 	padding: 1px;
@@ -126,7 +147,7 @@
 	margin-top: 16px;
 }
 
-.cabinvest__calc-item+.cabinvest__calc-item {
+.cabinvest__calc-item + .cabinvest__calc-item {
 	margin-top: 30px;
 }
 
@@ -138,17 +159,26 @@
 
 .cabinvest__calc-select {
 	margin-top: 14px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	height: 65px;
-	padding: 0 30px;
-	background: rgba(255, 255, 255, 0.05);
-	box-shadow: 0px 4px 73px #000000;
-	font-size: 16px;
-	line-height: 23px;
-	text-transform: uppercase;
-	cursor: pointer;
+	position: relative;
+	& > input {
+		border-radius: 0 !important;
+		border: none !important;
+		height: 65px !important;
+		cursor: pointer !important;
+		padding: 0 30px !important;
+		background: rgba(255, 255, 255, 0.05) !important;
+		box-shadow: 0px 4px 73px #000000;
+		text-transform: uppercase;
+		font-size: 16px;
+		line-height: 23px;
+		outline: none;
+	}
+	span {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		right: 35px;
+	}
 }
 
 .cabinvest__calc-img {
@@ -167,7 +197,12 @@
 }
 
 .cabinvest__calc-result {
-	background: linear-gradient(92.35deg, #b48a3d 9.32%, #fcecce 50.74%, #ccab6c 95.84%);
+	background: linear-gradient(
+		92.35deg,
+		#b48a3d 9.32%,
+		#fcecce 50.74%,
+		#ccab6c 95.84%
+	);
 	box-shadow: 0px 4px 73px #000000;
 	border-radius: 10px;
 	padding: 1px;
@@ -181,7 +216,7 @@
 	padding: 38px 123px 42px 40px;
 }
 
-.cabinvest__calc-result--item+.cabinvest__calc-result--item {
+.cabinvest__calc-result--item + .cabinvest__calc-result--item {
 	margin-top: 37px;
 }
 
@@ -205,8 +240,12 @@
 	margin-top: 12px;
 }
 
-.cabinvest__calc-result--body>span {
-	background: linear-gradient(118.17deg, rgba(41, 41, 41, 0.6) 19.54%, rgba(41, 41, 41, 0.306) 87.61%);
+.cabinvest__calc-result--body > span {
+	background: linear-gradient(
+		118.17deg,
+		rgba(41, 41, 41, 0.6) 19.54%,
+		rgba(41, 41, 41, 0.306) 87.61%
+	);
 	box-shadow: 0px 4px 73px #000000;
 	border-radius: 10px;
 	display: block;
@@ -214,21 +253,21 @@
 	align-items: center;
 }
 
-.cabinvest__calc-result--body>span:first-child {
+.cabinvest__calc-result--body > span:first-child {
 	width: 265px;
 	padding: 20px;
 	font-size: 34px;
 	line-height: 39px;
 }
 
-.cabinvest__calc-result--body>span:first-child>.gold {
+.cabinvest__calc-result--body > span:first-child > .gold {
 	display: flex;
 	align-items: center;
 	font-size: 48px;
 	line-height: 56px;
 }
 
-.cabinvest__calc-result--body>span:nth-child(2) {
+.cabinvest__calc-result--body > span:nth-child(2) {
 	margin-left: 13px;
 	width: 111px;
 	padding: 0 25px;
@@ -245,15 +284,20 @@
 	align-items: center;
 }
 
-.cabinvest__calc-result--footer>div:first-child {
-	background: linear-gradient(92.35deg, #b48a3d 9.32%, #fcecce 50.74%, #ccab6c 95.84%);
+.cabinvest__calc-result--footer > div:first-child {
+	background: linear-gradient(
+		92.35deg,
+		#b48a3d 9.32%,
+		#fcecce 50.74%,
+		#ccab6c 95.84%
+	);
 	border-radius: 10px;
 	padding: 1px;
 	box-shadow: 0px 4px 73px #000000;
 	width: max-content;
 }
 
-.cabinvest__calc-result--footer>div:first-child>span {
+.cabinvest__calc-result--footer > div:first-child > span {
 	background: #000;
 	border-radius: 10px;
 	height: 100%;
@@ -261,13 +305,13 @@
 	padding: 16px 24px;
 }
 
-.cabinvest__calc-result--footer>div:first-child>span img {
+.cabinvest__calc-result--footer > div:first-child > span img {
 	width: 100%;
 	height: 100%;
 	object-fit: contain;
 }
 
-.cabinvest__calc-result--footer>span {
+.cabinvest__calc-result--footer > span {
 	font-size: 18px;
 	line-height: 21px;
 	margin-left: 20px;
@@ -281,7 +325,6 @@
 .cabinvest__pulls {
 	margin-top: 40px;
 }
-
 
 // Form
 

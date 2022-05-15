@@ -1,4 +1,4 @@
-import Footer from '../../footer/Footer';
+import CabinetFooter from '../../cabinetFooter/CabinetFooter';
 import CabinetTopbar from '../../cabinetTopbar/CabinetTopbar';
 import Aside from '../../aside/Aside';
 import CabinetHeader from '../../cabinetHeader/CabinetHeader';
@@ -42,7 +42,7 @@ export default function CabinetToken() {
 													- купить токен на криптобирже -
 													<span className='gold'>BTC-ALPHA</span>
 												</div>
-												<a href='#'>
+												<a href='/'>
 													<div>
 														<span>
 															<span className='gold'>BTC</span>
@@ -63,7 +63,7 @@ export default function CabinetToken() {
 													которые предоставляют услуги по продаже
 													<span className='gold'>CG TOKEN</span>
 												</div>
-												<a href='#'>
+												<a href='/'>
 													<div>
 														<span>
 															<img
@@ -111,7 +111,7 @@ export default function CabinetToken() {
 							</div>
 						</div>
 					</main>
-					<Footer />
+					<CabinetFooter />
 				</div>
 			</div>
 		</div>

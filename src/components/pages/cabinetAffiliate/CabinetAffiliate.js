@@ -11,7 +11,7 @@ import Refbonus from './../../functions/getRefBonus';
 import checkManagerPoints from './../../functions/checkManagerPoints';
 import checkManagerLvl from './../../functions/checkManagerLvl';
 // Components
-import Footer from '../../footer/Footer';
+import CabinetFooter from '../../cabinetFooter/CabinetFooter';
 import CabinetTopbar from '../../cabinetTopbar/CabinetTopbar';
 import Aside from '../../aside/Aside';
 import CabinetHeader from '../../cabinetHeader/CabinetHeader';
@@ -209,10 +209,6 @@ export default function CabinetAffiliate() {
 			};
 		});
 	}
-
-	// Create a function that will render our row sub components
-
-	console.log(data);
 
 	return (
 		<div className='cabinet'>
@@ -1013,7 +1009,7 @@ export default function CabinetAffiliate() {
 							)}
 						</div>
 					</main>
-					<Footer />
+					<CabinetFooter />
 				</div>
 			</div>
 		</div>

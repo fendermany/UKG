@@ -1,15 +1,14 @@
 // Функции
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import AuthService from './../../../services/AuthService';
-import { useNavigate } from 'react-router-dom';
 // Формы
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 // Компоненты
-import Footer from '../../footer/Footer';
+import Footer from './../../footer/Footer';
 import Alert from './../../ui/alert/Alert';
 import Spinner from '../../spinner/Spinner';
 // Медиа
@@ -84,7 +83,8 @@ function CabinetRegistration() {
 		isSuccess,
 	} = useMutation(
 		'Registration',
-		data => AuthService.registration(data.fullName, data.email, data.phone, token),
+		data =>
+			AuthService.registration(data.fullName, data.email, data.phone, token),
 		{
 			onSuccess() {
 				reset(
@@ -108,121 +108,119 @@ function CabinetRegistration() {
 	);
 
 	return (
-		<div className='cabinet'>
-			<div className='wrapper'>
-				<main className='page'>
-					<div className='cabinet__container'>
-						<div className='cabinet__logo'>
-							<img src={logo} alt='Вход личный кабинет' />
-						</div>
-						<div className='cabinet__form'>
-							<div className='cabinet__form-wrapper'>
-								<div className='cabinet__form-title gold'>
-									{t('registration.formTitle')}
-								</div>
-								{isError && <Alert type='error' text={error.message} />}
-								{isSuccess && (
-									<Alert
-										type='success'
-										text='Регистрация прошла успешно. Проверьте почту для подтверждения.'
+		<div className='wrapper'>
+			<main className='page'>
+				<div className='cabinet__container'>
+					<Link to='/' className='cabinet__logo'>
+						<img src={logo} alt='Вход личный кабинет' />
+					</Link>
+					<div className='cabinet__form'>
+						<div className='cabinet__form-wrapper'>
+							<div className='cabinet__form-title gold'>
+								{t('registration.formTitle')}
+							</div>
+							{isError && <Alert type='error' text={error.message} />}
+							{isSuccess && (
+								<Alert
+									type='success'
+									text='Регистрация прошла успешно. Проверьте почту для подтверждения.'
+								/>
+							)}
+							{isLoading && <Spinner width='80px' height='80px' />}
+							<form
+								onSubmit={handleSubmit(registration)}
+								className='cabinet__form-form'
+							>
+								<div className='cabinet__form-line'>
+									<input
+										autoComplete='off'
+										type='text'
+										name='fullName'
+										placeholder='Имя'
+										{...register('fullName')}
+										className='cabinet__form-input'
 									/>
-								)}
-								{isLoading && <Spinner width='80px' height='80px' />}
-								<form
-									onSubmit={handleSubmit(registration)}
-									className='cabinet__form-form'
-								>
-									<div className='cabinet__form-line'>
-										<input
-											autoComplete='off'
-											type='text'
-											name='fullName'
-											placeholder='Имя'
-											{...register('fullName')}
-											className='cabinet__form-input'
-										/>
-										{errors.fullName && (
-											<p className='text-red-600 mt-1 text-xs'>
-												{errors.fullName.message}
-											</p>
-										)}
-									</div>
-									<div className='cabinet__form-line'>
-										<input
-											autoComplete='off'
-											type='text'
-											name='email'
-											placeholder='E-mail'
-											{...register('email')}
-											className='cabinet__form-input'
-										/>
-										{errors.email && (
-											<p className='text-red-600 mt-1 text-xs'>
-												{errors.email.message}
-											</p>
-										)}
-									</div>
-									<div className='cabinet__form-line'>
-										<input
-											autoComplete='off'
-											type='text'
-											name='phone'
-											{...register('phone')}
-											placeholder='Телефон'
-											className='cabinet__form-input'
-										/>
-										{errors.phone && (
-											<p className='text-red-600 mt-1 text-xs'>
-												{errors.phone.message}
-											</p>
-										)}
-									</div>
-									{view && (
-										<div className='cabinet__form-line'>
-											<input
-												disabled
-												autoComplete='off'
-												type='text'
-												name='invite'
-												placeholder={name}
-												className='cabinet__form-input'
-											/>
-										</div>
+									{errors.fullName && (
+										<p className='text-red-600 mt-1 text-xs'>
+											{errors.fullName.message}
+										</p>
 									)}
-									<div className='cabinet__form-checkbox checkbox'>
-										<input
-											id='checkbox'
-											className='checkbox__input'
-											type='checkbox'
-											{...register('checkbox')}
-											name='checkbox'
-										/>
-										<label htmlFor='checkbox' className='checkbox__label'>
-											<span className='checkbox__text'>
-												Согласен с правилами и соглашениями, а так же с
-												возможными рисками.
-											</span>
-										</label>
-										{errors.checkbox && (
-											<p className='text-red-600 mt-1 text-xs'>
-												{errors.checkbox.message}
-											</p>
-										)}
-									</div>
-									<button className='cabinet__form-btn button button_gold'>
-										Регистрация
-									</button>
-								</form>
-								<div className='cabinet__form-links'>
-									<NavLink to='/signin'>Вход</NavLink>
-									<NavLink to='/recovery'>Забыли пароль?</NavLink>
 								</div>
+								<div className='cabinet__form-line'>
+									<input
+										autoComplete='off'
+										type='text'
+										name='email'
+										placeholder='E-mail'
+										{...register('email')}
+										className='cabinet__form-input'
+									/>
+									{errors.email && (
+										<p className='text-red-600 mt-1 text-xs'>
+											{errors.email.message}
+										</p>
+									)}
+								</div>
+								<div className='cabinet__form-line'>
+									<input
+										autoComplete='off'
+										type='text'
+										name='phone'
+										{...register('phone')}
+										placeholder='Телефон'
+										className='cabinet__form-input'
+									/>
+									{errors.phone && (
+										<p className='text-red-600 mt-1 text-xs'>
+											{errors.phone.message}
+										</p>
+									)}
+								</div>
+								{view && (
+									<div className='cabinet__form-line'>
+										<input
+											disabled
+											autoComplete='off'
+											type='text'
+											name='invite'
+											placeholder={name}
+											className='cabinet__form-input'
+										/>
+									</div>
+								)}
+								<div className='cabinet__form-checkbox checkbox'>
+									<input
+										id='checkbox'
+										className='checkbox__input'
+										type='checkbox'
+										{...register('checkbox')}
+										name='checkbox'
+									/>
+									<label htmlFor='checkbox' className='checkbox__label'>
+										<span className='checkbox__text'>
+											Согласен с правилами и соглашениями, а так же с возможными
+											рисками.
+										</span>
+									</label>
+									{errors.checkbox && (
+										<p className='text-red-600 mt-1 text-xs'>
+											{errors.checkbox.message}
+										</p>
+									)}
+								</div>
+								<button className='cabinet__form-btn button button_gold'>
+									Регистрация
+								</button>
+							</form>
+							<div className='cabinet__form-links'>
+								<NavLink to='/signin'>Вход</NavLink>
+								<NavLink to='/recovery'>Забыли пароль?</NavLink>
 							</div>
 						</div>
 					</div>
-				</main>
-				<Footer />
-			</div>
+				</div>
+			</main>
+			<Footer />
 		</div>
 	);
 }

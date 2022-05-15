@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 // Components
-import Footer from '../../footer/Footer';
+import CabinetFooter from '../../cabinetFooter/CabinetFooter';
 import Aside from '../../aside/Aside';
 import CabinetHeader from '../../cabinetHeader/CabinetHeader';
 import Modals from './../../ui/modals/Modals';
@@ -18,18 +18,11 @@ import Spinner from './../../spinner/Spinner';
 import Alert from './../../ui/alert/Alert';
 
 // Media
-import {
-	cg,
-	gold,
-	gold3,
-	poucheGold,
-	angleDownSolid,
-	calcGold,
-	gold1,
-} from '../../../img/images';
+import { cg, gold, poucheGold, gold1 } from '../../../img/images';
 // Styles
 import './cabinetInvestments.scss';
 import '../../cabinetPools/cabinetPools.scss';
+import CabinetInvestmentsCalc from './CabinetInvestmentsCalc';
 
 const Schema = Yup.object().shape({
 	amount: Yup.string()
@@ -174,80 +167,7 @@ export default function CabinetInvestments() {
 										</SwiperSlide>
 									))}
 							</Swiper>
-							{/* <div className='cabinvest__calc'>
-								<div className='cabinvest__calc-inputs'>
-									<div className='cabinvest__calc-inputs--wrapper'>
-										<div className='cabinvest__calc-title cabinet__title_36'>
-											Калькулятор доходности
-										</div>
-										<div className='cabinvest__calc-list'>
-											<div className='cabinvest__calc-item'>
-												<div className='cabinvest__calc-subtitle'>
-													Инвестиционный пул
-												</div>
-												<div className='cabinvest__calc-select'>
-													18 месяцев - 20% ежемесячно
-													<div className='cabinvest__calc-img'>
-														<img
-															src={angleDownSolid}
-															alt='18 месяцев - 20% ежемесячно'
-														/>
-													</div>
-												</div>
-											</div>
-											<div className='cabinvest__calc-item'>
-												<div className='cabinvest__calc-subtitle'>
-													Сумма инвестиций
-												</div>
-												<div className='cabinvest__calc-select'>
-													10 000 $
-													<div className='cabinvest__calc-img'>
-														<img
-															src={angleDownSolid}
-															alt='18 месяцев - 20% ежемесячно'
-														/>
-													</div>
-												</div>
-											</div>
-										</div>
-										<button className='cabinvest__calc-button button button_gold'>
-											Инвестировать
-										</button>
-									</div>
-								</div>
-								<div className='cabinvest__calc-result'>
-									<div className='cabinvest__calc-result--wrapper'>
-										<div className='cabinvest__calc-result--item'>
-											<div className='cabinvest__calc-result--title'>
-												Ваш ежемесячный доход
-											</div>
-											<div className='cabinvest__calc-result--body'>
-												<span>278 000 $</span>
-												<span>278 %</span>
-											</div>
-										</div>
-										<div className='cabinvest__calc-result--item'>
-											<div className='cabinvest__calc-result--title'>
-												Ваш общий доход
-											</div>
-											<div className='cabinvest__calc-result--body'>
-												<span>
-													<span className='gold'>100 000 $</span>
-												</span>
-												<span>278 %</span>
-											</div>
-										</div>
-										<div className='cabinvest__calc-result--footer'>
-											<div>
-												<span>
-													<img src={calcGold} alt='Калькулятор доходности' />
-												</span>
-											</div>
-											<span className='gold'>Золотой слиток U-KG HOLDING</span>
-										</div>
-									</div>
-								</div>
-							</div> */}
+							<CabinetInvestmentsCalc />
 							{activePools.length > 0 ? (
 								<div className='cabinvest__pulls'>
 									<div className='cabinvest__pulls-title cabinet__title_36'>
@@ -422,7 +342,7 @@ export default function CabinetInvestments() {
 							)}
 						</div>
 					</main>
-					<Footer />
+					<CabinetFooter />
 				</div>
 			</div>
 			<Modals active={modalAmount} setActive={setModalAmount}>

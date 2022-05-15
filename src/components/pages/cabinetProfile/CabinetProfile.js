@@ -6,7 +6,7 @@ import UserServices from '../../../services/UserServices';
 import useUserInfo from './../../../hooks/useUserInfo';
 
 // Components
-import Footer from '../../footer/Footer';
+import CabinetFooter from '../../cabinetFooter/CabinetFooter';
 import CabinetTopbar from '../../cabinetTopbar/CabinetTopbar';
 import Aside from '../../aside/Aside';
 import CabinetHeader from '../../cabinetHeader/CabinetHeader';
@@ -425,7 +425,7 @@ export default function CabinetProfile() {
 							</div>
 						</div>
 					</main>
-					<Footer />
+					<CabinetFooter />
 				</div>
 			</div>
 		</div>

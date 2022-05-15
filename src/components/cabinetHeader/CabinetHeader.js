@@ -1,6 +1,7 @@
 // Functions
 import { useContext } from 'react';
 import LangContext from './../../contexts/LangContext';
+import { Link } from 'react-router-dom';
 
 import Select from 'react-select';
 import Clock from './Clock';
@@ -19,7 +20,7 @@ import {
 import './cabinetHeader.scss';
 
 function CabinetHeader() {
-	const { getValue, onChange, options } = useContext(LangContext);
+	const { getValue, onChange, langOptions } = useContext(LangContext);
 	const { store } = useContext(AuthContext);
 
 	const handleLogout = () => {
@@ -29,10 +30,10 @@ function CabinetHeader() {
 	return (
 		<div className='cabinet__header'>
 			<div className='cabinet__header-btns'>
-				<a href='/' className='cabinet__header-btns--settings gold'>
+				<Link to='/profile' className='cabinet__header-btns--settings gold'>
 					<img src={settingsIcon} alt='settings' />
 					<span>Настройки</span>
-				</a>
+				</Link>
 				<button
 					onClick={handleLogout}
 					className='cabinet__header-btns--exit gold'
@@ -68,11 +69,11 @@ function CabinetHeader() {
 				</div>
 				<div className='cabinet__header-lang lang'>
 					<Select
-						classNamePrefix='lang-list'
+						classNamePrefix='lang-list-top'
 						onChange={onChange}
 						value={getValue()}
 						className='lang-list'
-						options={options}
+						options={langOptions}
 					/>
 				</div>
 				<div className='cabinet__header-time'>

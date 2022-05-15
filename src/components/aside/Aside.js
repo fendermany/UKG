@@ -1,11 +1,11 @@
 // Functions
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import UserServices from './../../services/UserServices';
-import { useQuery } from 'react-query';
+import { Link, NavLink } from 'react-router-dom';
 import { Snackbar } from '@mui/material';
 import RefLink from '../functions/RefLink';
-
+// Hooks
+import useWalletsTree from './../../hooks/useWalletsTree';
+import useUserInfo from './../../hooks/useUserInfo';
 // Media
 import { copyIcon, logo } from '../../img/images';
 // Styles
@@ -13,6 +13,8 @@ import './aside.scss';
 
 function Aside() {
 	const [open, setOpen] = useState(false);
+	const { userInfo, isSuccessUserInfo } = useUserInfo();
+	const { walletsTree, isSuccessWalletsTree } = useWalletsTree();
 
 	const handleClick = e => {
 		e.stopPropagation();
@@ -20,29 +22,17 @@ function Aside() {
 		navigator.clipboard.writeText(e.currentTarget.firstElementChild.innerText);
 	};
 
-	const { data, isSuccess } = useQuery('user', () => UserServices.userInfo(), {
-		refetchOnWindowFocus: false,
-	});
-
-	const { data: walletsTree, isSuccess: isSuccessWalletsTree } = useQuery(
-		'wallet',
-		() => UserServices.walletsTree(),
-		{
-			refetchOnWindowFocus: false,
-		}
-	);
-
 	return (
 		<aside className='cabinet__aside'>
-			<div className='cabinet__aside-logo'>
+			<Link to='/' className='cabinet__aside-logo'>
 				<img src={logo} alt='logo' />
-			</div>
+			</Link>
 			<div className='cabinet__aside-welcome grey-block'>
 				<span>Добро пожаловать</span>
 
-				{isSuccess && (
+				{isSuccessUserInfo && (
 					<div className='cabinet__aside-welcome--name gold'>
-						{data.data.fullName}
+						{userInfo.data.fullName}
 					</div>
 				)}
 				<span>Ваша реферальная ссылка</span>
@@ -63,7 +53,7 @@ function Aside() {
 			<nav className='cabinet__aside-menu'>
 				<ul>
 					<li>
-						<NavLink to='/'>Главная страница</NavLink>
+						<NavLink to='/cabinet'>Главная страница</NavLink>
 					</li>
 					<li>
 						<NavLink to='/investments'>Ивестиции</NavLink>

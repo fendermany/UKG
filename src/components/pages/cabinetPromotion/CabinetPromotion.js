@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Tab, Tabs } from '@mui/material';
 import PropTypes from 'prop-types';
 // Components
-import Footer from '../../footer/Footer';
+import CabinetFooter from '../../cabinetFooter/CabinetFooter';
 import CabinetTopbar from '../../cabinetTopbar/CabinetTopbar';
 import Aside from '../../aside/Aside';
 import CabinetHeader from '../../cabinetHeader/CabinetHeader';
@@ -118,7 +118,7 @@ export default function CabinetPromotion() {
 							</div>
 						</div>
 					</main>
-					<Footer />
+					<CabinetFooter />
 				</div>
 			</div>
 		</div>

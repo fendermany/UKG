@@ -1,14 +1,14 @@
 // Функции
 import AuthService from './../../../services/AuthService';
 import { useMutation } from 'react-query';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 // Формы
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 // Компоненты
-import Footer from '../../footer/Footer';
+import Footer from './../../footer/Footer';
 import Alert from './../../ui/alert/Alert';
 import Spinner from './../../spinner/Spinner';
 // Медиа
@@ -59,62 +59,60 @@ function CabinetRecovery() {
 	});
 
 	return (
-		<div className='cabinet'>
-			<div className='wrapper'>
-				<main className='page'>
-					<div className='cabinet__container'>
-						<div className='cabinet__logo'>
-							<img src={logo} alt='Вход личный кабинет' />
-						</div>
-						<div className='cabinet__form'>
-							<div className='cabinet__form-wrapper'>
-								<div className='cabinet__form-title gold'>
-									Восстановление пароля
-								</div>
-								{isError && <Alert type='error' text={error.message} />}
-								{isSuccess && (
-									<Alert
-										type='success'
-										text='Ссылка для восстановления пароля отправлена на Вашу почту.'
+		<div className='wrapper'>
+			<main className='page'>
+				<div className='cabinet__container'>
+					<Link to='/' className='cabinet__logo'>
+						<img src={logo} alt='Вход личный кабинет' />
+					</Link>
+					<div className='cabinet__form'>
+						<div className='cabinet__form-wrapper'>
+							<div className='cabinet__form-title gold'>
+								Восстановление пароля
+							</div>
+							{isError && <Alert type='error' text={error.message} />}
+							{isSuccess && (
+								<Alert
+									type='success'
+									text='Ссылка для восстановления пароля отправлена на Вашу почту.'
+								/>
+							)}
+							{isLoading && <Spinner width='80px' height='80px' />}
+							<form
+								onSubmit={handleSubmit(recovery)}
+								className='cabinet__form-form'
+							>
+								<div className='cabinet__form-line'>
+									<input
+										autoComplete='off'
+										type='text'
+										name='email'
+										placeholder='E-mail'
+										{...register('email')}
+										className='cabinet__form-input'
 									/>
-								)}
-								{isLoading && <Spinner width='80px' height='80px' />}
-								<form
-									onSubmit={handleSubmit(recovery)}
-									className='cabinet__form-form'
-								>
-									<div className='cabinet__form-line'>
-										<input
-											autoComplete='off'
-											type='text'
-											name='email'
-											placeholder='E-mail'
-											{...register('email')}
-											className='cabinet__form-input'
-										/>
-										{errors.email && (
-											<p className='text-red-600 mt-1 text-xs'>
-												{errors.email.message}
-											</p>
-										)}
-									</div>
-									<button
-										type='submit'
-										className='cabinet__form-btn button button_gold'
-									>
-										Сбросить пароль
-									</button>
-								</form>
-								<div className='cabinet__form-links'>
-									<NavLink to='/signin'>Вход</NavLink>
-									<NavLink to='/registration'>Регистрация</NavLink>
+									{errors.email && (
+										<p className='text-red-600 mt-1 text-xs'>
+											{errors.email.message}
+										</p>
+									)}
 								</div>
+								<button
+									type='submit'
+									className='cabinet__form-btn button button_gold'
+								>
+									Сбросить пароль
+								</button>
+							</form>
+							<div className='cabinet__form-links'>
+								<NavLink to='/signin'>Вход</NavLink>
+								<NavLink to='/registration'>Регистрация</NavLink>
 							</div>
 						</div>
 					</div>
-				</main>
-				<Footer />
-			</div>
+				</div>
+			</main>
+			<Footer />
 		</div>
 	);
 }
