@@ -6,7 +6,7 @@ import useUserInfo from './../../hooks/useUserInfo';
 import useAdditions from './../../hooks/useAdditions';
 import useWithdrawals from './../../hooks/useWithdrawals';
 // Медиа
-import { cg, cgWhite, car, gift, money } from '../../img/images';
+import { cg, cgWhite, money } from '../../img/images';
 // Стили
 import './cabinetTopbar.scss';
 

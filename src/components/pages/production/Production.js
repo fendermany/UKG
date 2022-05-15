@@ -280,7 +280,7 @@ const Production = () => {
 					/>
 					<div className='production__container'>
 						<div className='production__gallery-title title'>
-							Галерея
+							Галерея&nbsp;
 							<span className='gold'>Фотографий</span>
 						</div>
 						<div className='production__gallery-descr'>

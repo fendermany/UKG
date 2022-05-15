@@ -18,13 +18,8 @@ import CabinetHeader from '../../cabinetHeader/CabinetHeader';
 import CabinetReflvl from './../../cabinetReflvl/CabinetReflvl';
 // Media
 import {
-	youtube,
-	facebook,
-	instagram,
-	telegram,
 	cg,
 	cgWhite,
-	car,
 	user,
 	procent,
 	handStars,
@@ -104,7 +99,7 @@ export default function CabinetAffiliate() {
 		[]
 	);
 
-	const data = useMemo(() => [], [referrals]);
+	const data = [];
 
 	if (isSuccessWalletsTree) {
 		walletsTree.data.children.forEach((item, i) => {

@@ -2,7 +2,6 @@ import { useContext, useState } from 'react';
 import LangContext from './../../contexts/LangContext';
 import Popup from 'reactjs-popup';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import { BodyScrollOptions } from 'body-scroll-lock';
 // Hooks
 import { useOutsideAlerter } from '../../hooks/useOutsideAlerter';
 // Components
@@ -154,7 +153,7 @@ const Header = () => {
 		}
 	}
 
-	const { ref, isComponentVisible, setIsComponentVisible } =
+	const { isComponentVisible, setIsComponentVisible } =
 		useOutsideAlerter(false);
 
 	isComponentVisible

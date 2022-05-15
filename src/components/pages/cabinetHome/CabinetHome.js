@@ -26,7 +26,6 @@ import checkManagerLvl from './../../functions/checkManagerLvl';
 import {
 	cg,
 	cgWhite,
-	banknota,
 	mail,
 	user,
 	userWhite,
