@@ -86,6 +86,7 @@ const CabinetInvestmentsCalc = () => {
 								value={getValue()}
 								className='cabinvest__calc-select'
 								options={calcOptions}
+								isSearchable={false}
 							/>
 						</div>
 						<div className='cabinvest__calc-item'>

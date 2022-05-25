@@ -15,6 +15,7 @@ import Spinner from './../../spinner/Spinner';
 import { logo } from '../../../img/images';
 // Стили
 import './cabinetForms.scss';
+import {Helmet} from "react-helmet";
 
 const Schema = Yup.object().shape({
 	email: Yup.string()
@@ -60,6 +61,9 @@ function CabinetRecovery() {
 
 	return (
 		<div className='wrapper'>
+		<Helmet>
+				<meta name='viewport' content='width=device-width' />
+			</Helmet>
 			<main className='page'>
 				<div className='cabinet__container'>
 					<Link to='/' className='cabinet__logo'>

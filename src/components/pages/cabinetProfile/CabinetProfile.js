@@ -19,6 +19,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 // Styles
 import './cabinetProfile.scss';
+import {Helmet} from "react-helmet";
 
 function TabPanel(props) {
 	const { children, value, index, ...other } = props;
@@ -135,6 +136,9 @@ export default function CabinetProfile() {
 
 	return (
 		<div className='cabinet'>
+		<Helmet>
+				<meta name="viewport" content="width=1660" />
+			</Helmet>
 			<div className='cabinet__wrapper'>
 				<Aside />
 

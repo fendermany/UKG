@@ -110,6 +110,7 @@ const Footer = () => {
 							value={getValue()}
 							className='lang-list'
 							options={langOptions}
+							isSearchable={false}
 						/>
 					</div>
 				</div>

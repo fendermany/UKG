@@ -10,6 +10,7 @@ import { Snackbar } from '@mui/material';
 // Styles
 import './cabinetPromotion.scss';
 import RefLink from './../../functions/RefLink';
+import {Helmet} from "react-helmet";
 
 function TabPanel(props) {
 	const { children, value, index, ...other } = props;
@@ -56,6 +57,9 @@ export default function CabinetPromotion() {
 
 	return (
 		<div className='cabinet'>
+		<Helmet>
+				<meta name="viewport" content="width=1660" />
+			</Helmet>
 			<div className='cabinet__wrapper'>
 				<Aside />
 

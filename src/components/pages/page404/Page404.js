@@ -9,12 +9,16 @@ import Aside from '../../aside/Aside';
 import CabinetHeader from '../../cabinetHeader/CabinetHeader';
 
 import './page404.scss';
+import {Helmet} from "react-helmet";
 
 export default function Page404() {
 	const { store } = useContext(AuthContext);
 
 	return (
 		<>
+		<Helmet>
+				<meta name='viewport' content='width=1660' />
+			</Helmet>
 			{store.isAuth ? (
 				<Navigate replace to='/cabinet' />
 			) : (

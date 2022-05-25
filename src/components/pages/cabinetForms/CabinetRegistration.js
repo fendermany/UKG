@@ -18,6 +18,7 @@ import './cabinetForms.scss';
 import UserServices from './../../../services/UserServices';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import {Helmet} from "react-helmet";
 
 const Schema = Yup.object().shape({
 	email: Yup.string()
@@ -109,6 +110,9 @@ function CabinetRegistration() {
 
 	return (
 		<div className='wrapper'>
+		<Helmet>
+				<meta name='viewport' content='width=device-width' />
+			</Helmet>
 			<main className='page'>
 				<div className='cabinet__container'>
 					<Link to='/' className='cabinet__logo'>

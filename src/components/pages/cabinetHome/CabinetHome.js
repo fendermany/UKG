@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet';
 // Functions
 import Refbonus from '../../functions/getRefBonus';
 import checkBars from './../../functions/checkBars';
@@ -33,6 +34,7 @@ import {
 	documents,
 	procent,
 	dollar,
+	banknota
 } from '../../../img/images';
 // Styles
 import './cabinetHome.scss';
@@ -87,6 +89,9 @@ export default function CabinetHome() {
 
 	return (
 		<div className='cabinet'>
+			<Helmet>
+				<meta name='viewport' content='width=1660' />
+			</Helmet>
 			<div className='cabinet__wrapper'>
 				<Aside />
 
@@ -105,14 +110,49 @@ export default function CabinetHome() {
 											<img src={procent} alt='procent-table' />
 											Процент доходности компании за все время:
 										</span>
-										<span className='gold'> % </span>
+										<span className='gold'>
+											{isSuccessAddition && isSuccessUserInfo && (
+												<>
+													{Math.floor(
+														(getAddition.data.content.reduce(
+															(acc, item) => acc + item.amount,
+															0
+														) /
+															userInfo.data.pools.reduce(
+																(acc, item) => acc + item.amount,
+																0
+															)) *
+															100
+													)}
+												</>
+											)}
+											%
+										</span>
 									</li>
 									<li>
 										<span>
 											<img src={procent} alt='procent-table' />
 											Процент доходности компании за эту неделю:
 										</span>
-										<span className='gold'> % </span>
+										<span className='gold'>
+											{' '}
+											{isSuccessAdditionWeek && isSuccessUserInfo && (
+												<>
+													{Math.floor(
+														(getAdditionWeek.data.content.reduce(
+															(acc, item) => acc + item.amount,
+															0
+														) /
+															userInfo.data.pools.reduce(
+																(acc, item) => acc + item.amount,
+																0
+															)) *
+															100
+													)}
+												</>
+											)}
+											%
+										</span>
 									</li>
 									<li>
 										<span>
@@ -1002,8 +1042,8 @@ export default function CabinetHome() {
 													</tbody>
 												</table>
 											</div>
-										</div>
-										<div className='cabhome__latest-item cab'>
+										</div> */}
+										{/* <div className='cabhome__latest-item cab'>
 											<div className='cabhome__latest-wrapper'>
 												<div className='cabhome__latest-title'>
 													Последние операции по кабинету
@@ -1016,46 +1056,6 @@ export default function CabinetHome() {
 														</tr>
 													</thead>
 													<tbody>
-														<tr>
-															<td>
-																<span>Вклад</span>
-																<span>
-																	<img src={banknota} alt='banknota' />
-																	100.00$
-																</span>
-															</td>
-															<td>11.03.2021 18:03</td>
-														</tr>
-														<tr>
-															<td>
-																<span>Вклад</span>
-																<span>
-																	<img src={banknota} alt='banknota' />
-																	100.00$
-																</span>
-															</td>
-															<td>11.03.2021 18:03</td>
-														</tr>
-														<tr>
-															<td>
-																<span>Вклад</span>
-																<span>
-																	<img src={banknota} alt='banknota' />
-																	100.00$
-																</span>
-															</td>
-															<td>11.03.2021 18:03</td>
-														</tr>
-														<tr>
-															<td>
-																<span>Вклад</span>
-																<span>
-																	<img src={banknota} alt='banknota' />
-																	100.00$
-																</span>
-															</td>
-															<td>11.03.2021 18:03</td>
-														</tr>
 														<tr>
 															<td>
 																<span>Вклад</span>

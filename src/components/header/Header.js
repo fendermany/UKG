@@ -265,6 +265,7 @@ const Header = () => {
 									value={getValue()}
 									className='lang-list'
 									options={langOptions}
+									isSearchable={false}
 								/>
 							</div>
 							<ul className='menu__social'>
@@ -293,6 +294,7 @@ const Header = () => {
 					</div>
 					<div className='header__lang lang'>
 						<Select
+							isSearchable={false}
 							classNamePrefix='lang-list-top-promo'
 							onChange={onChange}
 							value={getValue()}
@@ -302,6 +304,7 @@ const Header = () => {
 					</div>
 					<div className='header__social social'>
 						<Select
+							isSearchable={false}
 							classNamePrefix='lang-list-top-promo'
 							onChange={onChangeSocial}
 							value={getValueSocial()}

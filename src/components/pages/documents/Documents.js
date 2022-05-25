@@ -16,11 +16,15 @@ import {
 } from '../../../img/images.js';
 // Styles
 import './documents.scss';
+import {Helmet} from "react-helmet";
 
 
 const Documents = () => {
 	return (
 		<div className='wrapper'>
+		<Helmet>
+				<meta name='viewport' content='width=device-width' />
+			</Helmet>
 			<Header />
 
 			<main className='page documents'>

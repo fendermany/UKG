@@ -1,8 +1,11 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Select from 'react-select';
 import DataContext from '../../../contexts/DataContext';
 import { Navigation, Pagination, A11y, Thumbs, EffectFade } from 'swiper';
+import VideoPlayer from '../../ui/video/VideoPlayer';
+import { Helmet } from 'react-helmet';
+
 // Components
 import Footer from '../../footer/Footer';
 import Header from './../../header/Header';
@@ -113,8 +116,23 @@ const Home = () => {
 		});
 	};
 
+	const optionsPromo = {
+		controls: true,
+		poster: homePromo,
+		sources: [{ src: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4' }],
+	};
+
+	const optionsAbout = {
+		controls: true,
+		poster: homeAbout,
+		sources: [{ src: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4' }],
+	};
+
 	return (
 		<div className='wrapper'>
+			<Helmet>
+				<meta name='viewport' content='width=device-width' />
+			</Helmet>
 			<Header />
 
 			<main className='page home'>
@@ -139,20 +157,7 @@ const Home = () => {
 							</div>
 							<div className='home__promo-video promo-video'>
 								<div className='promo-video__preview'>
-									<picture>
-										<source media='(max-width: 480px)' srcSet={homePromoMob} />
-										<img src={homePromo} alt='promo' />
-									</picture>
-									<div className='promo-video__preview-center preview-center'>
-										<img
-											className='promo-video__preview-icon preview-icon'
-											src={iconsPlay}
-											alt='play'
-										/>
-										<span className='promo-video__preview-text preview-text'>
-											Смотреть
-										</span>
-									</div>
+									<VideoPlayer options={optionsPromo} key={'promo-video'} />
 								</div>
 							</div>
 						</div>
@@ -164,20 +169,7 @@ const Home = () => {
 						<div className='home__about-wrapper'>
 							<div className='home__about-video about-video'>
 								<div className='about-video__preview'>
-									<picture>
-										<source media='(max-width: 480px)' srcSet={homeAboutMob} />
-										<img src={homeAbout} alt='promo' />
-									</picture>
-									<div className='about-video__preview-center preview-center'>
-										<img
-											className='promo-video__preview-icon preview-icon'
-											src={iconsPlay}
-											alt='play'
-										/>
-										<span className='promo-video__preview-text preview-text'>
-											Смотреть
-										</span>
-									</div>
+									<VideoPlayer options={optionsAbout} abc={'about-video'} />
 								</div>
 							</div>
 							<div className='home__about-body'>
@@ -786,6 +778,7 @@ const Home = () => {
 												value={getValue()}
 												className='form'
 												options={calcOptions}
+												isSearchable={false}
 											/>
 										</li>
 										<li className='home__offer-calc--item'>
@@ -799,7 +792,7 @@ const Home = () => {
 													onChange={handleChange}
 													placeholder='10 000'
 													className='input'
-													maxLength="7"
+													maxLength='7'
 												/>
 												<span>$</span>
 											</div>

@@ -26,10 +26,15 @@ import {
 } from '../../../img/images.js';
 // Styles
 import './token.scss';
+import {Helmet} from "react-helmet";
+import { Link } from 'react-router-dom';
 
 const Token = () => {
 	return (
 		<div class='wrapper'>
+		<Helmet>
+				<meta name='viewport' content='width=device-width' />
+			</Helmet>
 			<Header />
 
 			<main class='page token'>
@@ -267,16 +272,16 @@ const Token = () => {
 							За нами будущее – присоединяйтесь!
 						</div>
 						<div class='token__footer-btns'>
-							<a href='/' class='token__footer-btn button button_gold'>
+							<Link to='/registration' class='token__footer-btn button button_gold'>
 								Зарегистрируйтесь уже сейчас
-							</a>
-							<a href='/' class='token__footer-btn button button_transparent'>
+							</Link>
+							<Link to='/registration' class='token__footer-btn button button_transparent'>
 								<div>
 									<span>
 										<span class='gold'>Станьте владельцем CG Token</span>
 									</span>
 								</div>
-							</a>
+							</Link>
 						</div>
 					</div>
 				</div>

@@ -23,6 +23,7 @@ import { cg, gold, poucheGold, gold1 } from '../../../img/images';
 import './cabinetInvestments.scss';
 import '../../cabinetPools/cabinetPools.scss';
 import CabinetInvestmentsCalc from './CabinetInvestmentsCalc';
+import {Helmet} from "react-helmet";
 
 const Schema = Yup.object().shape({
 	amount: Yup.string()
@@ -105,6 +106,9 @@ export default function CabinetInvestments() {
 
 	return (
 		<div className='cabinet'>
+		<Helmet>
+				<meta name="viewport" content="width=1660" />
+			</Helmet>
 			<div className='cabinet__wrapper'>
 				<Aside />
 

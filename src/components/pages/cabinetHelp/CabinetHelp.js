@@ -20,6 +20,7 @@ import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 // Styles
 import './cabinetHelp.scss';
+import {Helmet} from "react-helmet";
 
 const Schema = Yup.object().shape({
 	text: Yup.string()
@@ -150,6 +151,9 @@ export default function CabinetHelp() {
 
 	return (
 		<div className='cabinet'>
+		<Helmet>
+				<meta name="viewport" content="width=1660" />
+			</Helmet>
 			<div className='cabinet__wrapper'>
 				<Aside />
 

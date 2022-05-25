@@ -37,6 +37,7 @@ import {
 } from '../../../img/images.js';
 // Styles
 import './partners.scss';
+import {Helmet} from "react-helmet";
 
 const Partners = () => {
 	const [partnersSwiper, setPartnersSwiper] = useState(null);
@@ -44,6 +45,9 @@ const Partners = () => {
 
 	return (
 		<div className='wrapper'>
+		<Helmet>
+				<meta name='viewport' content='width=device-width' />
+			</Helmet>
 			<Header />
 
 			<main className='page referral'>

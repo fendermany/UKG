@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import LightGallery from 'lightgallery/react';
+import { Helmet } from 'react-helmet';
 
 // Components
 import Header from './../../header/Header';
@@ -30,10 +32,16 @@ import {
 } from '../../../img/images.js';
 // Styles
 import './production.scss';
+import 'lightgallery/css/lightgallery.css';
+import 'lightgallery/css/lg-zoom.css';
+import 'lightgallery/css/lg-thumbnail.css';
 
 const Production = () => {
 	return (
 		<div className='wrapper'>
+			<Helmet>
+				<meta name='viewport' content='width=device-width' />
+			</Helmet>
 			<Header />
 
 			<main className='page production'>

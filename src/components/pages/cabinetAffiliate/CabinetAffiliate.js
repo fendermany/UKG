@@ -34,6 +34,7 @@ import {
 } from '../../../img/images';
 // Styles
 import './cabinetAffiliate.scss';
+import {Helmet} from "react-helmet";
 
 export default function CabinetAffiliate() {
 	const { userInfo, isSuccessUserInfo } = useUserInfo();
@@ -207,6 +208,9 @@ export default function CabinetAffiliate() {
 
 	return (
 		<div className='cabinet'>
+			<Helmet>
+				<meta name='viewport' content='width=1660' />
+			</Helmet>
 			<div className='cabinet__wrapper'>
 				<Aside />
 

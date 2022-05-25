@@ -20,10 +20,14 @@ import {
 } from '../../../img/images.js';
 // Styles
 import './companies.scss';
+import {Helmet} from "react-helmet";
 
 const Companies = () => {
 	return (
 		<div className='wrapper'>
+		<Helmet>
+				<meta name='viewport' content='width=device-width' />
+			</Helmet>
 			<Header />
 
 			<main className='page partners'>

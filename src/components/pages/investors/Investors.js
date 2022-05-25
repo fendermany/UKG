@@ -26,6 +26,7 @@ import {
 } from '../../../img/images.js';
 // Styles
 import './investors.scss';
+import {Helmet} from "react-helmet";
 
 const Investors = () => {
 	const { calcOptions } = useContext(DataContext);
@@ -94,6 +95,9 @@ const Investors = () => {
 
 	return (
 		<div className='wrapper'>
+		<Helmet>
+				<meta name='viewport' content='width=device-width' />
+			</Helmet>
 			<Header />
 
 			<main className='page partner'>
@@ -212,6 +216,7 @@ const Investors = () => {
 											value={getValue()}
 											className='form'
 											options={calcOptions}
+											isSearchable={false}
 										/>
 									</li>
 									<li className='partner__offer-calc--item'>

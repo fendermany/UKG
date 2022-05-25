@@ -7,10 +7,14 @@ import './cabinetTopup.scss';
 
 import React from 'react';
 import { qr, topupCopy } from '../../../img/images';
+import {Helmet} from "react-helmet";
 
 export default function CabinetTopup() {
 	return (
 		<div className='cabinet'>
+		<Helmet>
+				<meta name="viewport" content="width=1660" />
+			</Helmet>
 			<div className='cabinet__wrapper'>
 				<Aside />
 

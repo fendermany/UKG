@@ -21,6 +21,7 @@ import {
 } from '../../../img/images.js';
 // Styles
 import './contacts.scss';
+import {Helmet} from "react-helmet";
 
 const Schema = Yup.object().shape({
 	email: Yup.string()
@@ -57,6 +58,9 @@ const Contacts = () => {
 
 	return (
 		<div className='wrapper'>
+			<Helmet>
+				<meta name='viewport' content='width=device-width' />
+			</Helmet>
 			<Header />
 
 			<main className='page contacts'>

@@ -74,6 +74,7 @@ function CabinetHeader() {
 						value={getValue()}
 						className='lang-list'
 						options={langOptions}
+						isSearchable={false}
 					/>
 				</div>
 				<div className='cabinet__header-time'>

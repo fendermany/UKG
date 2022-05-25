@@ -23,6 +23,7 @@ import {
 } from '../../../img/images.js';
 // Styles
 import './about.scss';
+import {Helmet} from "react-helmet";
 
 const About = () => {
 	const [aboutSwiper, setAboutSwiper] = useState(null);
@@ -30,6 +31,9 @@ const About = () => {
 
 	return (
 		<div className='wrapper'>
+			<Helmet>
+				<meta name='viewport' content='width=device-width' />
+			</Helmet>
 			<Header />
 
 			<main className='page about'>
